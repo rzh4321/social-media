@@ -1,17 +1,21 @@
 'use client';
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { signIn } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
 
+type CardLoginProps = {
+    switchToSignup: Dispatch<SetStateAction<boolean>>;
+}
 
-function CardLogin({ switchToSignup }: {switchToSignup: Dispatch<SetStateAction<boolean>>}) {
+
+export default function CardLogin({ switchToSignup }: CardLoginProps) {
     const [usernameInput, setUsernameInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [loginLoading, setLoginLoading] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
   
-    const handleLogin = async (e) => {
+    const handleLogin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       setLoginLoading(true);
       setLoginFailed(false);
@@ -19,6 +23,7 @@ function CardLogin({ switchToSignup }: {switchToSignup: Dispatch<SetStateAction<
         redirect: false,
         username: usernameInput,
         password: passwordInput,
+        callbackUrl: '/home',
       });
       if (res && !res.ok) {
         setLoginLoading(false);
@@ -44,6 +49,7 @@ function CardLogin({ switchToSignup }: {switchToSignup: Dispatch<SetStateAction<
           redirect: false,
           username: data.user.username,
           password: data.user.password,
+          callbackUrl: '/home',
         });
         if (signInRes && !signInRes.ok) {
           setLoginLoading(false);
@@ -88,9 +94,9 @@ function CardLogin({ switchToSignup }: {switchToSignup: Dispatch<SetStateAction<
           </form>
           <div className='border-bottom mt-2 mb-3'/>
           <button className='btn btn-outline-primary w-100'
-            onClick={() => {signIn('facebook')}} 
+            onClick={() => {signIn('google', {callbackUrl: '/home'})}} 
           >
-            Log in with Facebook
+            Log in with Google
           </button>
           <button className='btn btn-outline-primary mt-3 w-100'
             onClick={handleVisitorLogin}

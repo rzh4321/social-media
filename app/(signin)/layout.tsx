@@ -1,4 +1,3 @@
-import { Provider } from "@components/Provider";
 
 export const metadata = {
   title: "sign in page",
@@ -7,7 +6,9 @@ export const metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
   <html lang="en">
-    <body></body>
+    <body>
+      {children}
+    </body>
   </html>
 );
 
