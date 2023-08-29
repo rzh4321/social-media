@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 export const metadata = {
-  title: "title",
+  title: "home page",
   description: "some desc",
 };
 

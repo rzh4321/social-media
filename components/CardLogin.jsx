@@ -43,18 +43,15 @@ export default function CardLogin({ switchToSignup }) {
       method: "POST",
     });
     const data = await res.json();
-    console.log(data);
-    console.log(
-      "we created visitor data but still need to log in with credentials",
-    );
-    // should return newly created user object. Use user object to sign in, but use unhashed pw
+    console.log('we back to handleVisitorLogin function. we called general visitor login api. the res is ', data);
+    // should return newly created (or existing) user object. Use user object to sign in, but use unhashed pw
     const signInRes = await signIn("credentials", {
       redirect: false,
       username: data.user.username,
       password: data.user.username,
       callbackUrl: "/home",
     });
-    
+
     console.log("login api returned response. it is ", signInRes);
     if (signInRes && !signInRes.ok) {
       setLoginLoading(false);

@@ -1,9 +1,13 @@
+"use client";
 
-export const metadata = {
-  title: "title",
-  description: "some desc",
-};
+import { signOut, useSession } from "next-auth/react";
+
 
 export default function Home() {
-  return <>home</>;
+  const handleLogout = () => {
+    signOut({ callbackUrl: '/' });
+  }
+
+  return <>home
+  <button onClick={handleLogout}>log out</button></>;
 }
