@@ -38,13 +38,12 @@ export default function CardLogin({ switchToSignup }: CardLoginProps) {
     const handleVisitorLogin = async () => {
         setLoginLoading(true);
         setLoginFailed(false);
-        const res = await fetch(`../app/api/auth/general-visitor-login`, {
+        const res = await fetch(`/api/auth/general-visitor-login`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          }
         });
         const data = await res.json();
+        console.log(data);
+        // should return newly creted user
         const signInRes = await signIn('credentials', {
           redirect: false,
           username: data.user.username,
