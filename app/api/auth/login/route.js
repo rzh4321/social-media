@@ -17,7 +17,7 @@ async function authenticate(username, password) {
   if (!match) {
     // passwords do not match
     console.log("PASSWOWRDS DONT MATCH");
-    return { status: false, message: "Username does not exist" };
+    return { status: false, message: "Incorrect password" };
   }
   return { status: true, user };
 }
