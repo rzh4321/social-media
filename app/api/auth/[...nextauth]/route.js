@@ -81,7 +81,7 @@ const handler = NextAuth({
           "we back from calling google login api. this is res: ",
           data,
         );
-        // save token and userid to user object so it can be used to create jwt and session later
+        // save token and id to user object so it can be used to create jwt and session later
         user.id = data.user._id;
         user.token = data.token;
         console.log(
@@ -94,6 +94,7 @@ const handler = NextAuth({
         return true;
       }
     },
+    // transfer user data to token object
     async jwt({ token, user, account }) {
       console.log("INSIDE JWT FUNCTION");
       console.log("token jwt", token);
@@ -116,6 +117,7 @@ const handler = NextAuth({
       }
       return token;
     },
+    // transfer token data to session object
     async session({ session, token }) {
       console.log("IN SESSION FUNCTION");
       console.log("session is ", session);

@@ -22,7 +22,7 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="container-fluid py-5 bg-light">
+      <div className="container-fluid py-5">
         <div className="container-sm">
           <div className="row align-items-center justify-content-center gx-5">
             <div className="col-sm-6">
@@ -38,7 +38,6 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

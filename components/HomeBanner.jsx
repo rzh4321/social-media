@@ -1,6 +1,6 @@
 export default function HomeBanner() {
   return (
-    <div className="text-end">
+    <div className="text-end" data-bs-theme="dark">
       <p className="text-primary fs-1">
         <strong>app</strong>
       </p>

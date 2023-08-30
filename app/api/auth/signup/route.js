@@ -1,5 +1,7 @@
 import User from "../../../../models/User";
 import { NextResponse } from "next/server";
+import connectToDB from "../../../../utils/database";
+
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -28,6 +30,7 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  await connectToDB();
   const reqData = await req.json();
   console.log("we are in POST signup route. req is ", reqData);
   try {

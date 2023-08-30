@@ -1,5 +1,7 @@
 import User from "../../../../models/User";
 import { NextResponse } from "next/server";
+import connectToDB from "../../../../utils/database";
+
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -29,6 +31,7 @@ export async function GET() {
 
 // checks if user exists and pw matches. If yes, return user object and token. Otherwise return error
 export async function POST(req) {
+  await connectToDB();
   console.log("We are in POST log in api call");
   const { username, password } = await req.json();
   console.log(

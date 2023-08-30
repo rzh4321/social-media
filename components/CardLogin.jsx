@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { signIn } from "next-auth/react";
 import styles from "../styles/Home.module.css";
 
-
 // type CardLoginProps = {
 //   switchToSignup: Dispatch<SetStateAction<boolean>>;
 // };
@@ -25,7 +24,8 @@ export default function CardLogin({ switchToSignup }) {
       password: passwordInput,
       callbackUrl: "/home",
     });
-    if (res && !res.ok) {
+    console.log("res is ", res);
+    if (res && !res.url) {
       setLoginLoading(false);
       setLoginFailed(true);
     }
