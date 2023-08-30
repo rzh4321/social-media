@@ -59,6 +59,8 @@ const handler = NextAuth({
       // Google login: finding an existing account or creating a new account
       // in the database with the provided name, username and profilePicUrl from google
       if (account.provider === "google") {
+        // user object has details from google account, use those details to retrieve or create user object
+        // in api call later
         const credentials = {
           name: user.name,
           username: user.email,
@@ -68,14 +70,16 @@ const handler = NextAuth({
           "u just signed in with google. this is user object: ",
           user,
         );
-        const res = await fetch(`/app/api/auth/google-login`, {
+        const res = await fetch(`http://localhost:3000/api/auth/google-login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
         });
         // user and token will be returned from api call
         const data = await res.json();
-        user.id = data.user.id;
+        console.log('we back from calling google login api. this is res: ', data);
+        // save token and userid to user object so it can be used to create jwt and session later
+        user.id = data.user._id;
         user.token = data.token;
         console.log(
           "after api call to google to get User db object and token, we updated user object id and token. now its ",
@@ -83,6 +87,7 @@ const handler = NextAuth({
         );
         return true;
       } else if (account.provider === "credentials") {
+        // we already have all the necessary data from authorize(), just return true
         return true;
       }
     },
@@ -111,13 +116,14 @@ const handler = NextAuth({
     async session({ session, token }) {
       console.log("IN SESSION FUNCTION");
       console.log("session is ", session);
-      console.log("(is this the same token as in jwt?) token is ", token);
+      console.log("token is ", token);
       session.accessToken = token.accessToken;
       session.user.userId = token.userId;
       session.user.name = token.userName;
       session.user.email = token.userEmail;
       session.user.image = token.userImage;
       console.log("updated session. it is now ", session);
+      // session stores user object (name, email, image, userID), accessToken, and expires
       return session;
     },
   },

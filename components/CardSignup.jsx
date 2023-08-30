@@ -95,7 +95,10 @@ export default function CardSignup({ switchToSignup }) {
               }),
             });
             const data = await res.json();
-            console.log('we are back from post sign up api call. data we got is ', data);
+            console.log(
+              "we are back from post sign up api call. data we got is ",
+              data,
+            );
             if (data.errors) {
               setNameInput(data.input.name);
               setUsernameInput(data.input.username);
@@ -114,7 +117,7 @@ export default function CardSignup({ switchToSignup }) {
                 redirect: false,
                 username: usernameInput,
                 password: passwordInput,
-                callbackUrl: "/home",   // should redirect to home page after successful signup
+                callbackUrl: "/home", // should redirect to home page after successful signup
               });
             }
           }}

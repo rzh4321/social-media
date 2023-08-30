@@ -14,9 +14,7 @@ export default function CardLogin({ switchToSignup }) {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
 
-  const handleLogin = async (
-    e
-  ) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoginLoading(true);
     setLoginFailed(false);
@@ -43,7 +41,10 @@ export default function CardLogin({ switchToSignup }) {
       method: "POST",
     });
     const data = await res.json();
-    console.log('we back to handleVisitorLogin function. we called general visitor login api. the res is ', data);
+    console.log(
+      "we back to handleVisitorLogin function. we called general visitor login api. the res is ",
+      data,
+    );
     // should return newly created (or existing) user object. Use user object to sign in, but use unhashed pw
     const signInRes = await signIn("credentials", {
       redirect: false,

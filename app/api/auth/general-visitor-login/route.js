@@ -1,8 +1,7 @@
 import User from "../../../../models/User";
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../utils/database";
-import { cookies } from 'next/headers'
-
+import { cookies } from "next/headers";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -15,13 +14,12 @@ function generateRandomUsername() {
   const randomAdjective =
     adjectives[Math.floor(Math.random() * adjectives.length)];
   const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-  
+
   // Increase the range for the random number (e.g., 1 - 10000)
   const randomNumber = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 
   return `${randomAdjective}_${randomNoun}_${randomNumber}`;
 }
-
 
 export const GET = () => {
   return NextResponse.json({ message: "hi" });
@@ -32,26 +30,28 @@ export const POST = async () => {
   await connectToDB();
   console.log("u pressed visitor");
   const cookieStore = cookies();
-  const username = cookieStore.get('visitor').value;
+  const username = cookieStore.get("visitor").value;
   if (username) {
-    console.log('this is NOT first time visiting');
-    console.log('existing visitor username is ', username);
+    console.log("this is NOT first time visiting");
+    console.log("existing visitor username is ", username);
     try {
       const regex = new RegExp(username, "i");
       const user = await User.findOne({ username: { $regex: regex } });
-      console.log('we found visitor user object. it is ', user, ' returning response now')
+      console.log(
+        "we found visitor user object. it is ",
+        user,
+        " returning response now",
+      );
       return NextResponse.json({
         message: "logged in",
         user: user,
         //         token: token,
       });
+    } catch (e) {
+      throw new Error("couldnt find existing visitor");
     }
-    catch(e) {
-      throw new Error('couldnt find existing visitor')
-    }
-  }
-  else {
-    console.log('this is ur first time visitor')
+  } else {
+    console.log("this is ur first time visitor");
     const username = generateRandomUsername();
     const hashedPassword = bcrypt.hashSync(username, 10);
     try {
@@ -62,15 +62,14 @@ export const POST = async () => {
       });
       await user.save();
       const headers = new Headers();
-      headers.append('Set-Cookie', `visitor=${username}; Max-Age=10000000000`);
+      headers.append("Set-Cookie", `visitor=${username}; Max-Age=10000000000`);
       const body = JSON.stringify({
         message: "logged in",
         user: user,
       });
-      return new Response(body, {headers: headers});
-      
+      return new Response(body, { headers: headers });
     } catch (err) {
-      console.log('error: ', err);
+      console.log("error: ", err);
       throw new Error("cant hash password or create new user or something");
     }
   }
