@@ -77,7 +77,10 @@ const handler = NextAuth({
         });
         // user and token will be returned from api call
         const data = await res.json();
-        console.log('we back from calling google login api. this is res: ', data);
+        console.log(
+          "we back from calling google login api. this is res: ",
+          data,
+        );
         // save token and userid to user object so it can be used to create jwt and session later
         user.id = data.user._id;
         user.token = data.token;

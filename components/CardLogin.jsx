@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { signIn } from "next-auth/react";
 import styles from "../styles/Home.module.css";
 
+
 // type CardLoginProps = {
 //   switchToSignup: Dispatch<SetStateAction<boolean>>;
 // };
