@@ -114,7 +114,7 @@ export default function HomeFeed({ feedType, postsData }) {
           </div>
         </Link>
       </div>
-      <div className="border-top"></div>
+      <div className="border-top mb-4"></div>
       {feedType !== "user" && <NewPostCard authuserData={authuserData} />}
       {/*{feedType === 'home' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your feed</h3>} */}
       {feedType === "profile" && (

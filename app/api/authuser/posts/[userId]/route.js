@@ -1,6 +1,9 @@
 import User from "../../../../../models/User";
 import Post from "../../../../../models/Post";
 
+import {promises as fsPromises} from 'fs';
+import path from 'path';
+
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../../utils/database";
 
@@ -57,4 +60,15 @@ export async function GET(req) {
       return NextResponse.json({ error: err }, { status: 502 });
     }
   }
+}
+
+// session user makes a post
+export async function POST(req) {
+  console.log('insde making a post api handler')
+  // const data = await req.json();
+  // console.log('data is ', data);
+  console.log('req is ', req.body)
+  // const test = await new Response(req.body).text();
+  // console.log('req is ', test);
+  // throw new Error('asd')
 }

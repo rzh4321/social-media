@@ -11,6 +11,11 @@
   width: 40px;
 }
 
+.post-card.user-profile-pic {
+  position: relative;
+  bottom: 15px;
+}
+
 .user-profile-pic:hover {
   cursor: pointer;
 }
