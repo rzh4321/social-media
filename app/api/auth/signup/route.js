@@ -34,7 +34,6 @@ export async function POST(req) {
   console.log("we are in POST signup route. req is ", reqData);
   try {
     const data = schema.parse(reqData);
-    console.log("we just parsed teh data. it is ", data);
     const user = await User.findOne({ username: reqData.username });
     if (user) {
       console.log("username alredy exists in database");

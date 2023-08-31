@@ -6,19 +6,20 @@ import Link from "next/link";
 import Image from 'next/image'
 
 import FeedList from "./FeedList";
-
+// {
+//     file: null,
+//     fileName: '',
+//     mimeType: '',
+//     buffer: null,
+// }
 
 export default function NewPostCard({ authuserData }) {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [contentInput, setContentInput] = useState('');
-    const [imageInput, setImageInput] = useState({
-        file: null,
-        fileName: '',
-        mimeType: '',
-        buffer: null,
-    });
+    const [imageInput, setImageInput] = useState(null);
     const [fileError, setFileError] = useState();
+    const [imageBuffer, setImageBuffer] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isContentError, setIsContentError] = useState(false);
 
@@ -43,17 +44,24 @@ export default function NewPostCard({ authuserData }) {
       setFileError();
       // Use FileReader to read the file
       const reader = new FileReader();
+      reader.onload = () => {
+        const buffer = reader.result;
+        console.log('BUFFER IS ', buffer);
+        setImageBuffer(buffer);
+
+      }
+      setImageInput(selectedFile);
 
       // When FileReader finishes reading the file
-      reader.onload = () => {
-        // Update state with file information
-        setImageInput({
-          file: selectedFile,
-          fileName: selectedFile.name,
-          mimeType: selectedFile.type,
-          buffer: reader.result, // Contains the binary data
-        });
-      };
+    //   reader.onload = () => {
+    //     // Update state with file information
+    //     setImageInput({
+    //       file: selectedFile,
+    //       fileName: selectedFile.name,
+    //       mimeType: selectedFile.type,
+    //       buffer: reader.result, // Contains the binary data
+    //     });
+    //   };
 
       // Read the file as a binary buffer
       reader.readAsArrayBuffer(selectedFile);
@@ -75,22 +83,29 @@ export default function NewPostCard({ authuserData }) {
       e.preventDefault();
       setIsLoading(true);
         const formData = new FormData();
-        formData.append('username', "chris")
-        console.log('contentinput is ', contentInput, ' imageinput is ', imageInput);
+        //console.log('contentinput is ', contentInput, ' imageinput is ', imageInput);
         formData.append('content', contentInput);
-        const headers = new Headers();
-headers.append('Content-Type', 'multipart/form-data');
-        if (imageInput.file) {
+//         const headers = new Headers();
+// headers.append('Content-Type', 'multipart/form-data');
+        if (imageInput) {
             console.log('u have an image')
             //const imageBlob = new Blob([imageInput.buffer]);
 
             //formData.append('image', imageBlob, imageInput.fileName);
             formData.append('image', imageInput);
+            const blob = new Blob([imageBuffer])
+            formData.append('buffer', blob, 'filename.bin');
           }        
+          for (const entry of Array.from(formData.entries())) {
+            const [key, value] = entry;
+            console.log(key, ' : ', value)
+            console.log(typeof value)
+        }
       const res = await fetch(`/api/authuser/posts/${session.user.userId}`, {
         method: 'POST',
         body: formData,
-       
+
+        
       });
       console.log('back from api call to post a post. res is ', res);
       setIsLoading(false);
