@@ -58,14 +58,14 @@ export default function NavBar() {
   return (
     <nav className="navbar navbar-expand-sm shadow-sm">
       <div className="container-fluid">
-        <a className="navbar-brand text-primary fs-4" href="/">
+        <a className="navbar-brand text-primary fs-4" href="/home">
           <strong>App</strong>
         </a>
         <div className="navbar-nav me-auto mb-lg-0 d-flex flex-row gap-2">
           <a
             className={`nav-link ${activeNavLink === "home" ? "active" : ""}`}
             aria-current="page"
-            href="/"
+            href="/home"
             data-bs-toggle="tooltip"
             data-bs-title="Home"
             data-bs-placement="bottom"

@@ -1,0 +1,77 @@
+.feed-card {
+  max-width: 650px;
+}
+
+.feed-card-image {
+  max-width: 650px;
+}
+
+.user-profile-pic {
+  height: 40px;
+  width: 40px;
+}
+
+.user-profile-pic:hover {
+  cursor: pointer;
+}
+
+.user-profile-pic-icon {
+  font-size: 40px !important;
+}
+
+.user-profile-pic-icon:hover {
+  cursor: pointer;
+}
+
+.new-post-modal-textarea {
+  height: 150px !important;
+}
+
+.icon-text-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-bold {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 700,
+    "GRAD" 0,
+    "opsz" 48;
+}
+
+.user-profile-pic32 {
+  height: 32px;
+  width: 32px;
+}
+
+.user-profile-pic32:hover {
+  cursor: pointer;
+}
+
+.user-profile-pic-icon32 {
+  font-size: 32px !important;
+}
+
+.user-profile-pic-icon32:hover {
+  cursor: pointer;
+}
+
+.comment-bubble {
+  max-width: calc(100% - 40px);
+}
+
+.profile-click:hover {
+  cursor: pointer;
+}
+
+.my-feed,
+.all-posts {
+  transition: 0.3s all;
+}
+
+.my-feed:hover,
+.all-posts:hover {
+  filter: brightness(1.3);
+}

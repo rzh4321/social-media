@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { DateTime } from "luxon";
 import Link from "next/link";
+import NewPostCard from "./NewPostCard";
+import FeedList from "./FeedList";
 
 // feedType: 'all' || 'home' || 'profile' || 'user'
 export default function HomeFeed({ feedType, postsData }) {
@@ -29,14 +31,9 @@ export default function HomeFeed({ feedType, postsData }) {
   // Fetch posts according to the home feedType
   useEffect(() => {
     async function fetchAuthuserPostsAndSetPosts() {
-      const res = await fetch(`$/api/authuser/posts`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(`/api/authuser/posts/${session.user.userId}`);
       const data = await res.json();
+      console.log("back from feed posts api call. data is ", data.posts);
       if (data.posts.length < 10) {
         setEndOfFeed(true);
       }
@@ -62,6 +59,7 @@ export default function HomeFeed({ feedType, postsData }) {
       // Fetch 10 of all posts starting from the most recent one
       const res = await fetch(`/api/posts`);
       const data = await res.json();
+      console.log("back from feed posts api call. data is ", data.posts);
       // less than 10 posts returned means we already reached end of feed
       if (data.posts.length < 10) {
         setEndOfFeed(true);
@@ -69,6 +67,7 @@ export default function HomeFeed({ feedType, postsData }) {
       setPosts(data.posts);
       setPostsLoading(false);
     }
+
     function setUserPosts() {
       if (posts.length < 10) {
         setEndOfFeed(true);
@@ -81,7 +80,6 @@ export default function HomeFeed({ feedType, postsData }) {
 
     switch (feedType) {
       case "home":
-        console.log("feed type is home");
         fetchFeedPostsAndSetPosts();
         break;
       case "profile":
@@ -95,5 +93,43 @@ export default function HomeFeed({ feedType, postsData }) {
         break;
     }
   }, [session, feedType, posts.length, postsData, status]);
-  return <></>;
+
+  return (
+    <div className="container mt-4">
+      <div className="d-flex">
+        <Link
+          className="my-feed text-decoration-none w-50 d-flex align-items-center justify-content-center"
+          href="/home"
+        >
+          <div className="fs-4 text-primary">
+            <strong>My Feed</strong>
+          </div>
+        </Link>
+        <Link
+          className="all-posts text-decoration-none w-50 d-flex align-items-center justify-content-center"
+          href="/all"
+        >
+          <div className="fs-4 text-primary">
+            <strong>All</strong>
+          </div>
+        </Link>
+      </div>
+      <div className="border-top"></div>
+      {feedType !== "user" && <NewPostCard authuserData={authuserData} />}
+      {/*{feedType === 'home' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your feed</h3>} */}
+      {feedType === "profile" && (
+        <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your posts</h3>
+      )}
+      {/*{feedType === 'all' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>All posts</h3>}
+      {feedType === 'user' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Posts</h3>} */}
+      <FeedList
+        posts={posts}
+        setPosts={setPosts}
+        postsLoading={postsLoading}
+        authuserData={authuserData}
+        feedType={feedType}
+        endOfFeed={endOfFeed}
+      />
+    </div>
+  );
 }
