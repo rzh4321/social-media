@@ -30,7 +30,8 @@ export const POST = async () => {
   await connectToDB();
   console.log("u pressed visitor");
   const cookieStore = cookies();
-  const username = cookieStore.get("visitor").value;
+  let username;
+  if (cookieStore.get("visitor")) username = cookieStore.get("visitor").value;
   if (username) {
     console.log("this is NOT first time visiting");
     console.log("existing visitor username is ", username);

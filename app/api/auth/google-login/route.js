@@ -15,7 +15,12 @@ export async function POST(req) {
   await connectToDB();
   console.log("We are in POST google log in api call");
   const { username, name, profilePicUrl } = await req.json(); // username will be their email
-  console.log("username is ", username, ' this is profilepicurl ', profilePicUrl);
+  console.log(
+    "username is ",
+    username,
+    " this is profilepicurl ",
+    profilePicUrl,
+  );
   const user = await User.findOne({ username: username });
   if (user) {
     console.log(
@@ -30,7 +35,8 @@ export async function POST(req) {
   }
   try {
     console.log(
-      "this is a new acc. trying to create and save google user to db now. profilepicurl is ", profilePicUrl
+      "this is a new acc. trying to create and save google user to db now. profilepicurl is ",
+      profilePicUrl,
     );
     // no need for password if signing in with provider
     const user = new User({

@@ -2,7 +2,6 @@ import User from "../../../../models/User";
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../utils/database";
 
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 

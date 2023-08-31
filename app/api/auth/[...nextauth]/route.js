@@ -22,10 +22,10 @@ const handler = NextAuth({
       },
       // this will be called when we sign in with normal credentials
       async authorize(credentials, req) {
-        console.log(
-          "u just called signIn(credentials) with an object of username and pw. we are now in authorize. credentials is ",
-          credentials,
-        );
+        // console.log(
+        //   "u just called signIn(credentials) with an object of username and pw. we are now in authorize. credentials is ",
+        //   credentials,
+        // );
         // console.log('TESTING GET')
         // const test = await fetch('http://localhost:3000/api/auth/login');
         // const testData = await test.json();
@@ -36,13 +36,13 @@ const handler = NextAuth({
         });
         // should either return user object + token, or error
         const data = await res.json();
-        console.log("data from log in api call is ", data);
+        // console.log("data from log in api call is ", data);
 
         // If no error and we have user data, return it
         if (res.ok && data.user) {
-          console.log(
-            "data from log in api call returned us user object, log in success",
-          );
+          // console.log(
+          //   "data from log in api call returned us user object, log in success",
+          // );
           return data;
         }
         // Return null if user data could not be retrived
@@ -66,10 +66,10 @@ const handler = NextAuth({
           username: user.email,
           profilePicUrl: user.image,
         };
-        console.log(
-          "u just signed in with google. this is user object: ",
-          user,
-        );
+        // console.log(
+        //   "u just signed in with google. this is user object: ",
+        //   user,
+        // );
         const res = await fetch(`http://localhost:3000/api/auth/google-login`, {
           method: "POST",
           body: JSON.stringify(credentials),
@@ -77,17 +77,17 @@ const handler = NextAuth({
         });
         // user and token will be returned from api call
         const data = await res.json();
-        console.log(
-          "we back from calling google login api. this is res: ",
-          data,
-        );
+        // console.log(
+        //   "we back from calling google login api. this is res: ",
+        //   data,
+        // );
         // save token and id to user object so it can be used to create jwt and session later
         user.id = data.user._id;
         user.token = data.token;
-        console.log(
-          "after api call to google to get User db object and token, we updated user object id and token. now its ",
-          user,
-        );
+        // console.log(
+        //   "after api call to google to get User db object and token, we updated user object id and token. now its ",
+        //   user,
+        // );
         return true;
       } else if (account.provider === "credentials") {
         // we already have all the necessary data from authorize(), just return true
@@ -96,32 +96,32 @@ const handler = NextAuth({
     },
     // transfer user data to token object
     async jwt({ token, user, account }) {
-      console.log("INSIDE JWT FUNCTION");
-      console.log("token jwt", token);
-      console.log("user jwt", user);
-      console.log("account jwt", account);
+      // console.log("INSIDE JWT FUNCTION");
+      // console.log("token jwt", token);
+      // console.log("user jwt", user);
+      // console.log("account jwt", account);
       if (account?.provider === "google") {
         token.accessToken = user.token;
         token.userId = user.id;
         token.userName = user.name;
         token.userEmail = user.email;
         token.userImage = user.image;
-        console.log("u signed in with google. token is now ", token);
+        // console.log("u signed in with google. token is now ", token);
       } else if (account?.provider === "credentials") {
         token.accessToken = user.token;
         token.userId = user.user._id;
         token.userName = user.user.name;
         token.userEmail = user.user.username;
         token.userImage = user.user.profile_pic_url;
-        console.log("u signed in with credentials. token is now ", token);
+        // console.log("u signed in with credentials. token is now ", token);
       }
       return token;
     },
     // transfer token data to session object
     async session({ session, token }) {
-      console.log("IN SESSION FUNCTION");
-      console.log("session is ", session);
-      console.log("token is ", token);
+      // console.log("IN SESSION FUNCTION");
+      // console.log("session is ", session);
+      // console.log("token is ", token);
       session.accessToken = token.accessToken;
       session.user.userId = token.userId;
       session.user.name = token.userName;
