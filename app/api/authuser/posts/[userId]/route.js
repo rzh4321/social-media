@@ -75,17 +75,8 @@ export async function POST(req) {
   const data = await req.formData();
   const arr = Array.from(data.entries());
   console.log('ARRR IS ', arr)
-
-    for (const entry of Array.from(data.entries())) {
-    const [key, value] = entry;
-    console.log(key, ' : ', value);
-    console.log(typeof value);
-    // if (key === 'image') {
-    //   console.log(value)
-    //   const fileBuffer = Buffer.from(value, 'base64');
-    //   console.log(fileBuffer)
-    // }
-  }
+  console.log(arr[2][1])
+  console.log(typeof arr[2][1])
 
   const pathParts = req.url.split("/");
   const userId = pathParts[pathParts.length - 1];
@@ -106,8 +97,9 @@ export async function POST(req) {
     let post;
     if (arr.length > 1) {
       // theres an image
-      const buffer = await new Response(arr[2][1]).text();
-      //console.log('data should be ', buffer);
+      const arrayBuffer = await arr[2][1].arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      //const buffer = await new Response(arr[2][1]).text();
       image = new Image({
         filename: arr[1][1].name,
         contentType: arr[1][1].type,

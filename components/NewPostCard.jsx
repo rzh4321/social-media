@@ -46,22 +46,10 @@ export default function NewPostCard({ authuserData }) {
       const reader = new FileReader();
       reader.onload = () => {
         const buffer = reader.result;
-        console.log('BUFFER IS ', buffer);
         setImageBuffer(buffer);
 
       }
       setImageInput(selectedFile);
-
-      // When FileReader finishes reading the file
-    //   reader.onload = () => {
-    //     // Update state with file information
-    //     setImageInput({
-    //       file: selectedFile,
-    //       fileName: selectedFile.name,
-    //       mimeType: selectedFile.type,
-    //       buffer: reader.result, // Contains the binary data
-    //     });
-    //   };
 
       // Read the file as a binary buffer
       reader.readAsArrayBuffer(selectedFile);
@@ -94,7 +82,7 @@ export default function NewPostCard({ authuserData }) {
             //formData.append('image', imageBlob, imageInput.fileName);
             formData.append('image', imageInput);
             const blob = new Blob([imageBuffer])
-            formData.append('buffer', blob, 'filename.bin');
+            formData.append('buffer', blob, {filename: imageInput.name});
           }        
           for (const entry of Array.from(formData.entries())) {
             const [key, value] = entry;

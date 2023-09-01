@@ -11,7 +11,6 @@ export async function GET(req) {
   // console.log('userid is ', userId);
   const { searchParams } = new URL(req.url);
   const startId = searchParams.get("startId");
-  console.log("search params of startId (if u included) is ", startId);
   if (startId) {
     try {
       const posts = await Post.find()
@@ -33,7 +32,7 @@ export async function GET(req) {
       return NextResponse.json({ error: err }, { status: 502 });
     }
   } else {
-    console.log("this is first call (initial page load)");
+    //onsole.log("this is first call (initial page load)");
     // this is first call to get posts (initial page load)
     try {
       const posts = await Post.find()
@@ -46,7 +45,6 @@ export async function GET(req) {
             path: "user",
           },
         });
-      console.log("first 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);

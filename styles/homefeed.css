@@ -4,6 +4,7 @@
 
 .feed-card-image {
   max-width: 650px;
+  height: 100% !important;
 }
 
 .user-profile-pic {
