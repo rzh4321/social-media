@@ -6,11 +6,13 @@ import { NextResponse } from "next/server";
 import connectToDB from "../../../../../utils/database";
 
 // gets user data given userId param
-export async function GET(req) {
+export async function GET(req, context) {
   await connectToDB();
   console.log("getting all feed posts");
-  const pathParts = req.url.split("/");
-  const userId = pathParts[pathParts.length - 1];
+  console.log(req.url);
+  const params = new URL(req.url);
+  console.log(params);
+  const userId = context.params.userId;
   // console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
@@ -35,7 +37,7 @@ export async function GET(req) {
             path: "user",
           },
         });
-      console.log("next 10 posts is ", posts);
+      //console.log("next 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);
@@ -55,7 +57,7 @@ export async function GET(req) {
             path: "user",
           },
         });
-      console.log("first 10 posts is ", posts);
+      //console.log("first 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);

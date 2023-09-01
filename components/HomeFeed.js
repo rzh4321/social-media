@@ -92,7 +92,7 @@ export default function HomeFeed({ feedType, postsData }) {
         setUserPosts();
         break;
     }
-  }, [session, feedType, posts.length, postsData, status]);
+  }, [session, feedType, status]);
 
   return (
     <div className="container mt-4">

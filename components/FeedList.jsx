@@ -3,11 +3,17 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { DateTime } from "luxon";
-import FeedPostCard from './FeedPostCard';
+import FeedPostCard from "./FeedPostCard";
 import Link from "next/link";
 
-
-export default function FeedList({ posts, setPosts, postsLoading, authuserData, feedType, endOfFeed }) {
+export default function FeedList({
+  posts,
+  setPosts,
+  postsLoading,
+  authuserData,
+  feedType,
+  endOfFeed,
+}) {
   const { data: session } = useSession();
   const [morePostsLoading, setMorePostsLoading] = useState(false);
   const [newEndOfFeed, setNewEndOfFeed] = useState(false);
@@ -18,18 +24,22 @@ export default function FeedList({ posts, setPosts, postsLoading, authuserData, 
     const startId = posts[posts.length - 1]._id;
     let res;
     switch (feedType) {
-      case 'all':
+      case "all":
         res = await fetch(`/api/posts?startId=${startId}`);
         break;
-      case 'profile':
-        res = await fetch(`/api/authuser/posts/${session.user.userId}?startId=${startId}`);
+      case "profile":
+        res = await fetch(
+          `/api/authuser/posts/${session.user.userId}?startId=${startId}`,
+        );
         break;
-      case 'user':
+      case "user":
         const userId = posts[0].user._id;
         res = await fetch(`/api/users/${userId}/posts?startId=${startId}`);
         break;
-      case 'home':
-        res = await fetch(`/api/authuser/feed-posts/${session.user.userId}?startId=${startId}`);
+      case "home":
+        res = await fetch(
+          `/api/authuser/feed-posts/${session.user.userId}?startId=${startId}`,
+        );
         break;
     }
     const data = await res.json();
@@ -38,7 +48,7 @@ export default function FeedList({ posts, setPosts, postsLoading, authuserData, 
     }
     setMorePostsLoading(false);
     setPosts(posts.concat(data.posts));
-  }
+  };
 
   if (postsLoading) {
     return (
@@ -53,42 +63,60 @@ export default function FeedList({ posts, setPosts, postsLoading, authuserData, 
   if (posts.length > 0) {
     return (
       <>
-        <ul className='ps-0'>
+        <ul className="ps-0">
           {posts.map((post) => {
-            return <FeedPostCard key={post._id} post={post} authuserData={authuserData} />
+            return (
+              <FeedPostCard
+                key={post._id}
+                post={post}
+                authuserData={authuserData}
+              />
+            );
           })}
         </ul>
-        {(!newEndOfFeed && !endOfFeed) 
-        ?
-        <div className='d-flex justify-content-center'>
-          {morePostsLoading ?
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
+        {!newEndOfFeed && !endOfFeed ? (
+          <div className="d-flex justify-content-center">
+            {morePostsLoading ? (
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              <button
+                className="btn btn-outline-secondary"
+                onClick={fetchMorePostsFromLastId}
+              >
+                Load posts
+              </button>
+            )}
           </div>
-          :
-          <button className='btn btn-outline-secondary'
-            onClick={fetchMorePostsFromLastId}
-          >
-            Load posts
-          </button>}
-        </div>
-        :
-        ''
-        }
+        ) : (
+          ""
+        )}
       </>
     );
   } else {
     return (
       <div className={`row mx-auto mt-3 feed-card`}>
-        {feedType === 'home' && <p className=''>No posts from you or your friends yet...</p>}
-        {feedType === 'user' && <p className=''>No posts from this user yet...</p>}
-        {feedType === 'profile' && <p className=''>No posts from you yet...</p>}
-        {feedType === 'all' && <p className=''>No posts yet...</p>}
-        <div className=''>
+        {feedType === "home" && (
+          <p className="">No posts from you or your friends yet...</p>
+        )}
+        {feedType === "user" && (
+          <p className="">No posts from this user yet...</p>
+        )}
+        {feedType === "profile" && <p className="">No posts from you yet...</p>}
+        {feedType === "all" && <p className="">No posts yet...</p>}
+        <div className="">
           <p>Check out:</p>
-          <div className='d-flex gap-2'>
-            <Link href='/posts' className='btn btn-outline-secondary px-3 py-1'>All posts</Link>
-            <Link href='/friends' className='btn btn-outline-secondary px-3 py-1'>All users</Link>
+          <div className="d-flex gap-2">
+            <Link href="/posts" className="btn btn-outline-secondary px-3 py-1">
+              All posts
+            </Link>
+            <Link
+              href="/friends"
+              className="btn btn-outline-secondary px-3 py-1"
+            >
+              All users
+            </Link>
           </div>
         </div>
       </div>

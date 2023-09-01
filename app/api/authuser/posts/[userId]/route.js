@@ -14,11 +14,10 @@ import { NextResponse } from "next/server";
 import connectToDB from "../../../../../utils/database";
 
 // gets session user's posts
-export async function GET(req) {
+export async function GET(req, context) {
   await connectToDB();
   console.log("getting all session users posts");
-  const pathParts = req.url.split("/");
-  const userId = pathParts[pathParts.length - 1];
+  const userId = context.params.userId;
   // console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
@@ -39,14 +38,14 @@ export async function GET(req) {
             path: "user",
           },
         });
-      console.log("next 10 posts is ", posts);
+      // console.log("next 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);
       return NextResponse.json({ error: err }, { status: 502 });
     }
   } else {
-    console.log("this is first call (initial page load)");
+    //console.log("this is first call (initial page load)");
     // this is first call to get posts (initial page load)
     try {
       const posts = await Post.find({ user: currentUser._id })
@@ -69,27 +68,22 @@ export async function GET(req) {
 }
 
 // session user makes a post
-export async function POST(req) {
+export async function POST(req, context) {
   await connectToDB();
-  console.log('insde making a post api handler')
+  console.log("insde making a post api handler");
   const data = await req.formData();
   const arr = Array.from(data.entries());
-  console.log('ARRR IS ', arr)
-  console.log(arr[2][1])
-  console.log(typeof arr[2][1])
-
-  const pathParts = req.url.split("/");
-  const userId = pathParts[pathParts.length - 1];
+  //console.log('ARRR IS ', arr)
+  const userId = context.params.userId;
   // console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
 
   try {
-    const data = schema.parse({'content': arr[0][1]});
-  }
-  catch(err) {
-    console.log('error form fvalidation: ', err);
-    return NextResponse.json({error: "Content is required"}, {status: 400});
+    const data = schema.parse({ content: arr[0][1] });
+  } catch (err) {
+    console.log("error form fvalidation: ", err);
+    return NextResponse.json({ error: "Content is required" }, { status: 400 });
   }
 
   try {
@@ -97,13 +91,13 @@ export async function POST(req) {
     let post;
     if (arr.length > 1) {
       // theres an image
-      const arrayBuffer = await arr[2][1].arrayBuffer();
+      // convert file object to buffer
+      const arrayBuffer = await arr[1][1].arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      //const buffer = await new Response(arr[2][1]).text();
       image = new Image({
         filename: arr[1][1].name,
         contentType: arr[1][1].type,
-        data: buffer
+        data: buffer,
       });
 
       await image.save();
@@ -111,11 +105,9 @@ export async function POST(req) {
       post = new Post({
         content: arr[0][1],
         user: currentUser._id,
-        image: image
+        image: image,
       });
-
-    }
-    else {
+    } else {
       // no image
       post = new Post({
         content: arr[0][1],
@@ -126,19 +118,17 @@ export async function POST(req) {
     await post.save();
     currentUser.posts.push(post);
     await currentUser.save();
-    console.log('saved user object with new post: ', currentUser);
-    return NextResponse.json({post}, {status: 201});
+    //console.log('saved user object with new post: ', currentUser);
+    return NextResponse.json({ post }, { status: 201 });
 
     //await image.save;
-    
 
     //console.log('post is ', post);
+  } catch (err) {
+    console.log("error: ", err);
+    return NextResponse.json(
+      { error: "Unknown server error" },
+      { status: 500 },
+    );
   }
-  catch(err) {
-    console.log('error: ', err);
-    return NextResponse.json({error: "Unknown server error"}, {status: 500});
-  }
-
-
-
 }

@@ -3,10 +3,9 @@ import { NextResponse } from "next/server";
 import connectToDB from "../../../../utils/database";
 
 // gets user data given userId param
-export async function GET(req) {
+export async function GET(req, context) {
   await connectToDB();
-  const pathParts = req.url.split("/");
-  const userId = pathParts[pathParts.length - 1];
+  const userId = context.params.userId;
 
   try {
     const user = await User.findById(userId).populate(
