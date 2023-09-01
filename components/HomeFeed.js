@@ -96,7 +96,7 @@ export default function HomeFeed({ feedType, postsData }) {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex">
+      <div className="d-flex p-2">
         <Link
           className="my-feed text-decoration-none w-50 d-flex align-items-center justify-content-center"
           href="/home"

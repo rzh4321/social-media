@@ -56,7 +56,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-sm shadow-sm">
+    <nav className="navbar navbar-expand-sm shadow-lg">
       <div className="container-fluid">
         <a className="navbar-brand text-primary fs-4" href="/home">
           <strong>App</strong>
