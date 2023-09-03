@@ -58,7 +58,7 @@ export default function NewPostCard({ authuserData }) {
       formData.append("image", imageInput);
     }
 
-    const res = await fetch(`/api/authuser/posts/${session.user.userId}`, {
+    const res = await fetch(`/api/users/${session.user.userId}/posts`, {
       method: "POST",
       body: formData,
     });

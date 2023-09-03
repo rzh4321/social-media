@@ -29,16 +29,16 @@ export default function FeedList({
         break;
       case "profile":
         res = await fetch(
-          `/api/authuser/posts/${session.user.userId}?startId=${startId}`,
+          `/api/users/${session.user.userId}/posts/?startId=${startId}`,
         );
         break;
       case "user":
         const userId = posts[0].user._id;
-        res = await fetch(`/api/users/${userId}/posts?startId=${startId}`);
+        res = await fetch(`/api/users/${userId}/posts/?startId=${startId}`);
         break;
       case "home":
         res = await fetch(
-          `/api/authuser/feed-posts/${session.user.userId}?startId=${startId}`,
+          `/api/users/${session.user.userId}/feed-posts/?startId=${startId}`,
         );
         break;
     }

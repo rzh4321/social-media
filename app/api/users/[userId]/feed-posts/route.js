@@ -9,9 +9,6 @@ import connectToDB from "../../../../../utils/database";
 export async function GET(req, context) {
   await connectToDB();
   console.log("getting all feed posts");
-  console.log(req.url);
-  const params = new URL(req.url);
-  console.log(params);
   const userId = context.params.userId;
   // console.log('userid is ', userId);
 
@@ -21,7 +18,7 @@ export async function GET(req, context) {
   // console.log(usersIds)
   const { searchParams } = new URL(req.url);
   const startId = searchParams.get("startId");
-  console.log("search params of startId (if u included) is ", startId);
+  //console.log("search params of startId (if u included) is ", startId);
   // get all posts in feed
   if (startId) {
     try {

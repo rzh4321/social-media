@@ -85,3 +85,10 @@
 .container.mt-4 {
   margin-top: 0 !important;
 }
+
+.like-icon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  bottom: 3px;
+}

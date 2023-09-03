@@ -4,7 +4,7 @@ import Post from "../../../../../models/Post";
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../../utils/database";
 
-// gets session user's posts
+// gets ALL posts
 export async function GET(req) {
   await connectToDB();
   console.log("getting all posts");

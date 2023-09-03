@@ -16,7 +16,7 @@ export default function HomeFeed({ feedType, postsData }) {
   const [authuserData, setAuthuserData] = useState({});
   const router = useRouter();
 
-  // Fetch authuser form session.user.userId and pass along the authuserData
+  // Fetch authuser from session.user.userId and pass along the authuserData
   useEffect(() => {
     async function fetchAuthuser() {
       const res = await fetch(`/api/users/${session.user.userId}`);
@@ -31,7 +31,7 @@ export default function HomeFeed({ feedType, postsData }) {
   // Fetch posts according to the home feedType
   useEffect(() => {
     async function fetchAuthuserPostsAndSetPosts() {
-      const res = await fetch(`/api/authuser/posts/${session.user.userId}`);
+      const res = await fetch(`/api/${session.user.userId}/posts`);
       const data = await res.json();
       console.log("back from feed posts api call. data is ", data.posts);
       if (data.posts.length < 10) {
@@ -43,7 +43,7 @@ export default function HomeFeed({ feedType, postsData }) {
 
     async function fetchFeedPostsAndSetPosts() {
       const res = await fetch(
-        `/api/authuser/feed-posts/${session.user.userId}`,
+        `/api/users/${session.user.userId}/feed-posts`,
       );
       const data = await res.json();
       console.log("back from feed posts api call. data is ", data.posts);
