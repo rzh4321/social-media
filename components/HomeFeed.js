@@ -42,9 +42,7 @@ export default function HomeFeed({ feedType, postsData }) {
     }
 
     async function fetchFeedPostsAndSetPosts() {
-      const res = await fetch(
-        `/api/users/${session.user.userId}/feed-posts`,
-      );
+      const res = await fetch(`/api/users/${session.user.userId}/feed-posts`);
       const data = await res.json();
       console.log("back from feed posts api call. data is ", data.posts);
       if (data.posts.length < 10) {

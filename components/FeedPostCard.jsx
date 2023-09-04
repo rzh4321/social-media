@@ -122,7 +122,7 @@ export default function FeedPostCard({ post, authuserData }) {
           )}
           {imageData && (
             <Image
-              className={`w-100 mb-2 feed-card-image`}
+              className={`w-100 feed-card-image`}
               src={
                 imageData
                   ? `data:${imageData.contentType};base64,${Buffer.from(

@@ -33,12 +33,6 @@ export async function POST(req) {
   await connectToDB();
   console.log("We are in POST log in api call");
   const { username, password } = await req.json();
-  console.log(
-    "username is ",
-    username,
-    " pw (should be unhashed) is ",
-    password,
-  );
   //return NextResponse.json({hi: 'hi'})
 
   const authRes = await authenticate(username, password);

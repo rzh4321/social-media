@@ -1,65 +1,73 @@
 import User from "../../../../models/User";
 import Image from "../../../../models/Image";
 import Post from "../../../../models/Post";
+import connectToDB from "../../../../../utils/database";
+import { NextResponse } from "next/server";
 
+import { z } from "zod";
 
+const schema = z.object({
+  content: z
+    .string()
+    .min(1, { message: "Content is required" })
+    .transform((val) => val.trim()),
+});
 
 // gets session user's posts
 export async function GET(req, context) {
-    await connectToDB();
-    console.log("getting all session users posts");
-    const userId = context.params.userId;
-    // console.log('userid is ', userId);
-  
-    const currentUser = await User.findById(userId);
-    const { searchParams } = new URL(req.url);
-    const startId = searchParams.get("startId");
-    console.log("search params of startId (if u included) is ", startId);
-    if (startId) {
-      try {
-        const posts = await Post.find({ user: currentUser._id })
-          .where("_id")
-          .lt(startId)
-          .sort({ _id: -1 })
-          .limit(10)
-          .populate("user")
-          .populate({
-            path: "comments",
-            populate: {
-              path: "user",
-            },
-          });
-        // console.log("next 10 posts is ", posts);
-        return NextResponse.json({ posts });
-      } catch (err) {
-        console.log(err);
-        return NextResponse.json({ error: err }, { status: 502 });
-      }
-    } else {
-      //console.log("this is first call (initial page load)");
-      // this is first call to get posts (initial page load)
-      try {
-        const posts = await Post.find({ user: currentUser._id })
-          .sort({ _id: -1 })
-          .limit(10)
-          .populate("user")
-          .populate({
-            path: "comments",
-            populate: {
-              path: "user",
-            },
-          });
-        console.log("first 10 posts is ", posts);
-        return NextResponse.json({ posts });
-      } catch (err) {
-        console.log(err);
-        return NextResponse.json({ error: err }, { status: 502 });
-      }
+  await connectToDB();
+  console.log("getting all session users posts");
+  const userId = context.params.userId;
+  // console.log('userid is ', userId);
+
+  const currentUser = await User.findById(userId);
+  const { searchParams } = new URL(req.url);
+  const startId = searchParams.get("startId");
+  console.log("search params of startId (if u included) is ", startId);
+  if (startId) {
+    try {
+      const posts = await Post.find({ user: currentUser._id })
+        .where("_id")
+        .lt(startId)
+        .sort({ _id: -1 })
+        .limit(10)
+        .populate("user")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user",
+          },
+        });
+      // console.log("next 10 posts is ", posts);
+      return NextResponse.json({ posts });
+    } catch (err) {
+      console.log(err);
+      return NextResponse.json({ error: err }, { status: 502 });
+    }
+  } else {
+    //console.log("this is first call (initial page load)");
+    // this is first call to get posts (initial page load)
+    try {
+      const posts = await Post.find({ user: currentUser._id })
+        .sort({ _id: -1 })
+        .limit(10)
+        .populate("user")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user",
+          },
+        });
+      console.log("first 10 posts is ", posts);
+      return NextResponse.json({ posts });
+    } catch (err) {
+      console.log(err);
+      return NextResponse.json({ error: err }, { status: 502 });
     }
   }
+}
 
-
-  // session user makes a post
+// session user makes a post
 export async function POST(req, context) {
   await connectToDB();
   console.log("insde making a post api handler");
