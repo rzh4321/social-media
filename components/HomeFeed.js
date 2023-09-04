@@ -1,3 +1,5 @@
+'use client';
+
 import "../styles/homefeed.css";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -33,7 +35,6 @@ export default function HomeFeed({ feedType, postsData }) {
     async function fetchAuthuserPostsAndSetPosts() {
       const res = await fetch(`/api/${session.user.userId}/posts`);
       const data = await res.json();
-      console.log("back from feed posts api call. data is ", data.posts);
       if (data.posts.length < 10) {
         setEndOfFeed(true);
       }
@@ -44,7 +45,6 @@ export default function HomeFeed({ feedType, postsData }) {
     async function fetchFeedPostsAndSetPosts() {
       const res = await fetch(`/api/users/${session.user.userId}/feed-posts`);
       const data = await res.json();
-      console.log("back from feed posts api call. data is ", data.posts);
       if (data.posts.length < 10) {
         console.log("less than 10 posts so endoffeed is true");
         setEndOfFeed(true);
@@ -57,7 +57,6 @@ export default function HomeFeed({ feedType, postsData }) {
       // Fetch 10 of all posts starting from the most recent one
       const res = await fetch(`/api/posts`);
       const data = await res.json();
-      console.log("back from feed posts api call. data is ", data.posts);
       // less than 10 posts returned means we already reached end of feed
       if (data.posts.length < 10) {
         setEndOfFeed(true);
@@ -99,27 +98,24 @@ export default function HomeFeed({ feedType, postsData }) {
           className="my-feed text-decoration-none w-50 d-flex align-items-center justify-content-center"
           href="/home"
         >
-          <div className="fs-4 text-primary">
+{          (feedType === 'all' || feedType === 'home') && (<div className="fs-4 text-primary">
             <strong>My Feed</strong>
-          </div>
+          </div>)}
         </Link>
         <Link
           className="all-posts text-decoration-none w-50 d-flex align-items-center justify-content-center"
           href="/all"
         >
-          <div className="fs-4 text-primary">
+          {(feedType === 'all' || feedType === 'home') && (<div className="fs-4 text-primary">
             <strong>All</strong>
-          </div>
+          </div>)}
         </Link>
       </div>
-      <div className="border-top mb-4"></div>
+      {(feedType === 'all' || feedType === 'home') && <div className="border-top mb-4"></div>}
       {feedType !== "user" && <NewPostCard authuserData={authuserData} />}
-      {/*{feedType === 'home' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your feed</h3>} */}
       {feedType === "profile" && (
         <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your posts</h3>
       )}
-      {/*{feedType === 'all' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>All posts</h3>}
-      {feedType === 'user' && <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Posts</h3>} */}
       <FeedList
         posts={posts}
         setPosts={setPosts}

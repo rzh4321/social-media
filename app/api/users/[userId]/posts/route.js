@@ -1,7 +1,7 @@
-import User from "../../../../models/User";
-import Image from "../../../../models/Image";
-import Post from "../../../../models/Post";
-import connectToDB from "../../../../../utils/database";
+import User from '../../../../../models/User';
+import Image from '../../../../../models/Image';
+import Post from '../../../../../models/Post';
+import connectToDB from '../../../../../utils/database';
 import { NextResponse } from "next/server";
 
 import { z } from "zod";
@@ -13,7 +13,7 @@ const schema = z.object({
     .transform((val) => val.trim()),
 });
 
-// gets session user's posts
+// get user's posts
 export async function GET(req, context) {
   await connectToDB();
   console.log("getting all session users posts");

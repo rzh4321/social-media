@@ -1,8 +1,10 @@
-import User from "../../../../../models/User";
-import Post from "../../../../../models/Post";
+import User from "../../../models/User"
+import Post from "../../../models/Post"
 
 import { NextResponse } from "next/server";
-import connectToDB from "../../../../../utils/database";
+import connectToDB from "../../../utils/database";
+
+
 
 // gets ALL posts
 export async function GET(req) {
