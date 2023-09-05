@@ -127,7 +127,6 @@ const handler = NextAuth({
       session.user.name = token.userName;
       session.user.email = token.userEmail;
       session.user.image = token.userImage;
-      console.log("updated session. it is now ", session);
       // session stores user object (name, email, image, userID), accessToken, and expires
       return session;
     },

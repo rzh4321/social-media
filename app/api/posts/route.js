@@ -8,7 +8,6 @@ import connectToDB from "../../../utils/database";
 export async function GET(req) {
   await connectToDB();
   console.log("getting all posts");
-  // console.log('userid is ', userId);
   const { searchParams } = new URL(req.url);
   const startId = searchParams.get("startId");
   if (startId) {
@@ -25,7 +24,6 @@ export async function GET(req) {
             path: "user",
           },
         });
-      console.log("next 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);

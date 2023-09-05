@@ -2,34 +2,71 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import "../styles/profile.css";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { userAgent } from "next/server";
 
 export default function ProfileEditModal({ userData }) {
   const { data: session } = useSession();
-  const router = useRouter();
   const [name, setName] = useState("");
   const [profileUrl, setProfileUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isContentError, setIsContentError] = useState(false);
+  const [fileError, setFileError] = useState(false);
+  const [duplicateImages, setDuplicateImages] = useState(false);
+  const [imageInput, setImageInput] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  function handleImageChange(e) {
+    const selectedFile = e.target.files[0];
+
+    // Check if a file was selected
+    if (selectedFile) {
+      // Check file type (allow only JPEG and PNG)
+      const allowedTypes = ["image/jpeg", "image/png"];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        setFileError("Please select a JPEG or PNG image");
+        return;
+      }
+
+      // Check file size (limit to 16 MB)
+      const maxSize = 16 * 1024 * 1024; // 16 MB in bytes
+      if (selectedFile.size > maxSize) {
+        setFileError("Image size exceeds the 16 MB limit");
+        return;
+      }
+      setFileError();
+      setImageInput(selectedFile);
+    }
+  }
+
   const handleSaveChanges = async () => {
-    if (name.trim().length === 0 && profileUrl.trim().length === 0) {
+    if (
+      name.trim().length === 0 &&
+      profileUrl.trim().length === 0 &&
+      !imageInput
+    ) {
       setIsContentError(true);
       return;
     }
+    if (profileUrl.trim().length > 0 && imageInput) {
+      setDuplicateImages(true);
+      return;
+    }
     setIsLoading(true);
+    setFileError(false);
+    setDuplicateImages(false);
     setIsSuccess(false);
     setIsContentError(false);
     console.log("about to call edit profile api");
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("profilePicUrl", profileUrl);
+    if (imageInput) {
+      console.log("u have an image when updating profile");
+      formData.append("image", imageInput);
+    }
     const res = await fetch(`/api/users/${session.user.userId}/profile`, {
       method: "PUT",
-      body: JSON.stringify({
-        name: name,
-        profilePicUrl: profileUrl,
-      }),
+      body: formData,
     });
     console.log("back from edit profile api. res is ", res);
     switch (res.status) {
@@ -37,6 +74,8 @@ export default function ProfileEditModal({ userData }) {
         setIsLoading(false);
         setIsError(false);
         setIsContentError(false);
+        setFileError(false);
+        setDuplicateImages(false);
         setIsSuccess(true);
         setTimeout(() => {
           location.reload();
@@ -46,6 +85,8 @@ export default function ProfileEditModal({ userData }) {
       default:
         setIsLoading(false);
         setIsContentError(false);
+        setFileError(false);
+        setDuplicateImages(false);
         setIsError(true);
         setIsSuccess(false);
     }
@@ -111,7 +152,6 @@ export default function ProfileEditModal({ userData }) {
                   id="nameFormControlInput"
                   value={name}
                   onChange={(e) => {
-                    console.log(name);
                     setName(e.target.value);
                   }}
                 />
@@ -130,15 +170,38 @@ export default function ProfileEditModal({ userData }) {
                   value={profileUrl}
                   onChange={(e) => setProfileUrl(e.target.value)}
                 />
+                <div className="mt-2">
+                  <label
+                    htmlFor="formImage"
+                    className="form-label ms-2"
+                  >{`Upload Image (JPG/PNG not bigger than 16Mb)`}</label>
+                  <input
+                    className="form-control"
+                    type="file"
+                    id="formImage"
+                    name="formImage"
+                    onChange={handleImageChange}
+                  />
+                </div>
               </div>
               {isContentError && (
                 <div className="alert alert-danger px-3 py-2" role="alert">
-                  Both fields cannot be empty
+                  All fields cannot be empty
                 </div>
               )}
               {isError && (
                 <div className="alert alert-danger px-3 py-2" role="alert">
                   Failed to post, please try again
+                </div>
+              )}
+              {duplicateImages && (
+                <div className="alert alert-danger px-3 py-2" role="alert">
+                  Cannot have both a profile image URL and an uploaded image
+                </div>
+              )}
+              {fileError && (
+                <div className="alert alert-danger px-3 py-2 mx-3" role="alert">
+                  {fileError}
                 </div>
               )}
               {isSuccess && (
@@ -159,6 +222,7 @@ export default function ProfileEditModal({ userData }) {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleSaveChanges}
+                disabled={fileError}
               >
                 {!isLoading && "Save changes"}
                 {isLoading && (

@@ -32,40 +32,75 @@ const schema = z.object({
 export async function PUT(req, context) {
   await connectToDB();
   console.log("insde editing profile api handler");
-  const { name, profilePicUrl } = await req.json();
+  const data = await req.formData();
+  const arr = Array.from(data.entries());
+  console.log("arr is ", arr);
+  //return;
   const userId = context.params.userId;
 
   try {
-    if (profilePicUrl.trim().length > 0 && name.trim().length > 0) {
+    // updated name and pic with URL
+    if (arr[0][1].trim().length > 0 && arr[1][1].trim().length > 0) {
+      console.log("update name and pic with url");
       try {
-        const data = schema.parse({ name, profilePicUrl });
+        const data = schema.parse({
+          name: arr[0][1],
+          profilePicUrl: arr[1][1],
+        });
       } catch (err) {
         console.log("error form validation: ", err);
         return NextResponse.json({ error: err.message }, { status: 400 });
       }
       const user = await User.findByIdAndUpdate(userId, {
-        name,
-        profilePicUrl,
+        name: arr[0][1],
+        profilePicUrl: arr[1][1],
       });
-    } else if (profilePicUrl.trim().length > 0) {
+      // only updated pic with URL
+    } else if (arr[1][1].trim().length > 0) {
+      console.log("only pic with url");
       try {
-        const data = urlSchema.parse({ profilePicUrl });
+        const data = urlSchema.parse({ profilePicUrl: arr[1][1] });
       } catch (err) {
         console.log("error form validation: ", err);
         return NextResponse.json({ error: err.message }, { status: 400 });
       }
       const user = await User.findByIdAndUpdate(userId, {
-        profilePicUrl,
+        profilePicUrl: arr[1][1],
       });
-    } else {
+      // updated name
+    } else if (arr[0][1].trim().length > 0) {
+      console.log("updated name");
       try {
-        const data = nameSchema.parse({ name });
+        const data = nameSchema.parse({ name: arr[0][1] });
       } catch (err) {
         console.log("error form validation: ", err);
         return NextResponse.json({ error: err.message }, { status: 400 });
       }
+      // also updated pic with upload
+      if (arr.length > 2) {
+        console.log("also pic with upload");
+        const arrayBuffer = await arr[2][1].arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const url = `data:${arr[2][1].type};base64,${buffer.toString(
+          "base64",
+        )}`;
+        const user = await User.findByIdAndUpdate(userId, {
+          name: arr[0][1],
+          profilePicUrl: url,
+        });
+      }
       const user = await User.findByIdAndUpdate(userId, {
-        name,
+        name: arr[0][1],
+      });
+    }
+    // only updated pic with uplaod
+    else {
+      console.log("only pic with upload");
+      const arrayBuffer = await arr[2][1].arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const url = `data:${arr[2][1].type};base64,${buffer.toString("base64")}`;
+      const user = await User.findByIdAndUpdate(userId, {
+        profilePicUrl: url,
       });
     }
     return NextResponse.json({ message: "Updated profile" }, { status: 200 });

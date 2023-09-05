@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import "../styles/profile.css";
 import ProfileEditModal from "./ProfileEditModal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function ProfileSection({ edit, stringData }) {

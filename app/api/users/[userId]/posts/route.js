@@ -23,7 +23,6 @@ export async function GET(req, context) {
   const currentUser = await User.findById(userId);
   const { searchParams } = new URL(req.url);
   const startId = searchParams.get("startId");
-  console.log("search params of startId (if u included) is ", startId);
   if (startId) {
     try {
       const posts = await Post.find({ user: currentUser._id })
@@ -58,7 +57,6 @@ export async function GET(req, context) {
             path: "user",
           },
         });
-      console.log("first 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);
