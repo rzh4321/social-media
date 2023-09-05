@@ -1,7 +1,7 @@
 import ProfileSection from "../../../../components/ProfileSection";
 import HomeFeed from "../../../../components/HomeFeed";
-import User from "../../../../models/User";
 import { notFound } from "next/navigation";
+import User from "../../../../models/User";
 
 async function findUser(userId) {
   const user = await User.findById(userId);
@@ -28,8 +28,8 @@ export default async function UserPage({ params }) {
 
   return (
     <div className="mt-4">
-      <ProfileSection stringData={JSON.stringify(user)} edit={false} />
-      <HomeFeed feedType={"user"} postsData={posts.posts} />
+      <ProfileSection stringData={JSON.stringify(user)} edit={true} />
+      <HomeFeed feedType={"profile"} postsData={posts.posts} />
     </div>
   );
 }

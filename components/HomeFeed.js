@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import "../styles/homefeed.css";
 import { useSession } from "next-auth/react";
@@ -16,7 +16,6 @@ export default function HomeFeed({ feedType, postsData }) {
   const [endOfFeed, setEndOfFeed] = useState(false);
   const [postsLoading, setPostsLoading] = useState(true);
   const [authuserData, setAuthuserData] = useState({});
-  const router = useRouter();
 
   // Fetch authuser from session.user.userId and pass along the authuserData
   useEffect(() => {
@@ -33,7 +32,7 @@ export default function HomeFeed({ feedType, postsData }) {
   // Fetch posts according to the home feedType
   useEffect(() => {
     async function fetchAuthuserPostsAndSetPosts() {
-      const res = await fetch(`/api/${session.user.userId}/posts`);
+      const res = await fetch(`/api/users/${session.user.userId}/posts`);
       const data = await res.json();
       if (data.posts.length < 10) {
         setEndOfFeed(true);
@@ -98,20 +97,26 @@ export default function HomeFeed({ feedType, postsData }) {
           className="my-feed text-decoration-none w-50 d-flex align-items-center justify-content-center"
           href="/home"
         >
-{          (feedType === 'all' || feedType === 'home') && (<div className="fs-4 text-primary">
-            <strong>My Feed</strong>
-          </div>)}
+          {(feedType === "all" || feedType === "home") && (
+            <div className="fs-4 text-primary">
+              <strong>My Feed</strong>
+            </div>
+          )}
         </Link>
         <Link
           className="all-posts text-decoration-none w-50 d-flex align-items-center justify-content-center"
           href="/all"
         >
-          {(feedType === 'all' || feedType === 'home') && (<div className="fs-4 text-primary">
-            <strong>All</strong>
-          </div>)}
+          {(feedType === "all" || feedType === "home") && (
+            <div className="fs-4 text-primary">
+              <strong>All</strong>
+            </div>
+          )}
         </Link>
       </div>
-      {(feedType === 'all' || feedType === 'home') && <div className="border-top mb-4"></div>}
+      {(feedType === "all" || feedType === "home") && (
+        <div className="border-top mb-4"></div>
+      )}
       {feedType !== "user" && <NewPostCard authuserData={authuserData} />}
       {feedType === "profile" && (
         <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your posts</h3>

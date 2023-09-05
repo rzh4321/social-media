@@ -41,16 +41,6 @@ export default function NavBar() {
     }
   }, [pathname]);
 
-  // Enable Bootstrap tooltips when NavBar is created
-  useEffect(() => {
-    const tooltipTriggerList = document.querySelectorAll(
-      '[data-bs-toggle="tooltip"]',
-    );
-    // const tooltipList = [...tooltipTriggerList].map(
-    //   (tooltipTriggerEl) => new window.bootstrap.Tooltip(tooltipTriggerEl),
-    // );
-  }, []);
-
   const handleLogout = () => {
     signOut({ callbackUrl: "/" });
   };
@@ -160,7 +150,10 @@ export default function NavBar() {
           )}
           <ul className="dropdown-menu dropdown-menu-end">
             <li>
-              <Link className="dropdown-item" href="/profile">
+              <Link
+                className="dropdown-item"
+                href={`/profile/${session?.user.userId}`}
+              >
                 Profile
               </Link>
             </li>

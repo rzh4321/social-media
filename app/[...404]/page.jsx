@@ -1,5 +1,3 @@
-
-
 export default function Page() {
-    return <>Not found</>
+  return <>Not found</>;
 }

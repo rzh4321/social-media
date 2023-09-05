@@ -1,7 +1,7 @@
-import User from '../../../../../models/User';
-import Image from '../../../../../models/Image';
-import Post from '../../../../../models/Post';
-import connectToDB from '../../../../../utils/database';
+import User from "../../../../../models/User";
+import Image from "../../../../../models/Image";
+import Post from "../../../../../models/Post";
+import connectToDB from "../../../../../utils/database";
 import { NextResponse } from "next/server";
 
 import { z } from "zod";

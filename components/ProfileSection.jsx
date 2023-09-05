@@ -1,34 +1,36 @@
-'use client';
+"use client";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import '../styles/profile.css';
+import "../styles/profile.css";
+import ProfileEditModal from "./ProfileEditModal";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+export default function ProfileSection({ edit, stringData }) {
+  const { data: session, status } = useSession();
+  const [userData, getUserData] = useState({});
 
-export default function ProfileSection({ edit, stringData, setUserData }) {
-    const { data: session, status } = useSession();
-    const [userData, getUserData] = useState({});
-    
-    useEffect(() => {
-        getUserData(JSON.parse(stringData));
-        console.log('userdata is ', userData)
-    }, [stringData, userData])
+  useEffect(() => {
+    getUserData(JSON.parse(stringData));
+  }, [stringData]);
 
-
-    return (
-      <div className={`mx-auto row profile-card`}>
-        {userData.profilePicUrl
-        ?
+  return (
+    <div className={`mx-auto row profile-card`}>
+      {userData.profilePicUrl ? (
         <div className={`col m-2 p-0 user-profile-pic-div`}>
-          <Image className={`rounded-circle profile-user-profile-pic`} src={userData.profilePicUrl} alt='profile pic'
-          width={40} height={40} />
+          <Image
+            className={`rounded-circle profile-user-profile-pic`}
+            src={userData.profilePicUrl}
+            alt="profile pic"
+            width={40}
+            height={40}
+          />
         </div>
-        :
+      ) : (
         <div className={`col m-2 p-0 rounded-circle user-profile-pic-div`}>
           <span className={`user-profile-pic-icon material-symbols-outlined`}>
-          <svg
+            <svg
               className="profile-user-profile-pic post-card"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -44,15 +46,19 @@ export default function ProfileSection({ edit, stringData, setUserData }) {
             </svg>
           </span>
         </div>
-        }
-        <div className="col my-auto">
-          <h1 className="mb-0"><strong>{userData.name}</strong></h1>
-          <div>{`@${userData.username}`}</div>
-          <div className="text-secondary">
-            {(userData.friends?.length > 1 || userData.friends?.length === 0) ? `${userData.friends?.length} friends` : `${userData.friends?.length} friend`}
-          </div>
+      )}
+      <div className="col my-auto">
+        <h1 className="mb-0">
+          <strong>{userData.name}</strong>
+        </h1>
+        <div>{`@${userData.username}`}</div>
+        <div className="text-secondary">
+          {userData.friends?.length > 1 || userData.friends?.length === 0
+            ? `${userData.friends?.length} friends`
+            : `${userData.friends?.length} friend`}
         </div>
-        {/*edit.current && <ProfileEditModal userData={userData} setUserData={setUserData} />*/}
       </div>
-    );
-  }
+      {edit && <ProfileEditModal userData={userData} />}
+    </div>
+  );
+}

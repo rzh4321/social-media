@@ -56,7 +56,7 @@ export default function NewComment({
             },
           },
         ]);
-        console.log('comments is now ', comments);
+        console.log("comments is now ", comments);
         break;
       default:
         setIsLoading(false);
