@@ -22,27 +22,15 @@ const handler = NextAuth({
       },
       // this will be called when we sign in with normal credentials
       async authorize(credentials, req) {
-        // console.log(
-        //   "u just called signIn(credentials) with an object of username and pw. we are now in authorize. credentials is ",
-        //   credentials,
-        // );
-        // console.log('TESTING GET')
-        // const test = await fetch('http://localhost:3000/api/auth/login');
-        // const testData = await test.json();
-        // console.log(testData);
         const res = await fetch(`http://localhost:3000/api/auth/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
         });
         // should either return user object + token, or error
         const data = await res.json();
-        // console.log("data from log in api call is ", data);
 
         // If no error and we have user data, return it
         if (res.ok && data.user) {
-          // console.log(
-          //   "data from log in api call returned us user object, log in success",
-          // );
           return data;
         }
         // Return null if user data could not be retrived
@@ -66,10 +54,6 @@ const handler = NextAuth({
           username: user.email,
           profilePicUrl: user.image,
         };
-        // console.log(
-        //   "u just signed in with google. this is user object: ",
-        //   user,
-        // );
         const res = await fetch(`http://localhost:3000/api/auth/google-login`, {
           method: "POST",
           body: JSON.stringify(credentials),
@@ -77,17 +61,9 @@ const handler = NextAuth({
         });
         // user and token will be returned from api call
         const data = await res.json();
-        // console.log(
-        //   "we back from calling google login api. this is res: ",
-        //   data,
-        // );
         // save token and id to user object so it can be used to create jwt and session later
         user.id = data.user._id;
         user.token = data.token;
-        // console.log(
-        //   "after api call to google to get User db object and token, we updated user object id and token. now its ",
-        //   user,
-        // );
         return true;
       } else if (account.provider === "credentials") {
         // we already have all the necessary data from authorize(), just return true

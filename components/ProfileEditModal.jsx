@@ -4,6 +4,7 @@ import "../styles/profile.css";
 import { useEffect, useRef, useState } from "react";
 
 export default function ProfileEditModal({ userData }) {
+  const router = useRouter();
   const { data: session } = useSession();
   const [name, setName] = useState("");
   const [profileUrl, setProfileUrl] = useState("");
@@ -56,19 +57,16 @@ export default function ProfileEditModal({ userData }) {
     setDuplicateImages(false);
     setIsSuccess(false);
     setIsContentError(false);
-    console.log("about to call edit profile api");
     const formData = new FormData();
     formData.append("name", name);
     formData.append("profilePicUrl", profileUrl);
     if (imageInput) {
-      console.log("u have an image when updating profile");
       formData.append("image", imageInput);
     }
     const res = await fetch(`/api/users/${session.user.userId}/profile`, {
       method: "PUT",
       body: formData,
     });
-    console.log("back from edit profile api. res is ", res);
     switch (res.status) {
       case 200:
         setIsLoading(false);
@@ -90,6 +88,7 @@ export default function ProfileEditModal({ userData }) {
         setIsError(true);
         setIsSuccess(false);
     }
+    router.reload();
   };
 
   return (

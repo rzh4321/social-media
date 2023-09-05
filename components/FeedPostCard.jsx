@@ -31,7 +31,7 @@ export default function FeedPostCard({ post, authuserData }) {
     if (post.image) {
       getImage();
     }
-  }, [post.image]);
+  }, [post.image, post.user]);
 
   // Display the post timestamp in a readable format
   function postTimeStampDisplay() {
@@ -58,6 +58,9 @@ export default function FeedPostCard({ post, authuserData }) {
 
   // Handle clicks on a user profile picture
   function handleUserProfilePicClick() {
+    if (authuserData._id.toString() === post.user._id) {
+      return router.push(`/profile/${authuserData._id}`);
+    }
     router.push(`/users/${post.user._id}`);
   }
 

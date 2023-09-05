@@ -13,7 +13,11 @@ async function findUser(userId) {
 
 async function getPosts(userId) {
   try {
-    let posts = await fetch(`http://localhost:3000/api/users/${userId}/posts`);
+    // dont cache fetch response since user can edit profile and the changes wouldnt show in the post.user
+    // object. Instead you'd still be fetching cached post objects with the outdated post.user object
+    let posts = await fetch(`http://localhost:3000/api/users/${userId}/posts`, {
+      cache: "no-store",
+    });
     posts = posts.json();
     return posts;
   } catch (err) {

@@ -15,7 +15,7 @@ export default function FeedPostCardCommentSection({
         setComments={setComments}
         authuserData={authuserData}
       />
-      <CommentsList comments={comments} />
+      <CommentsList comments={comments} authuserData={authuserData} />
     </div>
   );
 }

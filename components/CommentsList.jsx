@@ -5,11 +5,14 @@ import { DateTime } from "luxon";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CommentsList({ comments }) {
+export default function CommentsList({ comments, authuserData }) {
   const router = useRouter();
 
   // Handle clicks on a user profile picture
   function handleUserProfilePicClick(userId) {
+    if (authuserData._id.toString() === userId) {
+      return router.push(`/profile/${authuserData._id}`);
+    }
     router.push(`/users/${userId}`);
   }
 

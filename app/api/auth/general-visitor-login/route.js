@@ -28,21 +28,14 @@ export const GET = () => {
 // saves visitor data into db and returns user object
 export const POST = async () => {
   await connectToDB();
-  console.log("u pressed visitor");
   const cookieStore = cookies();
   let username;
   if (cookieStore.get("visitor")) username = cookieStore.get("visitor").value;
   if (username) {
     console.log("this is NOT first time visiting");
-    console.log("existing visitor username is ", username);
     try {
       const regex = new RegExp(username, "i");
       const user = await User.findOne({ username: { $regex: regex } });
-      console.log(
-        "we found visitor user object. it is ",
-        user,
-        " returning response now",
-      );
       return NextResponse.json({
         message: "logged in",
         user: user,
