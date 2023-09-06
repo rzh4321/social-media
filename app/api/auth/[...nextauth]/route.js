@@ -2,10 +2,6 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-if (!process.env.GOOGLE_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-  throw new Error("Google credentials not found in environment variables");
-}
-
 const handler = NextAuth({
   secret: process.env.SECRET,
   providers: [
