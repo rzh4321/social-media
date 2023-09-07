@@ -11,18 +11,36 @@ export default function ProfileSection({ edit, stringData }) {
   const { data: session, status } = useSession();
   const [userData, getUserData] = useState({});
   const [friendRequestStatus, setFriendRequestStatus] = useState("none");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (userData === undefined || Object.keys(userData).length === 0) {
       getUserData(JSON.parse(stringData));
     }
-    console.log("hi");
     if (userData.friendRequestsReceived?.includes(session?.user.userId)) {
       setFriendRequestStatus("sent");
     } else if (userData.friends?.includes(session?.user.userId)) {
       setFriendRequestStatus("friends");
     }
   }, [stringData, userData, session]);
+
+  async function handleUnfriendClick() {
+    setIsLoading(true);
+    const res = await fetch(
+      `/api/users/${session.user.userId}/unfriend/${userData._id}`,
+      {
+        method: "POST",
+      },
+    );
+    if (res.status === 200) {
+      setFriendRequestStatus("none");
+      location.reload();
+    } else {
+      setError(true);
+    }
+    setIsLoading(false);
+  }
 
   async function handleSendFriendRequest() {
     const status = friendRequestStatus;
@@ -35,7 +53,6 @@ export default function ProfileSection({ edit, stringData }) {
           method: "POST",
         },
       );
-      console.log("res is ", res);
       if (res.status === 200) {
         console.log("success");
         setFriendRequestStatus("sent");
@@ -135,7 +152,11 @@ export default function ProfileSection({ edit, stringData }) {
       )}
       {friendRequestStatus === "friends" && (
         <div className="col mt-auto">
-          <button className="btn btn-outline-danger d-flex text-nowrap py-1 px-2 ms-auto">
+          <button
+            className="btn btn-outline-danger d-flex text-nowrap py-1 px-2 ms-auto"
+            data-bs-toggle="modal"
+            data-bs-target="#newPostModal"
+          >
             Unfriend
           </button>
         </div>
@@ -146,6 +167,57 @@ export default function ProfileSection({ edit, stringData }) {
         </div>
       )}
       {edit && <ProfileEditModal userData={userData} />}
+
+      <div
+        className="modal fade"
+        id="newPostModal"
+        tabIndex="-1"
+        aria-labelledby="newPostModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <form className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="newPostModalLabel">
+                Unfriend {userData.name}?
+              </h1>
+              <button
+                type="button"
+                className="btn-close pointer-cursor"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="d-flex p-3 gap-3">
+              <button
+                type="button"
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                No
+              </button>
+              <button className="btn btn-success" onClick={handleUnfriendClick}>
+                {!isLoading && "Yes"}
+                {isLoading && (
+                  <div>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
+              </button>
+            </div>
+            {error && (
+              <div className="alert alert-danger px-3 py-2 mx-3" role="alert">
+                Something went wrong
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

@@ -31,7 +31,7 @@ export default function FriendCard({ user }) {
                 className={`user-profile-pic-icon material-symbols-outlined`}
               >
                 <svg
-                  className="user-profile-pic post-card"
+                  className="request-icon user-profile-pic post-card"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

@@ -88,7 +88,6 @@ export default function ProfileEditModal({ userData }) {
         setIsError(true);
         setIsSuccess(false);
     }
-    router.reload();
   };
 
   return (
@@ -96,7 +95,7 @@ export default function ProfileEditModal({ userData }) {
       {/* <!-- Button trigger modal --> */}
       <button
         type="button"
-        className="btn btn-outline-secondary d-flex text-nowrap py-1 px-2 ms-auto"
+        className="btn btn-outline-primary d-flex text-nowrap py-1 px-2 ms-auto"
         data-bs-toggle="modal"
         data-bs-target="#profileEditModal"
       >
@@ -190,7 +189,7 @@ export default function ProfileEditModal({ userData }) {
               )}
               {isError && (
                 <div className="alert alert-danger px-3 py-2" role="alert">
-                  Failed to post, please try again
+                  Something went wrong
                 </div>
               )}
               {duplicateImages && (

@@ -69,7 +69,6 @@ export default function NewPostCard({ authuserData }) {
       location.reload();
     } else {
       setIsContentError(true);
-      console.log("something errrored when posting a post");
     }
   };
 
