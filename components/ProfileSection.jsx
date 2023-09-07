@@ -107,31 +107,39 @@ export default function ProfileSection({ edit, stringData }) {
       </div>
       {!edit && (
         <div className="col mt-auto">
-          <button
-            type="button"
-            className="btn btn-outline-secondary d-flex text-nowrap py-1 px-2 ms-auto"
-            onClick={handleSendFriendRequest}
-          >
-            <span className="material-symbols-outlined"></span>
-            {friendRequestStatus === "sent" ? (
-              "Pending"
-            ) : friendRequestStatus === "none" ||
-              friendRequestStatus === "error" ? (
-              "Send Friend Request"
-            ) : (
-              <div>
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            )}
+          {friendRequestStatus !== "friends" && (
+            <button
+              type="button"
+              className="btn btn-outline-secondary d-flex text-nowrap py-1 px-2 ms-auto"
+              onClick={handleSendFriendRequest}
+            >
+              <span className="material-symbols-outlined"></span>
+              {friendRequestStatus === "sent" ? (
+                "Pending"
+              ) : friendRequestStatus === "none" ||
+                friendRequestStatus === "error" ? (
+                "Send Friend Request"
+              ) : (
+                <div>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
+            </button>
+          )}
+        </div>
+      )}
+      {friendRequestStatus === "friends" && (
+        <div className="col mt-auto">
+          <button className="btn btn-outline-danger d-flex text-nowrap py-1 px-2 ms-auto">
+            Unfriend
           </button>
         </div>
       )}
-      {friendRequestStatus === "friends" && <button>Unfriend</button>}
       {friendRequestStatus === "error" && (
         <div className="alert alert-danger px-3 py-2" role="alert">
           Error. Please try again later.
