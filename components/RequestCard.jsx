@@ -9,8 +9,9 @@ export default function RequestCard({ user, session }) {
 
   async function handleClick(accepted) {
     setRequestStatus("loading");
+    let res;
     if (accepted) {
-      const res = await fetch(
+      res = await fetch(
         `/api/users/${session.user.userId}/accept-request/${user._id}`,
         {
           method: "POST",
@@ -18,6 +19,12 @@ export default function RequestCard({ user, session }) {
       );
     } else {
       // TODO: handle decline. define api. also, if user has sent u a FR, display the accept/decline in their profile
+      res = await fetch(
+        `/api/users/${session.user.userId}/decline-request/${user._id}`,
+        {
+          method: "POST",
+        },
+      );
     }
     if (res.status === 200) {
       location.reload();

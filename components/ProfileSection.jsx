@@ -14,6 +14,34 @@ export default function ProfileSection({ edit, stringData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  async function handleClick(accepted) {
+    setIsLoading(true);
+    let res;
+    if (accepted) {
+      res = await fetch(
+        `/api/users/${session.user.userId}/accept-request/${userData._id}`,
+        {
+          method: "POST",
+        },
+      );
+      setFriendRequestStatus("friends");
+    } else {
+      res = await fetch(
+        `/api/users/${session.user.userId}/decline-request/${userData._id}`,
+        {
+          method: "POST",
+        },
+      );
+    }
+    if (res.status === 200) {
+      location.reload();
+    } else {
+      console.log("somethign went wrong");
+      setError(true);
+    }
+    setIsLoading(false);
+  }
+
   useEffect(() => {
     if (userData === undefined || Object.keys(userData).length === 0) {
       getUserData(JSON.parse(stringData));
@@ -22,6 +50,10 @@ export default function ProfileSection({ edit, stringData }) {
       setFriendRequestStatus("sent");
     } else if (userData.friends?.includes(session?.user.userId)) {
       setFriendRequestStatus("friends");
+    }
+    // this user has sent you a FR
+    else if (userData.friendRequestsSent?.includes(session?.user.userId)) {
+      setFriendRequestStatus("received");
     }
   }, [stringData, userData, session]);
 
@@ -122,12 +154,12 @@ export default function ProfileSection({ edit, stringData }) {
             : `${userData.friends?.length} friend`}
         </div>
       </div>
-      {!edit && (
+      {!edit && friendRequestStatus !== "received" && (
         <div className="col mt-auto">
           {friendRequestStatus !== "friends" && (
             <button
               type="button"
-              className="btn btn-outline-secondary d-flex text-nowrap py-1 px-2 ms-auto"
+              className="btn btn-primary d-flex text-nowrap py-1 px-2 ms-auto"
               onClick={handleSendFriendRequest}
             >
               <span className="material-symbols-outlined"></span>
@@ -148,6 +180,22 @@ export default function ProfileSection({ edit, stringData }) {
               )}
             </button>
           )}
+        </div>
+      )}
+      {friendRequestStatus === "received" && (
+        <div className="d-flex justify-content-end gap-3">
+          <button
+            className="btn btn-danger px-3 py-1"
+            onClick={() => handleClick(false)}
+          >
+            Decline
+          </button>
+          <button
+            className="btn btn-success px-3 py-1"
+            onClick={() => handleClick(true)}
+          >
+            Accept
+          </button>
         </div>
       )}
       {friendRequestStatus === "friends" && (
