@@ -1,19 +1,32 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import "../styles/navbar.css";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function NavBar() {
+  const buttonRef = useRef(null);
   const { data: session, status } = useSession();
   // activeNavLink: 'home' || 'friends' || 'posts'
   const [activeNavLink, setActiveNavLink] = useState("");
   const router = useRouter();
   const pathname = usePathname();
+  const [search, setSearch] = useState("");
   const [authuserData, setAuthuserData] = useState({});
+
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    const params = new URLSearchParams([
+      ["filter", search],
+      ["userId", session.user.userId],
+    ]);
+    router.push(`/search/?${params.toString()}`);
+    buttonRef.current.click();
+  }
 
   // Fetch authuser from session.user.userId and pass along the authuserData
   useEffect(() => {
@@ -46,7 +59,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-sm shadow-lg">
+    <nav className="navbar navbar-expand-sm shadow-lg mb-2">
       <div className="container-fluid">
         <a className="navbar-brand text-primary fs-4" href="/home">
           <strong>App</strong>
@@ -56,9 +69,6 @@ export default function NavBar() {
             className={`nav-link ${activeNavLink === "home" ? "active" : ""}`}
             aria-current="page"
             href="/home"
-            data-bs-toggle="tooltip"
-            data-bs-title="Home"
-            data-bs-placement="bottom"
           >
             <span className={`material-symbols-outlined nav-item-icon`}>
               <svg
@@ -82,9 +92,6 @@ export default function NavBar() {
               activeNavLink === "friends" ? "active" : ""
             }`}
             href="/friends"
-            data-bs-toggle="tooltip"
-            data-bs-title="Friends"
-            data-bs-placement="bottom"
           >
             <span className={`material-symbols-outlined nav-item-icon`}>
               <svg
@@ -104,12 +111,27 @@ export default function NavBar() {
             </span>
           </a>
         </div>
-        <div
-          className="dropdown"
-          data-bs-toggle="tooltip"
-          data-bs-title="Account"
-          data-bs-placement="bottom"
+        <button
+          className="btn d-flex text-nowrap py-1 px-2 ms-auto search-icon-button"
+          data-bs-toggle="modal"
+          data-bs-target="#searchModal"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="search-icon"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+        </button>
+        <div className="dropdown">
           {authuserData.profilePicUrl ? (
             <Image
               className={`dropdown-toggle rounded-circle user-profile-pic`}
@@ -169,6 +191,62 @@ export default function NavBar() {
               </button>
             </li>
           </ul>
+        </div>
+      </div>
+      {/*      <form className="me-auto search-form" onSubmit={handleSearchSubmit}>
+          <button type="submit">
+        
+          </button>
+          <input type="search" value={search} placeholder="Search users" onChange={(e) => setSearch(e.target.value)} />
+          
+          </form>*/}
+
+      <div
+        className="modal fade"
+        id="searchModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <form
+            className="modal-content search-form"
+            onSubmit={handleSearchSubmit}
+          >
+            <div className="modal-header">
+              <h1 className="modal-title fs-5">Search for users</h1>
+              <button
+                ref={buttonRef}
+                type="button"
+                className="btn-close pointer-cursor"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="d-flex p-2">
+              <button type="submit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="search-icon-modal"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  />
+                </svg>
+              </button>
+              <input
+                type="search"
+                value={search}
+                placeholder="Search by name or username..."
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </form>
         </div>
       </div>
     </nav>

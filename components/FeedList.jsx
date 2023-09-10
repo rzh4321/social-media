@@ -105,20 +105,6 @@ export default function FeedList({
         )}
         {feedType === "profile" && <p className="">No posts from you yet...</p>}
         {feedType === "all" && <p className="">No posts yet...</p>}
-        <div className="">
-          <p>Check out:</p>
-          <div className="d-flex gap-2">
-            <Link href="/posts" className="btn btn-outline-secondary px-3 py-1">
-              All posts
-            </Link>
-            <Link
-              href="/friends"
-              className="btn btn-outline-secondary px-3 py-1"
-            >
-              All users
-            </Link>
-          </div>
-        </div>
       </div>
     );
   }

@@ -135,3 +135,13 @@ input.form-control {
   position: relative;
   top: 10px;
 }
+
+@media screen and (max-width: 385px) {
+  .new-post-text {
+    width: 10%;
+  }
+
+  .new-post-text button {
+    font-size: 15px;
+  }
+}

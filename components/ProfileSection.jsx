@@ -114,7 +114,11 @@ export default function ProfileSection({ edit, stringData }) {
   return (
     <div className={`mx-auto row profile-card`}>
       {userData.profilePicUrl ? (
-        <div className={`col m-2 p-0 user-profile-pic-div`}>
+        <div
+          className={`col m-2 p-0 user-profile-pic-div`}
+          data-bs-toggle={edit ? "modal" : ""}
+          data-bs-target={edit ? "#profileEditModal" : ""}
+        >
           <Image
             className={`rounded-circle profile-user-profile-pic`}
             src={userData.profilePicUrl}

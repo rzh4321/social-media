@@ -20,7 +20,6 @@ export default function FriendsPage() {
     async function setStates() {
       const res = await fetch(`/api/users/${session.user.userId}`);
       const data = await res.json();
-      //console.log('data is ', data);
       setFriends(data.user.friends);
       setRequestsReceived(data.user.friendRequestsReceived);
     }
@@ -30,7 +29,7 @@ export default function FriendsPage() {
   return (
     <div className="container mt-4">
       <RequestsReceived requests={requestsReceived} session={session} />
-      <FriendsSection friends={friends} />
+      <FriendsSection friends={friends} heading="Friends" />
     </div>
   );
 }

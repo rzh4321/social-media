@@ -20,11 +20,6 @@ export default function FeedPostCard({ post, authuserData }) {
       setImageLoading(true);
       const res = await fetch(`/api/images/${post.image}`);
       const data = await res.json();
-      // const uint8Array = new Uint8Array(data.image.data.data);
-      // const blob = new Blob([uint8Array], { type: 'image/jpeg' });
-      // const dataUrl = URL.createObjectURL(blob);
-      // data.test = dataUrl;
-
       setImageData(data.image);
       setImageLoading(false);
     }

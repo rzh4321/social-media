@@ -107,13 +107,13 @@ export default function NewPostCard({ authuserData }) {
                 </span>
               </div>
             )}
-            <div className="col ms-2">
+            <div className="col ms-2 new-post-text">
               <button
                 className={`btn btn-light text-secondary w-100 text-start text-nowrap user-profile-pic`}
                 data-bs-toggle="modal"
                 data-bs-target="#newPostModal"
               >
-                Whats on your mind, {authuserData.name}?
+                Welcome, {authuserData.name}
               </button>
             </div>
           </div>
