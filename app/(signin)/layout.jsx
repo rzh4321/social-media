@@ -7,8 +7,8 @@ import "../../styles/Home.css";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 export const metadata = {
-  title: "title",
-  description: "some desc",
+  title: "Retiform",
+  description: "Sign in page",
 };
 
 const RootLayout = ({ children }) => (

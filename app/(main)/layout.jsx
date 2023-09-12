@@ -7,8 +7,8 @@ import Script from "next/script";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 export const metadata = {
-  title: "home page",
-  description: "some desc",
+  title: "Retiform",
+  description: "Retiform",
 };
 
 const RootLayout = ({ children }) => (
