@@ -2,7 +2,6 @@
 
 import { Dispatch, SetStateAction, useState } from "react";
 import { signIn } from "next-auth/react";
-import styles from "../styles/Home.module.css";
 
 // type CardSignupProps = {
 //   switchToSignup: Dispatch<SetStateAction<boolean>>;
@@ -38,7 +37,7 @@ export default function CardSignup({ switchToSignup }) {
   const [signupErrors, setSignupErrors] = useState([]);
 
   return (
-    <div className={`card shadow-sm p-4 ${styles.cardlogin}`}>
+    <div className={`card shadow-sm p-4 card-login`}>
       <form>
         <div className="form-floating mb-3">
           <input

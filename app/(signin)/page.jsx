@@ -7,6 +7,7 @@ import HomeBanner from "../../components/HomeBanner";
 import Footer from "../../components/Footer";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import "../../styles/Home.css";
 
 const SignIn = () => {
   const [signupCard, setSignupCard] = useState(false);

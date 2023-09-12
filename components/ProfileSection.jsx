@@ -205,7 +205,7 @@ export default function ProfileSection({ edit, stringData }) {
       {friendRequestStatus === "friends" && (
         <div className="col mt-auto">
           <button
-            className="btn btn-outline-danger d-flex text-nowrap py-1 px-2 ms-auto"
+            className="btn btn-danger d-flex text-nowrap py-1 px-2 ms-auto"
             data-bs-toggle="modal"
             data-bs-target="#newPostModal"
           >

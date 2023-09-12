@@ -62,7 +62,7 @@ export default function NavBar() {
     <nav className="navbar navbar-expand-sm shadow-lg mb-2">
       <div className="container-fluid">
         <a className="navbar-brand text-primary fs-4" href="/home">
-          <strong>App</strong>
+          <strong>Retiform</strong>
         </a>
         <div className="navbar-nav me-auto mb-lg-0 d-flex flex-row gap-2">
           <a
