@@ -21,7 +21,6 @@ function generateRandomUsername() {
   return `${randomAdjective}_${randomNoun}_${randomNumber}`;
 }
 
-
 // saves visitor data into db and returns user object
 export const POST = async () => {
   await connectToDB();

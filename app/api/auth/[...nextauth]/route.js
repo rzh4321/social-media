@@ -18,10 +18,13 @@ const handler = NextAuth({
       },
       // this will be called when we sign in with normal credentials
       async authorize(credentials, req) {
-        const res = await fetch(`https://social-media-eight-rho.vercel.app/api/auth/login`, {
-          method: "POST",
-          body: JSON.stringify(credentials),
-        });
+        const res = await fetch(
+          `https://social-media-eight-rho.vercel.app/api/auth/login`,
+          {
+            method: "POST",
+            body: JSON.stringify(credentials),
+          },
+        );
         // should either return user object + token, or error
         const data = await res.json();
 
@@ -50,11 +53,14 @@ const handler = NextAuth({
           username: user.email,
           profilePicUrl: user.image,
         };
-        const res = await fetch(`https://social-media-eight-rho.vercel.app/api/auth/google-login`, {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
+        const res = await fetch(
+          `https://social-media-eight-rho.vercel.app/api/auth/google-login`,
+          {
+            method: "POST",
+            body: JSON.stringify(credentials),
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         // user and token will be returned from api call
         const data = await res.json();
         // save token and id to user object so it can be used to create jwt and session later

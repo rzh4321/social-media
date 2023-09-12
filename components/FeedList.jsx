@@ -60,7 +60,7 @@ export default function FeedList({
     );
   }
 
-  if (posts.length > 0) {
+  if (posts?.length > 0) {
     return (
       <>
         <ul className="ps-0">

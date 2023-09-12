@@ -8,7 +8,11 @@ export default function Footer() {
       <footer className="container-fluid py-3 d-flex justify-content-center align-items-center gap-2 flex-row border-top">
         <p className="mb-0 text-secondary">
           Made by{" "}
-          <a target="_blank" className="link-secondary link-underline-secondary" href="https://github.com/rzh4321">
+          <a
+            target="_blank"
+            className="link-secondary link-underline-secondary"
+            href="https://github.com/rzh4321"
+          >
             Ricky
           </a>{" "}
           with
