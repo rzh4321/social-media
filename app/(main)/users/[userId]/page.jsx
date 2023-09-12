@@ -29,7 +29,6 @@ async function getPosts(userId) {
 export default async function UserPage({ params }) {
   const user = await findUser(params.userId);
   const posts = await getPosts(params.userId);
-
   return (
     <div className="mt-4">
       <ProfileSection stringData={JSON.stringify(user)} edit={false} />
