@@ -21,9 +21,6 @@ function generateRandomUsername() {
   return `${randomAdjective}_${randomNoun}_${randomNumber}`;
 }
 
-export const GET = () => {
-  return NextResponse.json({ message: "hi" });
-};
 
 // saves visitor data into db and returns user object
 export const POST = async () => {
@@ -39,7 +36,6 @@ export const POST = async () => {
       return NextResponse.json({
         message: "logged in",
         user: user,
-        //         token: token,
       });
     } catch (e) {
       throw new Error("couldnt find existing visitor");
@@ -56,6 +52,7 @@ export const POST = async () => {
       });
       await user.save();
       const headers = new Headers();
+      // return cookie to remember visitor account
       headers.append("Set-Cookie", `visitor=${username}; Max-Age=10000000000`);
       const body = JSON.stringify({
         message: "logged in",
