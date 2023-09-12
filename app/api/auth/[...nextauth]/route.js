@@ -18,7 +18,7 @@ const handler = NextAuth({
       },
       // this will be called when we sign in with normal credentials
       async authorize(credentials, req) {
-        const res = await fetch(`https://social-media-6iaukdbx1-rzh4321.vercel.app/api/auth/login`, {
+        const res = await fetch(`https://social-media-eight-rho.vercel.app/api/auth/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
         });
@@ -50,7 +50,7 @@ const handler = NextAuth({
           username: user.email,
           profilePicUrl: user.image,
         };
-        const res = await fetch(`https://social-media-6iaukdbx1-rzh4321.vercel.app/api/auth/google-login`, {
+        const res = await fetch(`https://social-media-eight-rho.vercel.app/api/auth/google-login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
