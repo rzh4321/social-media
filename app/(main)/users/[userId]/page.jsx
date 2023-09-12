@@ -25,7 +25,6 @@ async function getPosts(userId) {
     throw new Error(err);
   }
 }
-
 export default async function UserPage({ params }) {
   const user = await findUser(params.userId);
   const posts = await getPosts(params.userId);
