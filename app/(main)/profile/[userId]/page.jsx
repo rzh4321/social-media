@@ -13,7 +13,7 @@ async function findUser(userId) {
 
 async function getPosts(userId) {
   try {
-    let posts = await fetch(`/api/users/${userId}/posts`);
+    let posts = await fetch(`https://social-media-eight-rho.vercel.app/api/users/${userId}/posts`);
     posts = posts.json();
     return posts;
   } catch (err) {
