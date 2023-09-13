@@ -24,14 +24,14 @@ export default function FriendCard({ user }) {
             />
           ) : (
             <div
-              className={`my-auto rounded-circle user-profile-pic user-profile-pic`}
+              className={`my-auto rounded-circle user-profile-pic`}
               onClick={handleClickProfilePic}
             >
               <span
-                className={`user-profile-pic-icon material-symbols-outlined`}
+                className={`material-symbols-outlined`}
               >
                 <svg
-                  className="request-icon user-profile-pic post-card"
+                  className="request-icon user-profile-pic"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
