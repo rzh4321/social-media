@@ -1,6 +1,8 @@
 import User from "../../../../../models/User";
 import Post from "../../../../../models/Post";
 import Comment from "../../../../../models/Comment";
+import Like from "../../../../../models/Like";
+
 
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../../utils/database";
@@ -29,6 +31,12 @@ export async function GET(req, context) {
         .limit(10)
         .populate("user")
         .populate({
+          path: "likes",
+          populate: {
+            path: "user",
+          },
+        })
+        .populate({
           path: "comments",
           populate: {
             path: "user",
@@ -48,6 +56,12 @@ export async function GET(req, context) {
         .sort({ _id: -1 })
         .limit(10)
         .populate("user")
+        .populate({
+          path: "likes",
+          populate: {
+            path: "user",
+          },
+        })
         .populate({
           path: "comments",
           populate: {

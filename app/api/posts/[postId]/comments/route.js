@@ -1,9 +1,12 @@
-import User from "../../../../../../../models/User";
-import Post from "../../../../../../../models/Post";
-import Comment from "../../../../../../../models/Comment";
+import User from "../../../../../models/User";
+import Post from "../../../../../models/Post";
+import Comment from "../../../../../models/Comment";
+import { authOptions } from "../../../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+
 import mongoose from "mongoose";
 
-import connectToDB from "../../../../../../../utils/database";
+import connectToDB from "../../../../../utils/database";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -14,11 +17,13 @@ const schema = z.object({
     .transform((val) => val.trim()),
 });
 
+// post a comment on a post
 export async function POST(req, context) {
   await connectToDB();
   console.log("inside making post api call");
+  const session = await getServerSession(authOptions);
   const { content } = await req.json();
-  const userId = context.params.userId;
+  const userId = session.user.userId;
   const postId = context.params.postId;
   try {
     const data = schema.parse({ content });

@@ -1,13 +1,7 @@
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { DateTime } from "luxon";
-import Link from "next/link";
 import Image from "next/image";
 
 export default function NewPostCard({ authuserData }) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
   const [contentInput, setContentInput] = useState("");
   const [imageInput, setImageInput] = useState(null);
   const [fileError, setFileError] = useState();
@@ -54,11 +48,11 @@ export default function NewPostCard({ authuserData }) {
     const formData = new FormData();
     formData.append("content", contentInput);
     if (imageInput) {
-      console.log("u have an image");
+      //console.log("u have an image");
       formData.append("image", imageInput);
     }
 
-    const res = await fetch(`/api/users/${session.user.userId}/posts`, {
+    const res = await fetch(`/api/posts`, {
       method: "POST",
       body: formData,
     });

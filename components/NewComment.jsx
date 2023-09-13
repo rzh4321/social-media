@@ -28,7 +28,7 @@ export default function NewComment({
       return;
     }
     const res = await fetch(
-      `/api/users/${session.user.userId}/posts/${postid}/comments`,
+      `/api/posts/${postid}/comments`,
       {
         method: "POST",
         body: JSON.stringify({

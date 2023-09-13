@@ -12,8 +12,9 @@ export default function FeedPostCardLikeSection({ post, comments }) {
 
   useEffect(() => {
     if (post.likes.length > 0) {
+      console.log(post.likes)
       // see if userId is in likes array
-      post.likes.some((like) => like.toString() === session.user.userId)
+      post.likes.some((like) => like.user._id.toString() === session.user.userId)
         ? setLikeStatus("liked")
         : setLikeStatus("unliked");
     }
@@ -31,9 +32,8 @@ export default function FeedPostCardLikeSection({ post, comments }) {
     setLikeStatus("loading");
     if (status === "unliked") {
       console.log("abiut to call like api");
-      console.log(post._id);
       const res = await fetch(
-        `/api/users/${session.user.userId}/posts/${post._id}/give-like`,
+        `/api/posts/${post._id}/likes`,
         {
           method: "POST",
         },
@@ -51,8 +51,16 @@ export default function FeedPostCardLikeSection({ post, comments }) {
           setLikeStatus("error");
       }
     } else if (status === "liked") {
+      let likeId;
+      for (const like of likes) {
+        if (like.user._id?.toString() === session.user.userId || like.user === session.user.userId) {
+          likeId = like._id.toString();
+        }
+      }
+      console.log("likeid is ", likeId);
+      
       const res = await fetch(
-        `/api/users/${session.user.userId}/posts/${post._id}/cancel-like`,
+        `/api/posts/${post._id}/likes/${likeId}`,
         {
           method: "DELETE",
         },

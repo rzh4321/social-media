@@ -63,7 +63,7 @@ export default function ProfileEditModal({ userData }) {
     if (imageInput) {
       formData.append("image", imageInput);
     }
-    const res = await fetch(`/api/users/${session.user.userId}/profile`, {
+    const res = await fetch(`/api/profile`, {
       method: "PUT",
       body: formData,
     });

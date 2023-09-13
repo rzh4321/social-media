@@ -1,8 +1,9 @@
 import { z } from "zod";
-import connectToDB from "../../../../../utils/database";
-import User from "../../../../../models/User";
+import connectToDB from "../../../utils/database";
+import User from "../../../models/User";
 import { NextResponse } from "next/server";
-import { url } from "inspector";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 const nameSchema = z.object({
   name: z
@@ -29,13 +30,14 @@ const schema = z.object({
     .transform((val) => val.trim()),
 });
 
-export async function PUT(req, context) {
+export async function PUT(req) {
   await connectToDB();
   console.log("insde editing profile api handler");
+  const session = await getServerSession(authOptions);
   const data = await req.formData();
   const arr = Array.from(data.entries());
   //return;
-  const userId = context.params.userId;
+  const userId = session.user.userId;
 
   try {
     // updated name and pic with URL
