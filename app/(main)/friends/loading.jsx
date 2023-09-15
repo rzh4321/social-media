@@ -10,3 +10,5 @@ export default function Loading() {
     </div>
   );
 }
+
+export const revalidate = 0;
