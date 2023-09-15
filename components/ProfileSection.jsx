@@ -5,6 +5,7 @@ import "../styles/profile.css";
 import ProfileEditModal from "./ProfileEditModal";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfileSection({ edit, stringData }) {
   const { data: session, status } = useSession();
@@ -155,9 +156,9 @@ export default function ProfileSection({ edit, stringData }) {
         </h1>
         <div>{`@${userData.username}`}</div>
         <div className="text-secondary">
-          {userData.friends?.length > 1 || userData.friends?.length === 0
-            ? `${userData.friends?.length} friends`
-            : `${userData.friends?.length} friend`}
+          {userData.friends?.length > 1
+            ? <Link href={`/users/${userData._id}/friends`} className="p-0 mb-0 text-decoration-none">{`${userData.friends?.length} friends`}</Link>
+            : userData.friends?.length === 1 ? <Link href={`/users/${userData._id}/friends`} className="p-0 mb-0 text-decoration-none">{"1 friend"}</Link> : "0 friends"}
         </div>
       </div>
       {!edit && friendRequestStatus !== "received" && (

@@ -1,11 +1,17 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function FriendCard({ user }) {
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleClickProfilePic = () => {
+    if (user._id.toString() === session.user.userId) {
+      router.push(`/profile/${session.user.userId}`);
+      return;
+    }
     router.push(`/users/${user._id}`);
   };
 
@@ -47,12 +53,7 @@ export default function FriendCard({ user }) {
             </div>
           )}
           <div>
-            <Link
-              href={`/users/${user._id}`}
-              className="p-0 mb-0 text-decoration-none"
-            >
-              <strong>{user.name}</strong>
-            </Link>
+              <strong style={{color: 'rgb(110,168,254)', cursor: 'pointer'}} onClick={handleClickProfilePic}>{user.name}</strong>
           </div>
         </div>
       </div>

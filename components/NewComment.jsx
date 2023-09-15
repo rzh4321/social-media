@@ -81,7 +81,7 @@ export default function NewComment({
             className={`material-symbols-outlined user-profile-pic-32 comment-profile`}
           >
             <svg
-              className="user-profile-pic post-card"
+              className="user-profile-pic"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

@@ -18,7 +18,6 @@ export default function FriendsSection({ friends, heading }) {
     ) {
       setFriendObjs(JSON.parse(friends));
     } else if (friendObjs === null || typeof friends === "object") {
-      console.log(friends);
       setFriendObjs(friends);
     }
     prevFriends.current = friends;
