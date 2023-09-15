@@ -9,7 +9,7 @@ export default function FriendCard({ user }) {
 
   const handleClickProfilePic = () => {
     if (user._id.toString() === session.user.userId) {
-      router.push(`/profile/${session.user.userId}`);
+      router.push(`/profile`);
       return;
     }
     router.push(`/users/${user._id}`);

@@ -174,7 +174,7 @@ export default function NavBar() {
             <li>
               <Link
                 className="dropdown-item"
-                href={`/profile/${session?.user.userId}`}
+                href={`/profile`}
               >
                 Profile
               </Link>

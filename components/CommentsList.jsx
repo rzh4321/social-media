@@ -11,7 +11,7 @@ export default function CommentsList({ comments, authuserData }) {
   // Handle clicks on a user profile picture
   function handleUserProfilePicClick(userId) {
     if (authuserData._id.toString() === userId) {
-      return router.push(`/profile/${authuserData._id}`);
+      return router.push(`/profile`);
     }
     router.push(`/users/${userId}`);
   }

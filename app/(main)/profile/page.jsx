@@ -1,7 +1,9 @@
-import ProfileSection from "../../../../components/ProfileSection";
-import HomeFeed from "../../../../components/HomeFeed";
+import ProfileSection from "../../../components/ProfileSection";
+import HomeFeed from "../../../components/HomeFeed";
 import { notFound } from "next/navigation";
-import User from "../../../../models/User";
+import User from "../../../models/User";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 async function findUser(userId) {
   const user = await User.findById(userId);
@@ -25,8 +27,9 @@ async function getPosts(userId) {
 }
 
 export default async function UserPage({ params }) {
-  const user = await findUser(params.userId);
-  const posts = await getPosts(params.userId);
+  const session = await getServerSession(authOptions);
+  const user = await findUser(session.user.userId);
+  const posts = await getPosts(session.user.userId);
 
   return (
     <div className="mt-4">

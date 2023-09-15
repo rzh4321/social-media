@@ -54,7 +54,7 @@ export default function FeedPostCard({ post, authuserData }) {
   // Handle clicks on a user profile picture
   function handleUserProfilePicClick() {
     if (authuserData._id.toString() === post.user._id) {
-      return router.push(`/profile/${authuserData._id}`);
+      return router.push(`/profile`);
     }
     router.push(`/users/${post.user._id}`);
   }
