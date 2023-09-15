@@ -45,7 +45,6 @@ export default function HomeFeed({ feedType, postsData }) {
       const res = await fetch(`/api/users/${session.user.userId}/feed-posts`);
       const data = await res.json();
       if (data.posts.length < 10) {
-        console.log("less than 10 posts so endoffeed is true");
         setEndOfFeed(true);
       }
       setPosts(data.posts);

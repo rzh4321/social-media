@@ -10,7 +10,6 @@ import connectToDB from "../../../../../utils/database";
 // gets user data given userId param
 export async function GET(req, context) {
   await connectToDB();
-  console.log("getting all feed posts");
   const userId = context.params.userId;
   // console.log('userid is ', userId);
 
@@ -49,7 +48,6 @@ export async function GET(req, context) {
       return NextResponse.json({ error: err }, { status: 502 });
     }
   } else {
-    console.log("this is first call (initial page load)");
     // this is first call to get posts (initial page load)
     try {
       const posts = await Post.find({ user: { $in: usersIds } })

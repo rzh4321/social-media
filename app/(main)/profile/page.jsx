@@ -21,7 +21,7 @@ async function getPosts(userId) {
     posts = posts.json();
     return posts;
   } catch (err) {
-    console.log("error fecthing users posts: ", err);
+    //console.log("error fecthing users posts: ", err);
     throw new Error(err);
   }
 }

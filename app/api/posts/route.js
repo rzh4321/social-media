@@ -19,7 +19,6 @@ const schema = z.object({
 // gets ALL posts
 export async function GET(req) {
   await connectToDB();
-  console.log("getting all posts");
   const { searchParams } = new URL(req.url);
   const startId = searchParams.get("startId");
   if (startId) {
@@ -79,7 +78,6 @@ export async function GET(req) {
 // session user makes a post
 export async function POST(req, context) {
   await connectToDB();
-  console.log("insde making a post api handler");
   const session = await getServerSession(authOptions);
   const data = await req.formData();
   const arr = Array.from(data.entries());

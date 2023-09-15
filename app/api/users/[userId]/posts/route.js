@@ -7,7 +7,6 @@ import { NextResponse } from "next/server";
 // get user's posts
 export async function GET(req, context) {
   await connectToDB();
-  console.log("getting all session users posts");
   const userId = context.params.userId;
   // console.log('userid is ', userId);
 
