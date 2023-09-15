@@ -15,8 +15,6 @@ const RootLayout = ({ children }) => (
   <html lang="en" data-bs-theme="dark">
     <body class="wrapper">
       <Provider>
-        
-
         {children}
         <Footer />
       </Provider>

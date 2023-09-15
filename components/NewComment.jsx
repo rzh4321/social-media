@@ -27,15 +27,12 @@ export default function NewComment({
       setIsLoading(false);
       return;
     }
-    const res = await fetch(
-      `/api/posts/${postid}/comments`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          content: commentInput,
-        }),
-      },
-    );
+    const res = await fetch(`/api/posts/${postid}/comments`, {
+      method: "POST",
+      body: JSON.stringify({
+        content: commentInput,
+      }),
+    });
     const data = await res.json();
     console.log("back from posting comment api. data is ", data);
     switch (res.status) {

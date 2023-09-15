@@ -1,4 +1,3 @@
-
 import User from "../../../../../models/User";
 import Post from "../../../../../models/Post";
 import Like from "../../../../../models/Like";
@@ -24,14 +23,17 @@ export async function POST(req, context) {
   //console.log('userid is ', userId, ' postid is ', postId);
   try {
     const like = new Like({
-        user: new mongoose.Types.ObjectId(user._id),
-        post: new mongoose.Types.ObjectId(post._id),
-    })
+      user: new mongoose.Types.ObjectId(user._id),
+      post: new mongoose.Types.ObjectId(post._id),
+    });
     await like.save();
     post.likes.push(like);
     await post.save();
     console.log("liked post success");
-    return NextResponse.json({ message: "Liked post", post, like }, { status: 201 });
+    return NextResponse.json(
+      { message: "Liked post", post, like },
+      { status: 201 },
+    );
   } catch (err) {
     console.log("error liking post: ", err);
     return NextResponse.json({ error: err }, { status: 502 });

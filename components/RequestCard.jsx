@@ -11,19 +11,13 @@ export default function RequestCard({ user, session }) {
     setRequestStatus("loading");
     let res;
     if (accepted) {
-      res = await fetch(
-        `/api/friend-requests/${user._id}/accept`,
-        {
-          method: "POST",
-        },
-      );
+      res = await fetch(`/api/friend-requests/${user._id}/accept`, {
+        method: "POST",
+      });
     } else {
-      res = await fetch(
-        `/api/friend-requests/${user._id}/decline`,
-        {
-          method: "POST",
-        },
-      );
+      res = await fetch(`/api/friend-requests/${user._id}/decline`, {
+        method: "POST",
+      });
     }
     if (res.status === 200) {
       location.reload();

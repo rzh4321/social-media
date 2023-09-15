@@ -17,8 +17,7 @@ async function getUsersFromFilter(filter, userId) {
   return res;
 }
 
-export default async function Page({ searchParams }) {
-  console.log(searchParams);
+export default async function Search({ searchParams }) {
   const userId = searchParams.userId;
   const users = await getUsersFromFilter(searchParams.filter, userId);
   return (

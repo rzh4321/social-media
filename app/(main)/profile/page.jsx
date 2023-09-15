@@ -26,7 +26,7 @@ async function getPosts(userId) {
   }
 }
 
-export default async function UserPage({ params }) {
+export default async function ProfilePage({ params }) {
   const session = await getServerSession(authOptions);
   const user = await findUser(session.user.userId);
   const posts = await getPosts(session.user.userId);

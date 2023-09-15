@@ -16,7 +16,6 @@ const connectToDB = async () => {
     });
 
     isConnected = true;
-
   } catch (error) {
     console.log(error);
   }

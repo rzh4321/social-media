@@ -18,20 +18,14 @@ export default function ProfileSection({ edit, stringData }) {
     setIsLoading(true);
     let res;
     if (accepted) {
-      res = await fetch(
-        `/api/friend-requests/${userData._id}/accept`,
-        {
-          method: "POST",
-        },
-      );
+      res = await fetch(`/api/friend-requests/${userData._id}/accept`, {
+        method: "POST",
+      });
       setFriendRequestStatus("friends");
     } else {
-      res = await fetch(
-        `/api/friend-requests/${userData._id}/decline`,
-        {
-          method: "POST",
-        },
-      );
+      res = await fetch(`/api/friend-requests/${userData._id}/decline`, {
+        method: "POST",
+      });
     }
     if (res.status === 200) {
       location.reload();
@@ -59,15 +53,12 @@ export default function ProfileSection({ edit, stringData }) {
 
   async function handleUnfriendClick() {
     setIsLoading(true);
-    const res = await fetch(
-      `/api/users/${userData._id}/unfriend`,
-      {
-        method: "DELETE",
-      },
-    );
+    const res = await fetch(`/api/users/${userData._id}/unfriend`, {
+      method: "DELETE",
+    });
     if (res.status === 200) {
-      setFriendRequestStatus('none');
-      console.log('this is line after set. status is ', friendRequestStatus);
+      setFriendRequestStatus("none");
+      console.log("this is line after set. status is ", friendRequestStatus);
       location.reload();
     } else {
       setError(true);
@@ -80,13 +71,10 @@ export default function ProfileSection({ edit, stringData }) {
     setIsLoading(true);
     // send the request
     if (status === "none" || status === "error") {
-      const res = await fetch(
-        `/api/friend-requests`,
-        {
-          method: "POST",
-          body: JSON.stringify({ friendId: userData._id }),
-        },
-      );
+      const res = await fetch(`/api/friend-requests`, {
+        method: "POST",
+        body: JSON.stringify({ friendId: userData._id }),
+      });
       if (res.status === 200) {
         console.log("success");
         setFriendRequestStatus("sent");
@@ -97,12 +85,9 @@ export default function ProfileSection({ edit, stringData }) {
     }
     // cancel request
     else {
-      const res = await fetch(
-        `/api/friend-requests/${userData._id}/cancel`,
-        {
-          method: "DELETE",
-        },
-      );
+      const res = await fetch(`/api/friend-requests/${userData._id}/cancel`, {
+        method: "DELETE",
+      });
       if (res.status === 200) {
         console.log("success");
         setFriendRequestStatus("none");
@@ -156,9 +141,21 @@ export default function ProfileSection({ edit, stringData }) {
         </h1>
         <div>{`@${userData.username}`}</div>
         <div className="text-secondary">
-          {userData.friends?.length > 1
-            ? <Link href={`/users/${userData._id}/friends`} className="p-0 mb-0 text-decoration-none">{`${userData.friends?.length} friends`}</Link>
-            : userData.friends?.length === 1 ? <Link href={`/users/${userData._id}/friends`} className="p-0 mb-0 text-decoration-none">{"1 friend"}</Link> : "0 friends"}
+          {userData.friends?.length > 1 ? (
+            <Link
+              href={`/users/${userData._id}/friends`}
+              className="p-0 mb-0 text-decoration-none"
+            >{`${userData.friends?.length} friends`}</Link>
+          ) : userData.friends?.length === 1 ? (
+            <Link
+              href={`/users/${userData._id}/friends`}
+              className="p-0 mb-0 text-decoration-none"
+            >
+              {"1 friend"}
+            </Link>
+          ) : (
+            "0 friends"
+          )}
         </div>
       </div>
       {!edit && friendRequestStatus !== "received" && (
@@ -251,7 +248,11 @@ export default function ProfileSection({ edit, stringData }) {
               >
                 No
               </button>
-              <button className="btn btn-success" type="button" onClick={() => handleUnfriendClick()}>
+              <button
+                className="btn btn-success"
+                type="button"
+                onClick={() => handleUnfriendClick()}
+              >
                 {!isLoading && "Yes"}
                 {isLoading && (
                   <div>

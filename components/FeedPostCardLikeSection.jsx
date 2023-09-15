@@ -12,9 +12,11 @@ export default function FeedPostCardLikeSection({ post, comments }) {
 
   useEffect(() => {
     if (post.likes.length > 0) {
-      console.log(post.likes)
+      console.log(post.likes);
       // see if userId is in likes array
-      post.likes.some((like) => like.user._id.toString() === session.user.userId)
+      post.likes.some(
+        (like) => like.user._id.toString() === session.user.userId,
+      )
         ? setLikeStatus("liked")
         : setLikeStatus("unliked");
     }
@@ -32,12 +34,9 @@ export default function FeedPostCardLikeSection({ post, comments }) {
     setLikeStatus("loading");
     if (status === "unliked") {
       console.log("abiut to call like api");
-      const res = await fetch(
-        `/api/posts/${post._id}/likes`,
-        {
-          method: "POST",
-        },
-      );
+      const res = await fetch(`/api/posts/${post._id}/likes`, {
+        method: "POST",
+      });
       const data = await res.json();
       console.log("back from give like api. data is ", data);
       switch (res.status) {
@@ -53,18 +52,18 @@ export default function FeedPostCardLikeSection({ post, comments }) {
     } else if (status === "liked") {
       let likeId;
       for (const like of likes) {
-        if (like.user._id?.toString() === session.user.userId || like.user === session.user.userId) {
+        if (
+          like.user._id?.toString() === session.user.userId ||
+          like.user === session.user.userId
+        ) {
           likeId = like._id.toString();
         }
       }
       console.log("likeid is ", likeId);
-      
-      const res = await fetch(
-        `/api/posts/${post._id}/likes/${likeId}`,
-        {
-          method: "DELETE",
-        },
-      );
+
+      const res = await fetch(`/api/posts/${post._id}/likes/${likeId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       switch (res.status) {
         // Successfully unliked

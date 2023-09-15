@@ -13,7 +13,6 @@ export const metadata = {
 
 const RootLayout = ({ children }) => (
   <html lang="en" data-bs-theme="dark">
-    
     <body>
       <Provider>
         <Script

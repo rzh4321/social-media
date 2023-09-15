@@ -9,7 +9,7 @@ export async function POST(req) {
   await connectToDB();
   console.log("insde send request api handler");
   const session = await getServerSession(authOptions);
-  const {friendId} = await req.json();
+  const { friendId } = await req.json();
   const userId = session.user.userId;
 
   try {

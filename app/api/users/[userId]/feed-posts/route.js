@@ -3,7 +3,6 @@ import Post from "../../../../../models/Post";
 import Comment from "../../../../../models/Comment";
 import Like from "../../../../../models/Like";
 
-
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../../utils/database";
 

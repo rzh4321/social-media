@@ -35,11 +35,9 @@ export default function CommentsList({ comments, authuserData }) {
                 className={`my-auto rounded-circle`}
                 onClick={() => handleUserProfilePicClick(comment.user?._id)}
               >
-                <span
-                  className={`material-symbols-outlined`}
-                >
+                <span className={`material-symbols-outlined`}>
                   <svg
-                  className="user-profile-pic comment-profile"
+                    className="user-profile-pic comment-profile"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

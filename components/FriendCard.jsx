@@ -33,9 +33,7 @@ export default function FriendCard({ user }) {
               className={`my-auto rounded-circle user-profile-pic`}
               onClick={handleClickProfilePic}
             >
-              <span
-                className={`material-symbols-outlined`}
-              >
+              <span className={`material-symbols-outlined`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -53,7 +51,12 @@ export default function FriendCard({ user }) {
             </div>
           )}
           <div>
-              <strong style={{color: 'rgb(110,168,254)', cursor: 'pointer'}} onClick={handleClickProfilePic}>{user.name}</strong>
+            <strong
+              style={{ color: "rgb(110,168,254)", cursor: "pointer" }}
+              onClick={handleClickProfilePic}
+            >
+              {user.name}
+            </strong>
           </div>
         </div>
       </div>

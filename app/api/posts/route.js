@@ -74,7 +74,6 @@ export async function GET(req) {
   }
 }
 
-
 // session user makes a post
 export async function POST(req, context) {
   await connectToDB();
