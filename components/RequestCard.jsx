@@ -12,15 +12,14 @@ export default function RequestCard({ user, session }) {
     let res;
     if (accepted) {
       res = await fetch(
-        `/api/users/${session.user.userId}/accept-request/${user._id}`,
+        `/api/friend-requests/${user._id}/accept`,
         {
           method: "POST",
         },
       );
     } else {
-      // TODO: handle decline. define api. also, if user has sent u a FR, display the accept/decline in their profile
       res = await fetch(
-        `/api/users/${session.user.userId}/decline-request/${user._id}`,
+        `/api/friend-requests/${user._id}/decline`,
         {
           method: "POST",
         },

@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import "../styles/profile.css";
 import ProfileEditModal from "./ProfileEditModal";
 import { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ export default function ProfileSection({ edit, stringData }) {
     let res;
     if (accepted) {
       res = await fetch(
-        `/api/users/${session.user.userId}/accept-request/${userData._id}`,
+        `/api/friend-requests/${userData._id}/accept`,
         {
           method: "POST",
         },
@@ -27,7 +26,7 @@ export default function ProfileSection({ edit, stringData }) {
       setFriendRequestStatus("friends");
     } else {
       res = await fetch(
-        `/api/users/${session.user.userId}/decline-request/${userData._id}`,
+        `/api/friend-requests/${userData._id}/decline`,
         {
           method: "POST",
         },
@@ -55,18 +54,19 @@ export default function ProfileSection({ edit, stringData }) {
     else if (userData.friendRequestsSent?.includes(session?.user.userId)) {
       setFriendRequestStatus("received");
     }
-  }, [stringData, userData, session]);
+  }, [stringData, userData, session, friendRequestStatus]);
 
   async function handleUnfriendClick() {
     setIsLoading(true);
     const res = await fetch(
-      `/api/users/${session.user.userId}/unfriend/${userData._id}`,
+      `/api/users/${userData._id}/unfriend`,
       {
-        method: "POST",
+        method: "DELETE",
       },
     );
     if (res.status === 200) {
-      setFriendRequestStatus("none");
+      setFriendRequestStatus('none');
+      console.log('this is line after set. status is ', friendRequestStatus);
       location.reload();
     } else {
       setError(true);
@@ -76,13 +76,14 @@ export default function ProfileSection({ edit, stringData }) {
 
   async function handleSendFriendRequest() {
     const status = friendRequestStatus;
-    setFriendRequestStatus("loading");
+    setIsLoading(true);
     // send the request
     if (status === "none" || status === "error") {
       const res = await fetch(
-        `/api/users/${session.user.userId}/send-request/${userData._id}`,
+        `/api/friend-requests`,
         {
           method: "POST",
+          body: JSON.stringify({ friendId: userData._id }),
         },
       );
       if (res.status === 200) {
@@ -96,9 +97,9 @@ export default function ProfileSection({ edit, stringData }) {
     // cancel request
     else {
       const res = await fetch(
-        `/api/users/${session.user.userId}/cancel-request/${userData._id}`,
+        `/api/friend-requests/${userData._id}/cancel`,
         {
-          method: "POST",
+          method: "DELETE",
         },
       );
       if (res.status === 200) {
@@ -109,6 +110,7 @@ export default function ProfileSection({ edit, stringData }) {
         setFriendRequestStatus("error");
       }
     }
+    setIsLoading(false);
   }
 
   return (
@@ -248,7 +250,7 @@ export default function ProfileSection({ edit, stringData }) {
               >
                 No
               </button>
-              <button className="btn btn-success" onClick={handleUnfriendClick}>
+              <button className="btn btn-success" type="button" onClick={() => handleUnfriendClick()}>
                 {!isLoading && "Yes"}
                 {isLoading && (
                   <div>

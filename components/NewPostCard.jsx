@@ -82,10 +82,9 @@ export default function NewPostCard({ authuserData }) {
             ) : (
               <div className={`my-auto rounded-circle user-profile-pic`}>
                 <span
-                  className={`user-profile-pic-icon material-symbols-outlined`}
+                  className={`material-symbols-outlined`}
                 >
                   <svg
-                    className="user-profile-pic post-card"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

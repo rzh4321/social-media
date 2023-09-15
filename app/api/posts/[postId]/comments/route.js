@@ -1,8 +1,6 @@
 import User from "../../../../../models/User";
 import Post from "../../../../../models/Post";
 import Comment from "../../../../../models/Comment";
-import { authOptions } from "../../../auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
 
 import mongoose from "mongoose";
 

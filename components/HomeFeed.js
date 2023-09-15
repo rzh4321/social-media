@@ -69,7 +69,7 @@ export default function HomeFeed({ feedType, postsData }) {
         setEndOfFeed(true);
       }
       setPostsLoading(false);
-      setPosts(postsData);
+      setPosts(JSON.parse(postsData));
     }
 
     if (status === "loading") return;

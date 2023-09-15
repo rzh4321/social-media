@@ -1,13 +1,16 @@
-import connectToDB from "../../../../../../utils/database";
-import User from "../../../../../../models/User";
+import connectToDB from "../../../utils/database";
+import User from "../../../models/User";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 // send friend request
-export async function POST(req, context) {
+export async function POST(req) {
   await connectToDB();
   console.log("insde send request api handler");
-  const userId = context.params.userId;
-  const friendId = context.params.friendId;
+  const session = await getServerSession(authOptions);
+  const {friendId} = await req.json();
+  const userId = session.user.userId;
 
   try {
     const friend = await User.findById(friendId);

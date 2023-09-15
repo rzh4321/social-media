@@ -1,11 +1,14 @@
-import connectToDB from "../../../../../../utils/database";
-import User from "../../../../../../models/User";
+import connectToDB from "../../../../../utils/database";
+import User from "../../../../../models/User";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../auth/[...nextauth]/route";
 
 export async function POST(req, context) {
   await connectToDB();
   console.log("insde decline friend request api handler");
-  const userId = context.params.userId;
+  const session = await getServerSession(authOptions);
+  const userId = session.user.userId;
   const friendId = context.params.friendId;
 
   try {
