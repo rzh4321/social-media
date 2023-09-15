@@ -55,8 +55,13 @@ export default function HomeFeed({ feedType, postsData }) {
       // Fetch 10 of all posts starting from the most recent one
       const res = await fetch(`/api/posts`);
       const data = await res.json();
+      if (data.status === 502) {
+        setPostsLoading(false);
+        alert("Unknown server error. Please try refreshing.");
+        return;
+      }
       // less than 10 posts returned means we already reached end of feed
-      if (data.posts.length < 10) {
+      if (data.posts?.length < 10) {
         setEndOfFeed(true);
       }
       setPosts(data.posts);
