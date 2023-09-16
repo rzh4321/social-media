@@ -2,13 +2,9 @@ import ProfileSection from "../../../../components/ProfileSection";
 import HomeFeed from "../../../../components/HomeFeed";
 import User from "../../../../models/User";
 import Post from "../../../../models/Post";
-import { notFound } from "next/navigation";
 
 async function findUser(userId) {
   const user = await User.findById(userId);
-  if (!user) {
-    notFound();
-  }
   return user;
 }
 
