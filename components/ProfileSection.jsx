@@ -37,25 +37,27 @@ export default function ProfileSection({ edit, stringData }) {
   }
 
   useEffect(() => {
+    console.log('usedata is ', userData);
     if (userData === undefined || Object.keys(userData).length === 0) {
       getUserData(JSON.parse(stringData));
     }
-    if (userData.friendRequestsReceived?.includes(session?.user.userId)) {
+    if (userData.friendRequestsReceived?.some(obj => obj._id.toString() === session?.user.userId)) {
       setFriendRequestStatus("sent");
-    } else if (userData.friends?.includes(session?.user.userId)) {
+    } else if (userData.friends?.some(obj => obj._id.toString() === session?.user.userId)) {
       setFriendRequestStatus("friends");
     }
     // this user has sent you a FR
-    else if (userData.friendRequestsSent?.includes(session?.user.userId)) {
+    else if (userData.friendRequestsSent?.some(obj => obj._id.toString() === session?.user.userId)) {
       setFriendRequestStatus("received");
     }
-  }, [stringData, userData, session, friendRequestStatus]);
+  }, [stringData, userData, session]);
 
   async function handleUnfriendClick() {
     setIsLoading(true);
     const res = await fetch(`/api/users/${userData._id}/unfriend`, {
       method: "DELETE",
     });
+    console.log('res is ', res)
     if (res.status === 200) {
       setFriendRequestStatus("none");
       console.log("this is line after set. status is ", friendRequestStatus);

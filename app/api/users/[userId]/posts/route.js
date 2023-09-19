@@ -1,6 +1,7 @@
 import User from "../../../../../models/User";
-import Image from "../../../../../models/Image";
 import Post from "../../../../../models/Post";
+import Like from "../../../../../models/Like";
+import Comment from "../../../../../models/Comment";
 import connectToDB from "../../../../../utils/database";
 import { NextResponse } from "next/server";
 
@@ -8,7 +9,7 @@ import { NextResponse } from "next/server";
 export async function GET(req, context) {
   await connectToDB();
   const userId = context.params.userId;
-  // console.log('userid is ', userId);
+  //console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
   const { searchParams } = new URL(req.url);
@@ -61,6 +62,7 @@ export async function GET(req, context) {
         });
       return NextResponse.json({ posts });
     } catch (err) {
+      console.log('?A?DAS?D?ASD')
       console.log(err);
       return NextResponse.json({ error: err }, { status: 502 });
     }

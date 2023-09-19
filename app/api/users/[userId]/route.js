@@ -1,4 +1,5 @@
 import User from "../../../../models/User";
+import Like from "../../../../models/Like";
 import { NextResponse } from "next/server";
 import connectToDB from "../../../../utils/database";
 

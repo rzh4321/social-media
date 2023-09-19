@@ -5,8 +5,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 async function findUser(userId) {
-  const user = await User.findById(userId);
-  return user;
+  const res = await fetch(`https://social-media-eight-rho.vercel.app/api/users/${userId}`);
+  const data = await res.json();
+return data.user;
 }
 
 async function getPosts(userId) {

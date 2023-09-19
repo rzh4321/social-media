@@ -12,7 +12,6 @@ export default function FeedPostCardLikeSection({ post, comments }) {
 
   useEffect(() => {
     if (post.likes.length > 0) {
-      console.log(post.likes);
       // see if userId is in likes array
       post.likes.some(
         (like) => like.user._id.toString() === session.user.userId,
