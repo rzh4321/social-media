@@ -3,10 +3,9 @@ import FriendsSection from "../../../../../components/FriendsSection";
 import "../../../../../styles/friends.css";
 
 async function findUser(userId) {
-  const user = await User.findById(userId).populate(
-    "friends friendRequestsSent friendRequestsReceived",
-  );
-  return user;
+  const res = await fetch(`https://social-media-eight-rho.vercel.app/api/users/${userId}`, {cache: 'no-store'});
+  const data = await res.json();
+return data.user;
 }
 
 export default async function FriendsPage({ params }) {

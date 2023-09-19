@@ -12,7 +12,7 @@ return data.user;
 }
 
 async function getPosts(userId) {
-  const res = await fetch(`http://localhost:3000/api/users/${userId}/posts`, {cache: 'no-store'});
+  const res = await fetch(`https://social-media-eight-rho.vercel.app/api/users/${userId}/posts`, {cache: 'no-store'});
   const data = await res.json();
   //console.log(data);
 return data.posts;
