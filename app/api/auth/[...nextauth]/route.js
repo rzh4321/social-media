@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       name: "credentials",
@@ -25,7 +25,7 @@ export const authOptions = {
             body: JSON.stringify(credentials),
           },
         );
-        // should either return user object + token, or error
+        // should either return user retrieved from database, or error
         const data = await res.json();
 
         // If no error and we have user data, return it
@@ -44,7 +44,7 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       // Google login: finding an existing account or creating a new account
-      // in the database with the provided name, username and profilePicUrl from google
+      // in the database with the provided name, username and profilePicUrl provided by google
       if (account.provider === "google") {
         // user object has details from google account, use those details to retrieve or create user object
         // in api call later
@@ -63,9 +63,9 @@ export const authOptions = {
         );
         // user and token will be returned from api call
         const data = await res.json();
-        // save token and id to user object so it can be used to create jwt and session later
+        // save id to user object so we can store it in session later
         user.id = data.user._id;
-        user.token = data.token;
+        // user.token = data.token;
         return true;
       } else if (account.provider === "credentials") {
         // we already have all the necessary data from authorize(), just return true
@@ -79,14 +79,14 @@ export const authOptions = {
       // console.log("user jwt", user);
       // console.log("account jwt", account);
       if (account?.provider === "google") {
-        token.accessToken = user.token;
+        //token.accessToken = user.token;
         token.userId = user.id;
         token.userName = user.name;
         token.userEmail = user.email;
         token.userImage = user.image;
         // console.log("u signed in with google. token is now ", token);
       } else if (account?.provider === "credentials") {
-        token.accessToken = user.token;
+        //token.accessToken = user.token;
         token.userId = user.user._id;
         token.userName = user.user.name;
         token.userEmail = user.user.username;
@@ -100,7 +100,7 @@ export const authOptions = {
       // console.log("IN SESSION FUNCTION");
       // console.log("session is ", session);
       // console.log("token is ", token);
-      session.accessToken = token.accessToken;
+      //session.accessToken = token.accessToken;
       session.user.userId = token.userId;
       session.user.name = token.userName;
       session.user.email = token.userEmail;

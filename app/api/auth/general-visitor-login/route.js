@@ -4,7 +4,6 @@ import connectToDB from "../../../../utils/database";
 import { cookies } from "next/headers";
 
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 // function to generate random usernames
 function generateRandomUsername() {

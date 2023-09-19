@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import connectToDB from "../../../../utils/database";
 
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 async function authenticate(username, password) {
   console.log("in authenticate function");
@@ -38,11 +37,9 @@ export async function POST(req) {
   const authRes = await authenticate(username, password);
 
   if (authRes.status) {
-    const token = jwt.sign({ id: authRes.user._id }, process.env.JWT_SECRET);
     return NextResponse.json({
       message: "Logged in",
       user: authRes.user,
-      token,
     });
   } else {
     return NextResponse.json({ message: "Log in failed" }, { status: 400 });
