@@ -22,7 +22,6 @@ export default function NavBar() {
     e.preventDefault();
     const params = new URLSearchParams([
       ["filter", search],
-      ["userId", session.user.userId],
     ]);
     router.push(`/search/?${params.toString()}`);
     buttonRef.current.click();
