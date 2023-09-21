@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 async function findUser(userId) {
+  // making fetch request instead of working with db directly since deployment wouldnt work
   const res = await fetch(`https://retiform.vercel.app/api/users/${userId}`);
   const data = await res.json();
 return data.user;

@@ -6,6 +6,8 @@ import Post from "../../../../models/Post";
 async function findUser(userId) {
   // dont cache. Otherwise, when we unfriend someone, it will still show as a friend since fetch response wont update
   // even after unfriend
+  // btw we are making fetch request instead of working with db directly since deployment wouldnt work.
+  // Working with db directly wouldnt have this cache problem
   const res = await fetch(`https://retiform.vercel.app/api/users/${userId}`, {cache: 'no-store'});
   const data = await res.json();
 return data.user;
