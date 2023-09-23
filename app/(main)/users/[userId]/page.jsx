@@ -1,8 +1,8 @@
 import ProfileSection from "../../../../components/ProfileSection";
 import HomeFeed from "../../../../components/HomeFeed";
 import User from "../../../../models/User";
-import Like from "../../../../models/User";
-import Comment from "../../../../models/User";
+import Like from "../../../../models/Like";
+import Comment from "../../../../models/Comment";
 import connectToDB from "../../../../utils/database";
 import Post from "../../../../models/Post";
 
