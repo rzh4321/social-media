@@ -9,6 +9,12 @@ import Link from "next/link";
 import NewPostCard from "./NewPostCard";
 import FeedList from "./FeedList";
 
+// TODO: instead of making fetch api calls, get all the necessary 
+// data inside of server component and pass it to this client component
+// through props as JSON, then parse it back to an object. For ex, to render
+// home page, perform DB operations in home/page.jsx and pass data as props
+// to HomeFeed client component
+
 // feedType: 'all' || 'home' || 'profile' || 'user'
 export default function HomeFeed({ feedType, postsData }) {
   const { data: session, status } = useSession();
@@ -17,7 +23,8 @@ export default function HomeFeed({ feedType, postsData }) {
   const [postsLoading, setPostsLoading] = useState(true);
   const [authuserData, setAuthuserData] = useState({});
 
-  // Fetch authuser from session.user.userId and pass along the authuserData
+  // Fetch authuser from session.user.userId and pass along the authuserData.
+  // TODO: also move this to a server component along with posts data
   useEffect(() => {
     async function fetchAuthuser() {
       const res = await fetch(`/api/users/${session.user.userId}`);
@@ -29,21 +36,32 @@ export default function HomeFeed({ feedType, postsData }) {
     fetchAuthuser();
   }, [session, status]);
 
-  // Fetch posts according to the home feedType
+  // Fetch posts according to the home feedType. Once I move all of this
+  // code to server components to work with DB directly, all the needed
+  // data will be passed as a prop so I can remove these functions
   useEffect(() => {
     async function fetchAuthuserPostsAndSetPosts() {
-      const res = await fetch(`/api/users/${session.user.userId}/posts`);
-      const data = await res.json();
-      if (data.posts.length < 10) {
+      setPostsLoading(false);
+      // console.log('POSTSDATA IS ', postsData)
+      //console.log('THEIR TYPE IS ', typeof postsData)
+      const parsedPosts = JSON.parse(postsData);
+      if (parsedPosts.length < 10) {
         setEndOfFeed(true);
       }
-      setPosts(data.posts);
+      setPosts(parsedPosts);
+      // console.log('PARSED POSTS: ', parsedPosts);
+      // console.log('THEIR TYPE IS ', typeof parsedPosts)
       setPostsLoading(false);
     }
 
     async function fetchFeedPostsAndSetPosts() {
       const res = await fetch(`/api/users/${session.user.userId}/feed-posts`);
       const data = await res.json();
+      if (data.error) {
+        setPostsLoading(false);
+        location.reload();
+        return;
+      }
       if (data.posts.length < 10) {
         setEndOfFeed(true);
       }
@@ -69,11 +87,17 @@ export default function HomeFeed({ feedType, postsData }) {
     }
 
     function setUserPosts() {
-      if (posts.length < 10) {
+      setPostsLoading(false);
+      // console.log('POSTSDATA IS ', postsData)
+      // console.log('THEIR TYPE IS ', typeof postsData)
+      const parsedPosts = JSON.parse(postsData);
+      if (parsedPosts.length < 10) {
         setEndOfFeed(true);
       }
+      setPosts(parsedPosts);
+      // console.log('PARSED POSTS: ', parsedPosts);
+      console.log(typeof parsedPosts)
       setPostsLoading(false);
-      setPosts(JSON.parse(postsData));
     }
 
     if (status === "loading") return;
