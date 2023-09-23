@@ -1,6 +1,8 @@
 import User from "../../../models/User";
 import connectToDB from "../../../utils/database";
 import FriendsSection from "../../../components/FriendsSection";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 async function getUsersFromFilter(filter, userId) {
   const regex = new RegExp(`^${filter}`, "i"); // 'i' makes the search case-insensitive
@@ -20,7 +22,8 @@ async function getUsersFromFilter(filter, userId) {
 
 export default async function Search({ searchParams }) {
   await connectToDB();
-  const userId = searchParams.userId;
+  const session = await getServerSession(authOptions);
+  const userId = session.user.userId;
   const users = await getUsersFromFilter(searchParams.filter, userId);
   return (
     <div className="container">
