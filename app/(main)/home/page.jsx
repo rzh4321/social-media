@@ -35,13 +35,30 @@ async function getPosts(userId) {
   }
 }
 
+async function getUser(userId) {
+
+  try {
+    const user = await User.findById(userId).populate(
+      "friends friendRequestsSent friendRequestsReceived",
+    );
+    if (!user) {
+      throw new Error('cant find user');
+    }
+    return user;
+  } catch (e) {
+    console.log("error occurred when trying to get user data: ", e);
+    throw new Error(e);
+  }
+}
+
 export default async function Home() {
   await connectToDB();
   const session = await getServerSession(authOptions);
+  const user = await getUser(session.user.userId);
   const posts = await getPosts(session.user.userId);
   return (
     <>
-      <HomeFeed feedType={"home"} postsData={JSON.stringify(posts)} />
+      <HomeFeed feedType={"home"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
     </>
   );
 }

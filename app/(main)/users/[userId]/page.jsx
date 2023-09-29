@@ -6,12 +6,19 @@ import Comment from "../../../../models/Comment";
 import connectToDB from "../../../../utils/database";
 import Post from "../../../../models/Post";
 
-async function findUser(userId) {
-  // same thing in api route handler
-  const user = await User.findById(userId).populate(
-    "friends friendRequestsSent friendRequestsReceived",
-  );
-  return user;
+async function getUser(userId) {
+  try {
+    const user = await User.findById(userId).populate(
+      "friends friendRequestsSent friendRequestsReceived",
+    );
+    if (!user) {
+      throw new Error('cant find user');
+    }
+    return user;
+  } catch (e) {
+    console.log("error occurred when trying to get user data: ", e);
+    throw new Error(e);
+  }
 }
 
 async function getPosts(userId) {
@@ -40,16 +47,14 @@ async function getPosts(userId) {
   }
 }
 
-
-
 export default async function UserPage({ params }) {
   await connectToDB();
-  const user = await findUser(params.userId);
+  const user = await getUser(params.userId);
   const posts = await getPosts(params.userId);
   return (
     <div className="mt-4">
       <ProfileSection stringData={JSON.stringify(user)} edit={false} />
-      <HomeFeed feedType={"user"} postsData={JSON.stringify(posts)} />
+      <HomeFeed feedType={"user"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
     </div>
   );
 }

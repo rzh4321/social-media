@@ -9,32 +9,12 @@ import Link from "next/link";
 import NewPostCard from "./NewPostCard";
 import FeedList from "./FeedList";
 
-// TODO: instead of making fetch api calls, get all the necessary 
-// data inside of server component and pass it to this client component
-// through props as JSON, then parse it back to an object. For ex, to render
-// home page, perform DB operations in home/page.jsx and pass data as props
-// to HomeFeed client component
-
 // feedType: 'all' || 'home' || 'profile' || 'user'
-export default function HomeFeed({ feedType, postsData, authData }) {
+export default function HomeFeed({ feedType, postsData, authuserData }) {
   const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [endOfFeed, setEndOfFeed] = useState(false);
   const [postsLoading, setPostsLoading] = useState(true);
-  const [authuserData, setAuthuserData] = useState({});
-
-  // Fetch authuser from session.user.userId and pass along the authuserData.
-  // TODO: also move this to a server component along with posts data
-  useEffect(() => {
-    async function fetchAuthuser() {
-      const res = await fetch(`/api/users/${session.user.userId}`);
-      const data = await res.json();
-      setAuthuserData(data.user);
-    }
-    if (status === "loading") return;
-    // no need to check for session, already did in navbar
-    fetchAuthuser();
-  }, [session, status]);
 
   useEffect(() => {
     async function getPosts() {
@@ -77,7 +57,7 @@ export default function HomeFeed({ feedType, postsData, authData }) {
       {(feedType === "all" || feedType === "home") && (
         <div className="border-top mb-4"></div>
       )}
-      {feedType !== "user" && <NewPostCard authuserData={authuserData} />}
+      {feedType !== "user" && <NewPostCard authuserData={JSON.parse(authuserData)} />}
       {feedType === "profile" && (
         <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your posts</h3>
       )}
@@ -85,7 +65,7 @@ export default function HomeFeed({ feedType, postsData, authData }) {
         posts={posts}
         setPosts={setPosts}
         postsLoading={postsLoading}
-        authuserData={authuserData}
+        authuserData={JSON.parse(authuserData)}
         feedType={feedType}
         endOfFeed={endOfFeed}
       />

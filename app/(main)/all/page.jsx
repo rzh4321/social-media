@@ -5,9 +5,11 @@ import Comment from "../../../models/Comment";
 import User from "../../../models/User";
 import Like from "../../../models/Like";
 import Image from "../../../models/Image";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { connect } from "http2";
 
 async function getPosts() {
-  await connectToDB();
     try {
       const posts = await Post.find()
         .sort({ _id: -1 })
@@ -31,11 +33,30 @@ async function getPosts() {
     }
 }
 
+async function getUser(userId) {
+
+  try {
+    const user = await User.findById(userId).populate(
+      "friends friendRequestsSent friendRequestsReceived",
+    );
+    if (!user) {
+      throw new Error('cant find user');
+    }
+    return user;
+  } catch (e) {
+    console.log("error occurred when trying to get user data: ", e);
+    throw new Error(e);
+  }
+}
+
 export default async function Home() {
+  await connectToDB();
+  const session = await getServerSession(authOptions);
+  const user = await getUser(session.user.userId);
   const posts = await getPosts();
   return (
     <>
-      <HomeFeed feedType={"all"} postsData={JSON.stringify(posts)} />
+      <HomeFeed feedType={"all"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
     </>
   );
 }

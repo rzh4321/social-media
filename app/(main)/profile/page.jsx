@@ -8,12 +8,19 @@ import connectToDB from "../../../utils/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 
-async function findUser(userId) {
-  // same thing in api route handler
-  const user = await User.findById(userId).populate(
-    "friends friendRequestsSent friendRequestsReceived",
-  );
-  return user;
+async function getUser(userId) {
+  try {
+    const user = await User.findById(userId).populate(
+      "friends friendRequestsSent friendRequestsReceived",
+    );
+    if (!user) {
+      throw new Error('cant find user');
+    }
+    return user;
+  } catch (e) {
+    console.log("error occurred when trying to get user data: ", e);
+    throw new Error(e);
+  }
 }
 
 async function getPosts(userId) {
@@ -45,13 +52,13 @@ async function getPosts(userId) {
 export default async function ProfilePage({ params }) {
   await connectToDB();
   const session = await getServerSession(authOptions);
-  const user = await findUser(session.user.userId);
+  const user = await getUser(session.user.userId);
   const posts = await getPosts(session.user.userId);
 
   return (
     <div className="mt-4">
       <ProfileSection stringData={JSON.stringify(user)} edit={true} />
-      <HomeFeed feedType={"profile"} postsData={JSON.stringify(posts)} />
+      <HomeFeed feedType={"profile"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
     </div>
   );
 }
