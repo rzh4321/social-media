@@ -16,7 +16,7 @@ import FeedList from "./FeedList";
 // to HomeFeed client component
 
 // feedType: 'all' || 'home' || 'profile' || 'user'
-export default function HomeFeed({ feedType, postsData }) {
+export default function HomeFeed({ feedType, postsData, authData }) {
   const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [endOfFeed, setEndOfFeed] = useState(false);
@@ -36,25 +36,8 @@ export default function HomeFeed({ feedType, postsData }) {
     fetchAuthuser();
   }, [session, status]);
 
-  // Fetch posts according to the home feedType. Once I move all of this
-  // code to server components to work with DB directly, all the needed
-  // data will be passed as a prop so I can remove these functions
   useEffect(() => {
-    async function fetchFeedPosts() {
-      setPostsLoading(false);
-      // console.log('POSTSDATA IS ', postsData)
-      //console.log('THEIR TYPE IS ', typeof postsData)
-      const parsedPosts = JSON.parse(postsData);
-      if (parsedPosts.length < 10) {
-        setEndOfFeed(true);
-      }
-      setPosts(parsedPosts);
-      // console.log('PARSED POSTS: ', parsedPosts);
-      // console.log('THEIR TYPE IS ', typeof parsedPosts)
-      setPostsLoading(false);
-    }
-
-    async function fetchHomePosts() {
+    async function getPosts() {
       setPostsLoading(false);
       const parsedPosts = JSON.parse(postsData);
       if (parsedPosts.length < 10) {
@@ -63,55 +46,9 @@ export default function HomeFeed({ feedType, postsData }) {
       setPosts(parsedPosts);
       setPostsLoading(false);
     }
+    getPosts();
 
-    async function fetchAllPostsAndSetPosts() {
-      // Fetch 10 of all posts starting from the most recent one
-      const res = await fetch(`/api/posts`);
-      const data = await res.json();
-      if (data.error) {
-        setPostsLoading(false);
-        location.reload();
-        return;
-      }
-      // less than 10 posts returned means we already reached end of feed
-      if (data.posts?.length < 10) {
-        setEndOfFeed(true);
-      }
-      setPosts(data.posts);
-      setPostsLoading(false);
-    }
-
-    function setUserPosts() {
-      setPostsLoading(false);
-      // console.log('POSTSDATA IS ', postsData)
-      // console.log('THEIR TYPE IS ', typeof postsData)
-      const parsedPosts = JSON.parse(postsData);
-      if (parsedPosts.length < 10) {
-        setEndOfFeed(true);
-      }
-      setPosts(parsedPosts);
-      // console.log('PARSED POSTS: ', parsedPosts);
-      console.log(typeof parsedPosts)
-      setPostsLoading(false);
-    }
-
-    if (status === "loading") return;
-
-    switch (feedType) {
-      case "home":
-        fetchHomePosts();
-        break;
-      case "profile":
-        fetchFeedPosts();
-        break;
-      case "all":
-        fetchAllPostsAndSetPosts();
-        break;
-      case "user":
-        setUserPosts();
-        break;
-    }
-  }, [session, feedType, status]);
+  }, [postsData]);
 
   return (
     <div className="container mt-4">
