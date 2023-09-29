@@ -40,7 +40,7 @@ export default function HomeFeed({ feedType, postsData }) {
   // code to server components to work with DB directly, all the needed
   // data will be passed as a prop so I can remove these functions
   useEffect(() => {
-    async function fetchAuthuserPostsAndSetPosts() {
+    async function fetchFeedPosts() {
       setPostsLoading(false);
       // console.log('POSTSDATA IS ', postsData)
       //console.log('THEIR TYPE IS ', typeof postsData)
@@ -54,18 +54,13 @@ export default function HomeFeed({ feedType, postsData }) {
       setPostsLoading(false);
     }
 
-    async function fetchFeedPostsAndSetPosts() {
-      const res = await fetch(`/api/users/${session.user.userId}/feed-posts`);
-      const data = await res.json();
-      if (data.error) {
-        setPostsLoading(false);
-        location.reload();
-        return;
-      }
-      if (data.posts.length < 10) {
+    async function fetchHomePosts() {
+      setPostsLoading(false);
+      const parsedPosts = JSON.parse(postsData);
+      if (parsedPosts.length < 10) {
         setEndOfFeed(true);
       }
-      setPosts(data.posts);
+      setPosts(parsedPosts);
       setPostsLoading(false);
     }
 
@@ -104,10 +99,10 @@ export default function HomeFeed({ feedType, postsData }) {
 
     switch (feedType) {
       case "home":
-        fetchFeedPostsAndSetPosts();
+        fetchHomePosts();
         break;
       case "profile":
-        fetchAuthuserPostsAndSetPosts();
+        fetchFeedPosts();
         break;
       case "all":
         fetchAllPostsAndSetPosts();
