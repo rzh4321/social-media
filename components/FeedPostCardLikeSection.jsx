@@ -13,7 +13,6 @@ export default function FeedPostCardLikeSection({ post, comments }) {
   useEffect(() => {
     if (status === 'loading') return;
     if (post.likes.length > 0) {
-      console.log(post.likes);
       // see if userId is in likes array
       post.likes.some(
         (like) => like.user._id.toString() === session.user.userId,
@@ -34,12 +33,10 @@ export default function FeedPostCardLikeSection({ post, comments }) {
     const status = likeStatus;
     setLikeStatus("loading");
     if (status === "unliked") {
-      console.log("abiut to call like api");
       const res = await fetch(`/api/posts/${post._id}/likes`, {
         method: "POST",
       });
       const data = await res.json();
-      console.log("back from give like api. data is ", data);
       switch (res.status) {
         // Successfully liked
         case 201:
@@ -60,7 +57,6 @@ export default function FeedPostCardLikeSection({ post, comments }) {
           likeId = like._id.toString();
         }
       }
-      console.log("likeid is ", likeId);
 
       const res = await fetch(`/api/posts/${post._id}/likes/${likeId}`, {
         method: "DELETE",

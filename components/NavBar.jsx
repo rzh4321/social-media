@@ -6,7 +6,6 @@ import Image from "next/image";
 import "../styles/navbar.css";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { redirect } from "next/navigation";
 
 export default function NavBar() {
   const buttonRef = useRef(null);
