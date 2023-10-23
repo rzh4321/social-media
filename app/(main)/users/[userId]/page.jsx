@@ -12,7 +12,7 @@ async function getUser(userId) {
       "friends friendRequestsSent friendRequestsReceived",
     );
     if (!user) {
-      throw new Error('cant find user');
+      throw new Error("cant find user");
     }
     return user;
   } catch (e) {
@@ -54,7 +54,11 @@ export default async function UserPage({ params }) {
   return (
     <div className="mt-4">
       <ProfileSection stringData={JSON.stringify(user)} edit={false} />
-      <HomeFeed feedType={"user"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
+      <HomeFeed
+        feedType={"user"}
+        postsData={JSON.stringify(posts)}
+        authuserData={JSON.stringify(user)}
+      />
     </div>
   );
 }

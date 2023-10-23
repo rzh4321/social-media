@@ -19,12 +19,11 @@ async function getUsersFromFilter(filter, userId) {
 }
 
 export async function GET(req, context) {
-  console.log('hi')
+  console.log("hi");
   await connectToDB();
   const filter = context.params.filter;
   const userId = context.params.userId;
   const users = await getUsersFromFilter(filter, userId);
-  
-  return NextResponse.json({ users});
-    
+
+  return NextResponse.json({ users });
 }

@@ -19,9 +19,7 @@ export default function NavBar() {
 
   function handleSearchSubmit(e) {
     e.preventDefault();
-    const params = new URLSearchParams([
-      ["filter", search],
-    ]);
+    const params = new URLSearchParams([["filter", search]]);
     router.push(`/search/?${params.toString()}`);
     buttonRef.current.click();
   }

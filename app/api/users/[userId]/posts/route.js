@@ -62,7 +62,7 @@ export async function GET(req, context) {
         });
       return NextResponse.json({ posts });
     } catch (err) {
-      console.log('?A?DAS?D?ASD')
+      console.log("?A?DAS?D?ASD");
       console.log(err);
       return NextResponse.json({ error: err }, { status: 502 });
     }

@@ -10,37 +10,36 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { connect } from "http2";
 
 async function getPosts() {
-    try {
-      const posts = await Post.find()
-        .sort({ _id: -1 })
-        .limit(10)
-        .populate("user")
-        .populate({
-          path: "likes",
-          populate: {
-            path: "user",
-          },
-        })
-        .populate({
-          path: "comments",
-          populate: {
-            path: "user",
-          },
-        });
-      return posts;
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    const posts = await Post.find()
+      .sort({ _id: -1 })
+      .limit(10)
+      .populate("user")
+      .populate({
+        path: "likes",
+        populate: {
+          path: "user",
+        },
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+        },
+      });
+    return posts;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function getUser(userId) {
-
   try {
     const user = await User.findById(userId).populate(
       "friends friendRequestsSent friendRequestsReceived",
     );
     if (!user) {
-      throw new Error('cant find user');
+      throw new Error("cant find user");
     }
     return user;
   } catch (e) {
@@ -56,7 +55,11 @@ export default async function Home() {
   const posts = await getPosts();
   return (
     <>
-      <HomeFeed feedType={"all"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
+      <HomeFeed
+        feedType={"all"}
+        postsData={JSON.stringify(posts)}
+        authuserData={JSON.stringify(user)}
+      />
     </>
   );
 }

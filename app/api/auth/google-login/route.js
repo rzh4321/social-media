@@ -36,10 +36,7 @@ export async function POST(req) {
     });
     await user.save();
     console.log("we saved the new user to db. returning status 201 now");
-    return NextResponse.json(
-      { message: "Logged in", user },
-      { status: 201 },
-    );
+    return NextResponse.json({ message: "Logged in", user }, { status: 201 });
   } catch (err) {
     console.log("errored: ", err);
     throw new Error("couldnt create and save user to db for some reaosn");

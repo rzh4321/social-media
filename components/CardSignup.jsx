@@ -1,32 +1,7 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
-
-// type CardSignupProps = {
-//   switchToSignup: Dispatch<SetStateAction<boolean>>;
-// };
-
-// type apiResError = {
-//   errors: [];
-//   input: { username: string; password: string };
-// };
-
-// type apiResSuccess = {
-//   message: string;
-//   user: {
-//     name: String;
-//     username: String;
-//     password: String;
-//     friends: [];
-//     friendRequestsSent: [];
-//     friendRequestsReceived: [];
-//     profileUrl: String;
-//     posts: [];
-//   };
-// };
-
-// type apiRes = apiResError | apiResSuccess;
 
 export default function CardSignup({ switchToSignup }) {
   const [nameInput, setNameInput] = useState("");

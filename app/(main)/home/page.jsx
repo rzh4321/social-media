@@ -36,13 +36,12 @@ async function getPosts(userId) {
 }
 
 async function getUser(userId) {
-
   try {
     const user = await User.findById(userId).populate(
       "friends friendRequestsSent friendRequestsReceived",
     );
     if (!user) {
-      throw new Error('cant find user');
+      throw new Error("cant find user");
     }
     return user;
   } catch (e) {
@@ -58,7 +57,11 @@ export default async function Home() {
   const posts = await getPosts(session.user.userId);
   return (
     <>
-      <HomeFeed feedType={"home"} postsData={JSON.stringify(posts)} authuserData={JSON.stringify(user)} />
+      <HomeFeed
+        feedType={"home"}
+        postsData={JSON.stringify(posts)}
+        authuserData={JSON.stringify(user)}
+      />
     </>
   );
 }

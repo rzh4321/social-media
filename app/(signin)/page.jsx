@@ -11,7 +11,7 @@ import "../../styles/Home.css";
 
 const SignIn = () => {
   const [signupCard, setSignupCard] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const SignIn = () => {
               {signupCard ? (
                 <CardSignup switchToSignup={setSignupCard} />
               ) : (
-                <CardLogin switchToSignup={setSignupCard} />
+                <CardLogin switchToSignup={setSignupCard} status={status} />
               )}
             </div>
           </div>

@@ -3,9 +3,11 @@ import FriendsSection from "../../../../../components/FriendsSection";
 import "../../../../../styles/friends.css";
 
 async function findUser(userId) {
-  const res = await fetch(`https://retiform.vercel.app/api/users/${userId}`, {cache: 'no-store'});
+  const res = await fetch(`https://retiform.vercel.app/api/users/${userId}`, {
+    cache: "no-store",
+  });
   const data = await res.json();
-return data.user;
+  return data.user;
 }
 
 export default async function FriendsPage({ params }) {
