@@ -6,7 +6,6 @@ import { authOptions } from "../../../auth/[...nextauth]/route";
 
 export async function DELETE(req, context) {
   await connectToDB();
-  console.log("insde unfriend request api handler");
   const session = await getServerSession(authOptions);
   const userId = session.user.userId;
   const friendId = context.params.userId;
@@ -26,7 +25,6 @@ export async function DELETE(req, context) {
       { status: 200 },
     );
   } catch (err) {
-    console.log("error unfriending: ", err);
     return NextResponse.json({ error: err }, { status: 502 });
   }
 }

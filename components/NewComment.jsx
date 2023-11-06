@@ -1,9 +1,5 @@
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { DateTime } from "luxon";
+import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function NewComment({
   postid,
@@ -11,7 +7,6 @@ export default function NewComment({
   setComments,
   authuserData,
 }) {
-  const { data: session } = useSession();
   const [commentInput, setCommentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isContentError, setIsContentError] = useState(false);
@@ -34,7 +29,6 @@ export default function NewComment({
       }),
     });
     const data = await res.json();
-    console.log("back from posting comment api. data is ", data);
     switch (res.status) {
       case 201:
         setIsLoading(false);
@@ -53,7 +47,6 @@ export default function NewComment({
             },
           },
         ]);
-        console.log("comments is now ", comments);
         break;
       default:
         setIsLoading(false);

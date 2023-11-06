@@ -1,7 +1,4 @@
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { DateTime } from "luxon";
 import Image from "next/image";
 import Link from "next/link";
 

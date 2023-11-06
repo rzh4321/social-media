@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { z } from "zod";
+
+const schema = z.object({
+  content: z
+    .string()
+    .min(1, { message: "Content is required" })
+    .transform((val) => val.trim()),
+});
 
 export default function NewPostCard({ authuserData }) {
   const [contentInput, setContentInput] = useState("");
@@ -45,10 +53,15 @@ export default function NewPostCard({ authuserData }) {
   const handleNewPost = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    try {
+      const validate = schema.parse(contentInput);
+    } catch (err) {
+      setIsContentError(true);
+      return;
+    }
     const formData = new FormData();
     formData.append("content", contentInput);
     if (imageInput) {
-      //console.log("u have an image");
       formData.append("image", imageInput);
     }
 
@@ -56,7 +69,6 @@ export default function NewPostCard({ authuserData }) {
       method: "POST",
       body: formData,
     });
-    //console.log('back from api call to post a post. res is ', res);
     setIsLoading(false);
     if (res.status === 201) {
       setIsContentError(false);

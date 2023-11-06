@@ -1,11 +1,7 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import "../styles/profile.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export default function ProfileEditModal({ userData }) {
-  const router = useRouter();
-  const { data: session } = useSession();
   const [name, setName] = useState("");
   const [profileUrl, setProfileUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);

@@ -7,7 +7,6 @@ import Like from "../../../models/Like";
 import Image from "../../../models/Image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
-import { connect } from "http2";
 
 async function getPosts() {
   try {

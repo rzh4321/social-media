@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ProfileSection({ edit, stringData }) {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [userData, getUserData] = useState({});
   const [friendRequestStatus, setFriendRequestStatus] = useState("none");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +30,6 @@ export default function ProfileSection({ edit, stringData }) {
     if (res.status === 200) {
       location.reload();
     } else {
-      console.log("somethign went wrong");
       setError(true);
     }
     setIsLoading(false);
@@ -68,7 +67,6 @@ export default function ProfileSection({ edit, stringData }) {
     const res = await fetch(`/api/users/${userData._id}/unfriend`, {
       method: "DELETE",
     });
-    //console.log("res is ", res);
     if (res.status === 200) {
       setFriendRequestStatus("none");
       location.reload();
@@ -88,10 +86,8 @@ export default function ProfileSection({ edit, stringData }) {
         body: JSON.stringify({ friendId: userData._id }),
       });
       if (res.status === 200) {
-        console.log("success");
         setFriendRequestStatus("sent");
       } else {
-        console.log("failed");
         setFriendRequestStatus("error");
       }
     }
@@ -101,10 +97,8 @@ export default function ProfileSection({ edit, stringData }) {
         method: "DELETE",
       });
       if (res.status === 200) {
-        console.log("success");
         setFriendRequestStatus("none");
       } else {
-        console.log("failed");
         setFriendRequestStatus("error");
       }
     }

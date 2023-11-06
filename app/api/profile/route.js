@@ -32,24 +32,20 @@ const schema = z.object({
 
 export async function PUT(req) {
   await connectToDB();
-  console.log("insde editing profile api handler");
   const session = await getServerSession(authOptions);
   const data = await req.formData();
   const arr = Array.from(data.entries());
-  //return;
   const userId = session.user.userId;
 
   try {
     // updated name and pic with URL
     if (arr[0][1].trim().length > 0 && arr[1][1].trim().length > 0) {
-      // console.log("update name and pic with url");
       try {
         const data = schema.parse({
           name: arr[0][1],
           profilePicUrl: arr[1][1],
         });
       } catch (err) {
-        console.log("error form validation: ", err);
         return NextResponse.json({ error: err.message }, { status: 400 });
       }
       const user = await User.findByIdAndUpdate(userId, {
@@ -58,11 +54,9 @@ export async function PUT(req) {
       });
       // only updated pic with URL
     } else if (arr[1][1].trim().length > 0) {
-      //console.log("only pic with url");
       try {
         const data = urlSchema.parse({ profilePicUrl: arr[1][1] });
       } catch (err) {
-        // console.log("error form validation: ", err);
         return NextResponse.json({ error: err.message }, { status: 400 });
       }
       const user = await User.findByIdAndUpdate(userId, {
@@ -70,16 +64,13 @@ export async function PUT(req) {
       });
       // updated name
     } else if (arr[0][1].trim().length > 0) {
-      //console.log("updated name, but maybe also image with uplaod......");
       try {
         const data = nameSchema.parse({ name: arr[0][1] });
       } catch (err) {
-        //console.log("error form validation: ", err);
         return NextResponse.json({ error: err.message }, { status: 400 });
       }
       // also updated pic with upload
       if (arr.length > 2) {
-        //console.log("yep, also pic with upload");
         const arrayBuffer = await arr[2][1].arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const url = `data:${arr[2][1].type};base64,${buffer.toString(
@@ -90,7 +81,6 @@ export async function PUT(req) {
           profilePicUrl: url,
         });
       } else {
-        //console.log('nope, just the name')
         const user = await User.findByIdAndUpdate(userId, {
           name: arr[0][1],
         });
@@ -98,7 +88,6 @@ export async function PUT(req) {
     }
     // only updated pic with uplaod
     else {
-      //console.log("only pic with upload");
       const arrayBuffer = await arr[2][1].arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       const url = `data:${arr[2][1].type};base64,${buffer.toString("base64")}`;
@@ -108,7 +97,6 @@ export async function PUT(req) {
     }
     return NextResponse.json({ message: "Updated profile" }, { status: 200 });
   } catch (err) {
-    console.log("error updating profile: ", err);
     return NextResponse.json({ error: err }, { status: 502 });
   }
 }

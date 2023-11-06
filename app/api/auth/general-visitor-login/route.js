@@ -27,7 +27,7 @@ export const POST = async () => {
   let username;
   if (cookieStore.get("visitor")) username = cookieStore.get("visitor").value;
   if (username) {
-    console.log("this is NOT first time visiting");
+    // not first time visitor
     try {
       const regex = new RegExp(username, "i");
       const user = await User.findOne({ username: { $regex: regex } });
@@ -39,7 +39,7 @@ export const POST = async () => {
       throw new Error("couldnt find existing visitor");
     }
   } else {
-    console.log("this is ur first time visitor");
+    // first time visitor
     const username = generateRandomUsername();
     const hashedPassword = bcrypt.hashSync(username, 10);
     try {

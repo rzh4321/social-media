@@ -71,38 +71,18 @@ export const authOptions = {
     },
     // transfer user data to token object
     async jwt({ token, user, account }) {
-      // console.log("INSIDE JWT FUNCTION");
-      // console.log("token jwt", token);
-      // console.log("user jwt", user);
-      // console.log("account jwt", account);
       if (account?.provider === "google") {
         //token.accessToken = user.token;
         token.userId = user.id;
-        token.userName = user.name;
-        token.userEmail = user.email;
-        token.userImage = user.image;
-        // console.log("u signed in with google. token is now ", token);
       } else if (account?.provider === "credentials") {
-        //token.accessToken = user.token;
         token.userId = user.user._id;
-        token.userName = user.user.name;
-        token.userEmail = user.user.username;
-        token.userImage = user.user.profile_pic_url;
-        // console.log("u signed in with credentials. token is now ", token);
       }
       return token;
     },
     // transfer token data to session object
     async session({ session, token }) {
-      // console.log("IN SESSION FUNCTION");
-      // console.log("session is ", session);
-      // console.log("token is ", token);
-      //session.accessToken = token.accessToken;
       session.user.userId = token.userId;
-      session.user.name = token.userName;
-      session.user.email = token.userEmail;
-      session.user.image = token.userImage;
-      // session stores user object (name, email, image, userID), accessToken, and expires
+      // session only stores userId
       return session;
     },
   },

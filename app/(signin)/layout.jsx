@@ -1,6 +1,4 @@
 import Provider from "../../components/Provider";
-import { Metadata } from "next";
-import Script from "next/script";
 import Footer from "../../components/Footer";
 import "../../styles/Home.css";
 

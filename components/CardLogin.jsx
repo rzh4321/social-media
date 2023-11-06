@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 export default function CardLogin({ switchToSignup, status }) {
@@ -19,7 +19,6 @@ export default function CardLogin({ switchToSignup, status }) {
       password: passwordInput,
       callbackUrl: "/home",
     });
-    console.log("res is ", res);
     if (res && !res.url) {
       setLoginLoading(false);
       setLoginFailed(true);
@@ -37,11 +36,7 @@ export default function CardLogin({ switchToSignup, status }) {
       method: "POST",
     });
     const data = await res.json();
-    console.log(
-      "we back to handleVisitorLogin function. we called general visitor login api. the res is ",
-      data,
-    );
-    // should return newly created (or existing) user object. Use user object to sign in, but use unhashed pw
+    // should return newly created (or existing) user object
     const signInRes = await signIn("credentials", {
       redirect: false,
       username: data.user.username,
@@ -49,7 +44,6 @@ export default function CardLogin({ switchToSignup, status }) {
       callbackUrl: "/home",
     });
 
-    console.log("login api returned response. it is ", signInRes);
     if (signInRes && !signInRes.ok) {
       setLoginLoading(false);
       setLoginFailed(true);

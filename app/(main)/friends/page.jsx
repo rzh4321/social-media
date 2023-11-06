@@ -6,7 +6,6 @@ import RequestsReceived from "../../../components/RequestsReceived";
 import FriendsSection from "../../../components/FriendsSection";
 
 import "../../../styles/friends.css";
-import { request } from "http";
 
 export default function FriendsPage() {
   const { data: session, status } = useSession();

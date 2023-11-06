@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import CardLogin from "../../components/CardLogin";
 import CardSignup from "../../components/CardSignup";
 import HomeBanner from "../../components/HomeBanner";
-import Footer from "../../components/Footer";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import "../../styles/Home.css";

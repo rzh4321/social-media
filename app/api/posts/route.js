@@ -9,15 +9,6 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import connectToDB from "../../../utils/database";
 
-import { z } from "zod";
-
-const schema = z.object({
-  content: z
-    .string()
-    .min(1, { message: "Content is required" })
-    .transform((val) => val.trim()),
-});
-
 // gets ALL posts
 export async function GET(req) {
   await connectToDB();
@@ -49,8 +40,6 @@ export async function GET(req) {
       return NextResponse.json({ error: err }, { status: 502 });
     }
   } else {
-    //onsole.log("this is first call (initial page load)");
-    // this is first call to get posts (initial page load)
     try {
       const posts = await Post.find()
         .sort({ _id: -1 })
@@ -70,7 +59,6 @@ export async function GET(req) {
         });
       return NextResponse.json({ posts });
     } catch (err) {
-      console.log(err);
       return NextResponse.json({ error: err }, { status: 502 });
     }
   }
@@ -82,18 +70,9 @@ export async function POST(req, context) {
   const session = await getServerSession(authOptions);
   const data = await req.formData();
   const arr = Array.from(data.entries());
-  //console.log('ARRR IS ', arr);
   const userId = session.user.userId;
-  // console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
-
-  try {
-    const data = schema.parse({ content: arr[0][1] });
-  } catch (err) {
-    console.log("error form fvalidation: ", err);
-    return NextResponse.json({ error: "Content is required" }, { status: 400 });
-  }
 
   try {
     let image;
@@ -127,14 +106,8 @@ export async function POST(req, context) {
     await post.save();
     currentUser.posts.push(post);
     await currentUser.save();
-    //console.log('saved user object with new post: ', currentUser);
     return NextResponse.json({ post }, { status: 201 });
-
-    //await image.save;
-
-    //console.log('post is ', post);
   } catch (err) {
-    console.log("error: ", err);
     return NextResponse.json(
       { error: "Unknown server error" },
       { status: 500 },

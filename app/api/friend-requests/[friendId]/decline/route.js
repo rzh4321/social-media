@@ -6,7 +6,6 @@ import { authOptions } from "../../../auth/[...nextauth]/route";
 
 export async function POST(req, context) {
   await connectToDB();
-  console.log("insde decline friend request api handler");
   const session = await getServerSession(authOptions);
   const userId = session.user.userId;
   const friendId = context.params.friendId;
@@ -30,7 +29,6 @@ export async function POST(req, context) {
       { status: 200 },
     );
   } catch (err) {
-    console.log("error declining FR: ", err);
     return NextResponse.json({ error: err }, { status: 502 });
   }
 }

@@ -22,7 +22,6 @@ export default function RequestCard({ user, session }) {
     if (res.status === 200) {
       location.reload();
     } else {
-      console.log("somethign went wrong");
       setRequestStatus("error");
     }
   }

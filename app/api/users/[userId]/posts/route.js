@@ -9,7 +9,6 @@ import { NextResponse } from "next/server";
 export async function GET(req, context) {
   await connectToDB();
   const userId = context.params.userId;
-  //console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
   const { searchParams } = new URL(req.url);
@@ -34,14 +33,12 @@ export async function GET(req, context) {
             path: "user",
           },
         });
-      // console.log("next 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);
       return NextResponse.json({ error: err }, { status: 502 });
     }
   } else {
-    //console.log("this is first call (initial page load)");
     // this is first call to get posts (initial page load)
     try {
       const posts = await Post.find({ user: currentUser._id })
@@ -62,7 +59,6 @@ export async function GET(req, context) {
         });
       return NextResponse.json({ posts });
     } catch (err) {
-      console.log("?A?DAS?D?ASD");
       console.log(err);
       return NextResponse.json({ error: err }, { status: 502 });
     }

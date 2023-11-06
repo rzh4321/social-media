@@ -44,7 +44,6 @@ async function getPosts(userId) {
       });
     return posts;
   } catch (err) {
-    //console.log("error fecthing users posts: ", err);
     throw new Error(err);
   }
 }

@@ -1,8 +1,5 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { DateTime } from "luxon";
-import Link from "next/link";
 
 export default function FeedPostCardLikeSection({ post, comments }) {
   const { data: session, status } = useSession();

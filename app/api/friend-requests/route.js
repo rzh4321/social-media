@@ -7,7 +7,6 @@ import { authOptions } from "../auth/[...nextauth]/route";
 // send friend request
 export async function POST(req) {
   await connectToDB();
-  console.log("insde send request api handler");
   const session = await getServerSession(authOptions);
   const { friendId } = await req.json();
   const userId = session.user.userId;
@@ -27,7 +26,6 @@ export async function POST(req) {
       { status: 200 },
     );
   } catch (err) {
-    console.log("error sending FR: ", err);
     return NextResponse.json({ error: err }, { status: 502 });
   }
 }

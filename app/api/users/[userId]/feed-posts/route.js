@@ -10,15 +10,12 @@ import connectToDB from "../../../../../utils/database";
 export async function GET(req, context) {
   await connectToDB();
   const userId = context.params.userId;
-  // console.log('userid is ', userId);
 
   const currentUser = await User.findById(userId);
   // this is how we check what to show on feed
   const usersIds = [currentUser._id, ...currentUser.friends];
-  // console.log(usersIds)
   const { searchParams } = new URL(req.url);
   const startId = searchParams.get("startId");
-  //console.log("search params of startId (if u included) is ", startId);
   // get all posts in feed
   if (startId) {
     try {
@@ -40,7 +37,6 @@ export async function GET(req, context) {
             path: "user",
           },
         });
-      //console.log("next 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);
@@ -65,7 +61,6 @@ export async function GET(req, context) {
             path: "user",
           },
         });
-      //console.log("first 10 posts is ", posts);
       return NextResponse.json({ posts });
     } catch (err) {
       console.log(err);

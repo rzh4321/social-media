@@ -1,10 +1,7 @@
 import "../styles/homefeed.css";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { DateTime } from "luxon";
+import { useState } from "react";
 import FeedPostCard from "./FeedPostCard";
-import Link from "next/link";
 
 export default function FeedList({
   posts,

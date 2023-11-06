@@ -1,17 +1,13 @@
 "use client";
 
 import "../styles/homefeed.css";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { DateTime } from "luxon";
 import Link from "next/link";
 import NewPostCard from "./NewPostCard";
 import FeedList from "./FeedList";
 
 // feedType: 'all' || 'home' || 'profile' || 'user'
 export default function HomeFeed({ feedType, postsData, authuserData }) {
-  const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [endOfFeed, setEndOfFeed] = useState(false);
   const [postsLoading, setPostsLoading] = useState(true);

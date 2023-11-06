@@ -17,7 +17,6 @@ export async function GET(req, context) {
     }
     return NextResponse.json({ user }, { status: 200 });
   } catch (e) {
-    console.log("error occurred when trying to get user data: ", e);
     throw new Error(e);
   }
 }

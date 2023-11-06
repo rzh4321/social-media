@@ -186,13 +186,6 @@ export default function NavBar() {
           </ul>
         </div>
       </div>
-      {/*      <form className="me-auto search-form" onSubmit={handleSearchSubmit}>
-          <button type="submit">
-        
-          </button>
-          <input type="search" value={search} placeholder="Search users" onChange={(e) => setSearch(e.target.value)} />
-          
-          </form>*/}
 
       <div
         className="modal fade"

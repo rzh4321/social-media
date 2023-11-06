@@ -2,14 +2,73 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { z } from "zod";
+
+const schema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "Name is required" })
+    .transform((val) => val.trim()),
+  username: z
+    .string()
+    .min(1, { message: "Username is required" })
+    .transform((val) => val.trim()),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" })
+    .transform((val) => val.trim()),
+});
 
 export default function CardSignup({ switchToSignup }) {
   const [nameInput, setNameInput] = useState("");
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
-  const [signupFailed, setSignupFailed] = useState(false);
   const [signupErrors, setSignupErrors] = useState([]);
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setSignupLoading(true);
+    try {
+      const validate = schema.parse({
+        name: nameInput,
+        username: usernameInput,
+        password: passwordInput,
+      });
+    } catch (err) {
+      const errorsArr = err.issues.map((obj) => {
+        return obj.message;
+      });
+      setSignupErrors(errorsArr);
+      setSignupLoading(false);
+      return;
+    }
+
+    const res = await fetch(`/api/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: nameInput,
+        username: usernameInput,
+        password: passwordInput,
+      }),
+    });
+    const data = await res.json();
+    if (res.status !== 201) {
+      setSignupErrors(data.errors);
+      setNameInput(data.input.name);
+      setUsernameInput(data.input.username);
+      setPasswordInput(data.input.password);
+    } else if (res.status === 201) {
+      const res = await signIn("credentials", {
+        redirect: false,
+        username: usernameInput,
+        password: passwordInput,
+        callbackUrl: "/home", // should redirect to home page after successful signup
+      });
+    }
+    setSignupLoading(false);
+  };
 
   return (
     <div className={`card shadow-sm p-4 card-login`}>
@@ -56,45 +115,7 @@ export default function CardSignup({ switchToSignup }) {
           type="submit"
           className="btn btn-success w-100"
           disabled={signupLoading}
-          onClick={async (e) => {
-            e.preventDefault();
-            setSignupLoading(true);
-            const res = await fetch(`/api/auth/signup`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                name: nameInput,
-                username: usernameInput,
-                password: passwordInput,
-              }),
-            });
-            const data = await res.json();
-            console.log(
-              "we are back from post sign up api call. data we got is ",
-              data,
-            );
-            if (data.errors) {
-              setNameInput(data.input.name);
-              setUsernameInput(data.input.username);
-              setPasswordInput(data.input.password);
-              setSignupErrors(data.errors);
-              setSignupLoading(false);
-            }
-            if (res.status !== 201) {
-              setSignupLoading(false);
-              setSignupFailed(true);
-            }
-            if (res.status === 201) {
-              setSignupLoading(false);
-              setSignupFailed(false);
-              const res = await signIn("credentials", {
-                redirect: false,
-                username: usernameInput,
-                password: passwordInput,
-                callbackUrl: "/home", // should redirect to home page after successful signup
-              });
-            }
-          }}
+          onClick={handleSignup}
         >
           {!signupLoading && "Sign up"}
           {signupLoading && (
@@ -108,7 +129,7 @@ export default function CardSignup({ switchToSignup }) {
             </div>
           )}
         </button>
-        {signupFailed && (
+        {signupErrors.length > 0 && (
           <div className="mt-1 py-0 text-danger text-center">
             <small>Sign up failed</small>
           </div>

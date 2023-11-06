@@ -19,7 +19,6 @@ async function getUsersFromFilter(filter, userId) {
 }
 
 export async function GET(req, context) {
-  console.log("hi");
   await connectToDB();
   const filter = context.params.filter;
   const userId = context.params.userId;
