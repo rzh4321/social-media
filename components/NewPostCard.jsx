@@ -3,10 +3,12 @@ import Image from "next/image";
 import { z } from "zod";
 
 const schema = z.object({
-  content: z
-    .string()
-    .min(1, { message: "Content is required" })
-    .transform((val) => val.trim()),
+  content: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "Content is required" }),
+}).transform({
+  content: val => val.trim(),
 });
 
 export default function NewPostCard({ authuserData }) {
@@ -14,7 +16,7 @@ export default function NewPostCard({ authuserData }) {
   const [imageInput, setImageInput] = useState(null);
   const [fileError, setFileError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [isContentError, setIsContentError] = useState(false);
+  const [isContentError, setIsContentError] = useState(null);
 
   function handleImageChange(e) {
     const selectedFile = e.target.files[0];
@@ -56,7 +58,8 @@ export default function NewPostCard({ authuserData }) {
     try {
       const validate = schema.parse(contentInput);
     } catch (err) {
-      setIsContentError(true);
+      setIsContentError('Post cannot be empty');
+      setIsLoading(false);
       return;
     }
     const formData = new FormData();
@@ -69,12 +72,13 @@ export default function NewPostCard({ authuserData }) {
       method: "POST",
       body: formData,
     });
+    const data = await res.json();
     setIsLoading(false);
     if (res.status === 201) {
-      setIsContentError(false);
+      setIsContentError(data.error);
       location.reload();
     } else {
-      setIsContentError(true);
+      setIsContentError(null);
     }
   };
 
@@ -183,7 +187,7 @@ export default function NewPostCard({ authuserData }) {
 
             {isContentError && (
               <div className="alert alert-danger px-3 py-2 mx-3" role="alert">
-                Something went wrong
+                {isContentError}
               </div>
             )}
             <div className="modal-footer">

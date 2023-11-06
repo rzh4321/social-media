@@ -6,28 +6,35 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 
 const nameSchema = z.object({
-  name: z
-    .string()
-    .min(1, { message: "Name is required" })
-    .transform((val) => val.trim()),
+  name: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "Name is required" }),
+}).transform({
+  name: val => val.trim(),
 });
 
 const urlSchema = z.object({
-  profilePicUrl: z
-    .string()
-    .min(1, { message: "URL is invalid" })
-    .transform((val) => val.trim()),
+  profilePicUrl: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "URL is invalid" }),
+}).transform({
+  profilePicUrl: val => val.trim(),
 });
 
 const schema = z.object({
-  name: z
-    .string()
-    .min(1, { message: "Name is required" })
-    .transform((val) => val.trim()),
-  profilePicUrl: z
-    .string()
-    .min(1, { message: "URL is invalid" })
-    .transform((val) => val.trim()),
+  name: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "Name is required" }),
+  profilePicUrl: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "URL is invalid" }),
+}).transform({
+  name: val => val.trim(),
+  profilePicUrl: val => val.trim(),
 });
 
 export async function PUT(req) {

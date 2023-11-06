@@ -5,18 +5,24 @@ import { signIn } from "next-auth/react";
 import { z } from "zod";
 
 const schema = z.object({
-  name: z
-    .string()
-    .min(1, { message: "Name is required" })
-    .transform((val) => val.trim()),
-  username: z
-    .string()
-    .min(1, { message: "Username is required" })
-    .transform((val) => val.trim()),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" })
-    .transform((val) => val.trim()),
+  name: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "Name is required" }),
+
+  username: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, { message: "Username is required" }),
+
+  password: z.string().refine(value => {
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 6;
+  }, { message: "Password must be at least 6 characters" }),
+}).transform({
+  name: val => val.trim(),
+  username: val => val.trim(),
+  password: val => val.trim(),
 });
 
 export default function CardSignup({ switchToSignup }) {

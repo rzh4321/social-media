@@ -9,7 +9,6 @@ export default function NewComment({
 }) {
   const [commentInput, setCommentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isContentError, setIsContentError] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const handleNewComment = async (e) => {
@@ -18,7 +17,6 @@ export default function NewComment({
     setIsError(false);
     // must comment something
     if (commentInput.trim().length === 0) {
-      setIsContentError(true);
       setIsLoading(false);
       return;
     }
@@ -32,7 +30,6 @@ export default function NewComment({
     switch (res.status) {
       case 201:
         setIsLoading(false);
-        setIsContentError(false);
         setIsError(false);
         setCommentInput("");
         setComments([
@@ -50,7 +47,6 @@ export default function NewComment({
         break;
       default:
         setIsLoading(false);
-        setIsContentError(false);
         setIsError(true);
     }
   };
@@ -137,11 +133,6 @@ export default function NewComment({
         {isError && (
           <div className="mt-2 mb-0 alert alert-danger px-3 py-1" role="alert">
             <small>Failed to comment, please try again</small>
-          </div>
-        )}
-        {isContentError && (
-          <div className="mt-2 mb-0 alert alert-danger px-3 py-1" role="alert">
-            Content is required
           </div>
         )}
       </form>
