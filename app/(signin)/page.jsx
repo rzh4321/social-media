@@ -21,7 +21,7 @@ const SignIn = () => {
               {signupCard ? (
                 <CardSignup switchToSignup={setSignupCard} />
               ) : (
-                <CardLogin switchToSignup={setSignupCard} status={status} />
+                <CardLogin switchToSignup={setSignupCard} />
               )}
             </div>
           </div>
