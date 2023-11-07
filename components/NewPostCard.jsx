@@ -6,10 +6,12 @@ const schema = z.object({
   content: z.string().refine(value => {
     const trimmedValue = value.trim();
     return trimmedValue.length >= 1;
-  }, { message: "Content is required" }),
-}).transform({
-  content: val => val.trim(),
-});
+  }, { message: "Post cannot be empty" }),
+}).transform(value => ({
+  ...value,
+  // trim the comment after validation
+  content: value.content.trim(),
+}));
 
 export default function NewPostCard({ authuserData }) {
   const [contentInput, setContentInput] = useState("");
@@ -56,7 +58,7 @@ export default function NewPostCard({ authuserData }) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const validate = schema.parse(contentInput);
+      const validate = schema.parse({content: contentInput});
     } catch (err) {
       setIsContentError('Post cannot be empty');
       setIsLoading(false);
@@ -75,10 +77,10 @@ export default function NewPostCard({ authuserData }) {
     const data = await res.json();
     setIsLoading(false);
     if (res.status === 201) {
-      setIsContentError(data.error);
+      setIsContentError(null);
       location.reload();
     } else {
-      setIsContentError(null);
+      setIsContentError(data.error);
     }
   };
 

@@ -3,39 +3,43 @@ import connectToDB from "../../../utils/database";
 import User from "../../../models/User";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../../../config/authOptions";
 
 const nameSchema = z.object({
   name: z.string().refine(value => {
     const trimmedValue = value.trim();
     return trimmedValue.length >= 1;
   }, { message: "Name is required" }),
-}).transform({
-  name: val => val.trim(),
-});
+}).transform(value => ({
+  ...value,
+  name: value.name.trim(),
+}));
 
 const urlSchema = z.object({
   profilePicUrl: z.string().refine(value => {
     const trimmedValue = value.trim();
     return trimmedValue.length >= 1;
   }, { message: "URL is invalid" }),
-}).transform({
-  profilePicUrl: val => val.trim(),
-});
+}).transform(value => ({
+  ...value,
+  profilePicUrl: value.profilePicUrl.trim()
+}));
 
 const schema = z.object({
   name: z.string().refine(value => {
     const trimmedValue = value.trim();
     return trimmedValue.length >= 1;
   }, { message: "Name is required" }),
+  
   profilePicUrl: z.string().refine(value => {
     const trimmedValue = value.trim();
     return trimmedValue.length >= 1;
   }, { message: "URL is invalid" }),
-}).transform({
-  name: val => val.trim(),
-  profilePicUrl: val => val.trim(),
-});
+}).transform(value => ({
+  ...value,
+  name: value.name.trim(),
+  profilePicUrl: value.profilePicUrl.trim()
+}));
 
 export async function PUT(req) {
   await connectToDB();

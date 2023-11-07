@@ -3,7 +3,7 @@ import Post from "../../../models/Post";
 import Comment from "../../../models/Comment";
 import Like from "../../../models/Like";
 import Image from "../../../models/Image";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../../../config/authOptions";
 import { getServerSession } from "next-auth";
 
 import { NextResponse } from "next/server";

@@ -3,9 +3,8 @@ import Post from "../../../../../models/Post";
 import Like from "../../../../../models/Like";
 import connectToDB from "../../../../../utils/database";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../../auth/[...nextauth]/route";
+import { authOptions } from "../../../../../config/authOptions";
 import { getServerSession } from "next-auth/next";
-import mongoose from "mongoose";
 
 // user gives a like to a post
 export async function POST(req, context) {
@@ -23,8 +22,8 @@ export async function POST(req, context) {
   //console.log('userid is ', userId, ' postid is ', postId);
   try {
     const like = new Like({
-      user: new mongoose.Types.ObjectId(user._id),
-      post: new mongoose.Types.ObjectId(post._id),
+      user: user._id,
+      post: post._id,
     });
     await like.save();
     post.likes.push(like);
