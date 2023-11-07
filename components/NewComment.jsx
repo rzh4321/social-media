@@ -1,5 +1,20 @@
 import { useState } from "react";
 import Image from "next/image";
+import { z } from "zod";
+
+const schema = z.object({
+  comment: z.string().refine(value => {
+    // trim the value before checking its length
+    const trimmedValue = value.trim();
+    return trimmedValue.length >= 1;
+  }, {
+    message: "Comment cannot be empty",
+  }),
+}).transform(value => ({
+  ...value,
+  // trim the comment after validation
+  comment: value.comment.trim(),
+}));
 
 export default function NewComment({
   postid,
@@ -9,14 +24,18 @@ export default function NewComment({
 }) {
   const [commentInput, setCommentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleNewComment = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setIsError(false);
+    setError(null);
     // must comment something
-    if (commentInput.trim().length === 0) {
+    try {
+      schema.parse({comment : commentInput});
+    }
+    catch(err) {
+      setError(JSON.parse(err)[0].message);
       setIsLoading(false);
       return;
     }
@@ -30,7 +49,6 @@ export default function NewComment({
     switch (res.status) {
       case 201:
         setIsLoading(false);
-        setIsError(false);
         setCommentInput("");
         setComments([
           ...comments,
@@ -46,8 +64,8 @@ export default function NewComment({
         ]);
         break;
       default:
+        setError(data.error);
         setIsLoading(false);
-        setIsError(true);
     }
   };
 
@@ -130,9 +148,9 @@ export default function NewComment({
             )}
           </button>
         </div>
-        {isError && (
+        {error && (
           <div className="mt-2 mb-0 alert alert-danger px-3 py-1" role="alert">
-            <small>Failed to comment, please try again</small>
+            <small>{error}</small>
           </div>
         )}
       </form>
