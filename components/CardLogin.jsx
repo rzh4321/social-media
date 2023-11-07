@@ -38,7 +38,7 @@ export default function CardLogin({ switchToSignup, status }) {
     const data = await res.json();
     // should return newly created (or existing) user object
     const signInRes = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       username: data.user.username,
       password: data.user.username,
       callbackUrl: "/home",

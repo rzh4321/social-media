@@ -5,7 +5,7 @@ import Comment from "../../../models/Comment";
 import Like from "../../../models/Like";
 import connectToDB from "../../../utils/database";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "../../../config/authOptions";
 
 async function getPosts(userId) {
   const currentUser = await User.findById(userId);

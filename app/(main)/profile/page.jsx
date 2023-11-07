@@ -6,7 +6,7 @@ import Like from "../../../models/Like";
 import Comment from "../../../models/Comment";
 import connectToDB from "../../../utils/database";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "../../../config/authOptions";
 
 async function getUser(userId) {
   try {

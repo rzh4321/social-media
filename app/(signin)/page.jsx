@@ -1,24 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CardLogin from "../../components/CardLogin";
 import CardSignup from "../../components/CardSignup";
 import HomeBanner from "../../components/HomeBanner";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import "../../styles/Home.css";
 
 const SignIn = () => {
   const [signupCard, setSignupCard] = useState(false);
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session && session.user) {
-      console.log("detected ur already logged in, redirecting to home page");
-      return router.push("/home");
-    }
-  }, [router, session]);
 
   return (
     <>

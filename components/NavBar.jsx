@@ -32,12 +32,8 @@ export default function NavBar() {
       setAuthuserData(data.user);
     }
     if (status === "loading") return;
-    if (session) {
-      fetchAuthuser();
-    } else {
-      return router.push("/");
-    }
-  }, [session, router, status]);
+    fetchAuthuser();
+  }, [session, status]);
 
   // Set activeNavLink from pathname
   useEffect(() => {
