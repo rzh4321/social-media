@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 import FeedPostCardCommentSection from "./FeedPostCardCommentSection";
 import FeedPostCardLikeSection from "./FeedPostCardLikeSection";
+import DeletePostIcon from "./DeletePostIcon";
 
 import Image from "next/image";
 
@@ -62,47 +63,54 @@ export default function FeedPostCard({ post, authuserData }) {
   return (
     <div className="row mt-3 justify-content-center" key={post._id}>
       <div className={`card shadow-sm py-3 px-0 feed-card`}>
-        <div className={`mx-3 d-flex d-row gap-2`}>
-          {post.user.profilePicUrl ? (
-            <Image
-              className={`my-auto rounded-circle user-profile-pic`}
-              src={post.user.profilePicUrl}
-              onClick={handleUserProfilePicClick}
-              alt="profile pic"
-              height={40}
-              width={40}
-            />
-          ) : (
-            <div
-              className={`my-auto rounded-circle user-profile-pic`}
-              onClick={handleUserProfilePicClick}
-            >
-              <svg
-                className="user-profile-pic"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
+        <div className={`d-flex d-row justify-content-between`}>
+          <div className="d-flex d-row gap-2 mx-3">
+            {post.user.profilePicUrl ? (
+              <Image
+                className={`my-auto rounded-circle user-profile-pic`}
+                src={post.user.profilePicUrl.toString()}
+                onClick={handleUserProfilePicClick}
+                alt="profile pic"
+                height={40}
+                width={40}
+              />
+            ) : (
+              <div
+                className={`my-auto rounded-circle user-profile-pic`}
+                onClick={handleUserProfilePicClick}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+                <svg
+                  className="user-profile-pic"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+            )}
+            <div>
+              <Link
+                href={`/users/${post.user._id}`}
+                className="p-0 mb-0 text-decoration-none"
+              >
+                <strong>{post.user.name}</strong>
+              </Link>
+              <p className="p-0 mb-0">
+                <small>{postTimeStampDisplay()}</small>
+              </p>
             </div>
-          )}
+          </div>
           <div>
-            <Link
-              href={`/users/${post.user._id}`}
-              className="p-0 mb-0 text-decoration-none"
-            >
-              <strong>{post.user.name}</strong>
-            </Link>
-            <p className="p-0 mb-0">
-              <small>{postTimeStampDisplay()}</small>
-            </p>
+            {authuserData._id === post.user._id ? (
+              <DeletePostIcon postId={post._id} />
+            ) : null}
           </div>
         </div>
         <div className="mx-3 card-text mt-1">

@@ -3,16 +3,21 @@ import Image from "next/image";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 
-const schema = z.object({
-  content: z.string().refine(value => {
-    const trimmedValue = value.trim();
-    return trimmedValue.length >= 1;
-  }, { message: "Post cannot be empty" }),
-}).transform(value => ({
-  ...value,
-  // trim the comment after validation
-  content: value.content.trim(),
-}));
+const schema = z
+  .object({
+    content: z.string().refine(
+      (value) => {
+        const trimmedValue = value.trim();
+        return trimmedValue.length >= 1;
+      },
+      { message: "Post cannot be empty" },
+    ),
+  })
+  .transform((value) => ({
+    ...value,
+    // trim the comment after validation
+    content: value.content.trim(),
+  }));
 
 export default function NewPostCard({ authuserData, setPosts, posts }) {
   const [contentInput, setContentInput] = useState("");
@@ -60,9 +65,9 @@ export default function NewPostCard({ authuserData, setPosts, posts }) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const validate = schema.parse({content: contentInput});
+      const validate = schema.parse({ content: contentInput });
     } catch (err) {
-      setIsContentError('Post cannot be empty');
+      setIsContentError("Post cannot be empty");
       setIsLoading(false);
       return;
     }
@@ -82,11 +87,11 @@ export default function NewPostCard({ authuserData, setPosts, posts }) {
       // display new post by calling setPosts, which will re-render HomeFeed
       setPosts(posts.concat(data.post));
       router.refresh();
-      const closeButton = document.getElementById('close-modal');
+      const closeButton = document.getElementById("close-modal");
       closeButton.click();
-      const form = document.getElementById('newPostForm');
+      const form = document.getElementById("newPostForm");
       form.reset();
-      setContentInput('');
+      setContentInput("");
       setImageInput(null);
       setIsContentError(null);
       setFileError();
@@ -150,7 +155,7 @@ export default function NewPostCard({ authuserData, setPosts, posts }) {
         <div className="modal-dialog">
           <form
             className="modal-content"
-            id='newPostForm'
+            id="newPostForm"
             encType="multipart/form-data"
             onSubmit={handleNewPost}
           >
@@ -160,7 +165,7 @@ export default function NewPostCard({ authuserData, setPosts, posts }) {
               </h1>
               <button
                 type="button"
-                id='close-modal'
+                id="close-modal"
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"

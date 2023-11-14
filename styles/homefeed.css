@@ -110,6 +110,7 @@
   width: 24px;
   position: relative;
   bottom: 3px;
+  cursor: pointer;
 }
 
 input::placeholder {

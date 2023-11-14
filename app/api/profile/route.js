@@ -5,41 +5,59 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../config/authOptions";
 
-const nameSchema = z.object({
-  name: z.string().refine(value => {
-    const trimmedValue = value.trim();
-    return trimmedValue.length >= 1;
-  }, { message: "Name is required" }),
-}).transform(value => ({
-  ...value,
-  name: value.name.trim(),
-}));
+const nameSchema = z
+  .object({
+    name: z.string().refine(
+      (value) => {
+        const trimmedValue = value.trim();
+        return trimmedValue.length >= 1;
+      },
+      { message: "Name is required" },
+    ),
+  })
+  .transform((value) => ({
+    ...value,
+    name: value.name.trim(),
+  }));
 
-const urlSchema = z.object({
-  profilePicUrl: z.string().refine(value => {
-    const trimmedValue = value.trim();
-    return trimmedValue.length >= 1;
-  }, { message: "URL is invalid" }),
-}).transform(value => ({
-  ...value,
-  profilePicUrl: value.profilePicUrl.trim()
-}));
+const urlSchema = z
+  .object({
+    profilePicUrl: z.string().refine(
+      (value) => {
+        const trimmedValue = value.trim();
+        return trimmedValue.length >= 1;
+      },
+      { message: "URL is invalid" },
+    ),
+  })
+  .transform((value) => ({
+    ...value,
+    profilePicUrl: value.profilePicUrl.trim(),
+  }));
 
-const schema = z.object({
-  name: z.string().refine(value => {
-    const trimmedValue = value.trim();
-    return trimmedValue.length >= 1;
-  }, { message: "Name is required" }),
-  
-  profilePicUrl: z.string().refine(value => {
-    const trimmedValue = value.trim();
-    return trimmedValue.length >= 1;
-  }, { message: "URL is invalid" }),
-}).transform(value => ({
-  ...value,
-  name: value.name.trim(),
-  profilePicUrl: value.profilePicUrl.trim()
-}));
+const schema = z
+  .object({
+    name: z.string().refine(
+      (value) => {
+        const trimmedValue = value.trim();
+        return trimmedValue.length >= 1;
+      },
+      { message: "Name is required" },
+    ),
+
+    profilePicUrl: z.string().refine(
+      (value) => {
+        const trimmedValue = value.trim();
+        return trimmedValue.length >= 1;
+      },
+      { message: "URL is invalid" },
+    ),
+  })
+  .transform((value) => ({
+    ...value,
+    name: value.name.trim(),
+    profilePicUrl: value.profilePicUrl.trim(),
+  }));
 
 export async function PUT(req) {
   await connectToDB();

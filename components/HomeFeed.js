@@ -53,7 +53,11 @@ export default function HomeFeed({ feedType, postsData, authuserData }) {
         <div className="border-top mb-4"></div>
       )}
       {feedType !== "user" && (
-        <NewPostCard authuserData={JSON.parse(authuserData)} setPosts={setPosts} posts={posts} />
+        <NewPostCard
+          authuserData={JSON.parse(authuserData)}
+          setPosts={setPosts}
+          posts={posts}
+        />
       )}
       {feedType === "profile" && (
         <h3 className={`mx-auto mt-4 mb-0 feed-card`}>Your posts</h3>

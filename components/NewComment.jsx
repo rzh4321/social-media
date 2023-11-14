@@ -2,19 +2,24 @@ import { useState } from "react";
 import Image from "next/image";
 import { z } from "zod";
 
-const schema = z.object({
-  comment: z.string().refine(value => {
-    // trim the value before checking its length
-    const trimmedValue = value.trim();
-    return trimmedValue.length >= 1;
-  }, {
-    message: "Comment cannot be empty",
-  }),
-}).transform(value => ({
-  ...value,
-  // trim the comment after validation
-  comment: value.comment.trim(),
-}));
+const schema = z
+  .object({
+    comment: z.string().refine(
+      (value) => {
+        // trim the value before checking its length
+        const trimmedValue = value.trim();
+        return trimmedValue.length >= 1;
+      },
+      {
+        message: "Comment cannot be empty",
+      },
+    ),
+  })
+  .transform((value) => ({
+    ...value,
+    // trim the comment after validation
+    comment: value.comment.trim(),
+  }));
 
 export default function NewComment({
   postid,
@@ -32,9 +37,8 @@ export default function NewComment({
     setError(null);
     // must comment something
     try {
-      schema.parse({comment : commentInput});
-    }
-    catch(err) {
+      schema.parse({ comment: commentInput });
+    } catch (err) {
       setError(JSON.parse(err)[0].message);
       setIsLoading(false);
       return;

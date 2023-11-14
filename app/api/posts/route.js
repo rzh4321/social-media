@@ -107,19 +107,19 @@ export async function POST(req, context) {
     await currentUser.save();
     // populate the new post before returning it since we'll call setPost() with it
     const populatedPost = await Post.findById(post._id)
-        .populate('user')
-        .populate({
-          path: 'likes',
-          populate: {
-            path: 'user'
-          }
-        })
-        .populate({
-          path: 'comments',
-          populate: {
-            path: 'user'
-          }
-        });
+      .populate("user")
+      .populate({
+        path: "likes",
+        populate: {
+          path: "user",
+        },
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+        },
+      });
     return NextResponse.json({ post: populatedPost }, { status: 201 });
   } catch (err) {
     return NextResponse.json(

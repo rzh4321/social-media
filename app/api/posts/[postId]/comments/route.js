@@ -3,7 +3,7 @@ import Post from "../../../../../models/Post";
 import Comment from "../../../../../models/Comment";
 import connectToDB from "../../../../../utils/database";
 import { getServerSession } from "next-auth";
-import { authOptions } from '../../../../../config/authOptions';
+import { authOptions } from "../../../../../config/authOptions";
 import { NextResponse } from "next/server";
 
 // post a comment on a post

@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../config/authOptions";
 
-
 export async function POST(req, context) {
   await connectToDB();
   const session = await getServerSession(authOptions);
