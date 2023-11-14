@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   content: z.string().refine(value => {
@@ -13,12 +14,13 @@ const schema = z.object({
   content: value.content.trim(),
 }));
 
-export default function NewPostCard({ authuserData }) {
+export default function NewPostCard({ authuserData, setPosts, posts }) {
   const [contentInput, setContentInput] = useState("");
   const [imageInput, setImageInput] = useState(null);
   const [fileError, setFileError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isContentError, setIsContentError] = useState(null);
+  const router = useRouter();
 
   function handleImageChange(e) {
     const selectedFile = e.target.files[0];
@@ -77,8 +79,17 @@ export default function NewPostCard({ authuserData }) {
     const data = await res.json();
     setIsLoading(false);
     if (res.status === 201) {
+      // display new post by calling setPosts, which will re-render HomeFeed
+      setPosts(posts.concat(data.post));
+      router.refresh();
+      const closeButton = document.getElementById('close-modal');
+      closeButton.click();
+      const form = document.getElementById('newPostForm');
+      form.reset();
+      setContentInput('');
+      setImageInput(null);
       setIsContentError(null);
-      location.reload();
+      setFileError();
     } else {
       setIsContentError(data.error);
     }
@@ -139,6 +150,7 @@ export default function NewPostCard({ authuserData }) {
         <div className="modal-dialog">
           <form
             className="modal-content"
+            id='newPostForm'
             encType="multipart/form-data"
             onSubmit={handleNewPost}
           >
@@ -148,6 +160,7 @@ export default function NewPostCard({ authuserData }) {
               </h1>
               <button
                 type="button"
+                id='close-modal'
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
@@ -163,6 +176,7 @@ export default function NewPostCard({ authuserData }) {
                   placeholder=""
                   id="formTextarea"
                   required
+                  value={contentInput}
                   onChange={(e) => setContentInput(e.target.value)}
                 />
               </div>

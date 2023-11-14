@@ -102,11 +102,25 @@ export async function POST(req, context) {
         user: currentUser._id,
       });
     }
-
     await post.save();
     currentUser.posts.push(post);
     await currentUser.save();
-    return NextResponse.json({ post }, { status: 201 });
+    // populate the new post before returning it since we'll call setPost() with it
+    const populatedPost = await Post.findById(post._id)
+        .populate('user')
+        .populate({
+          path: 'likes',
+          populate: {
+            path: 'user'
+          }
+        })
+        .populate({
+          path: 'comments',
+          populate: {
+            path: 'user'
+          }
+        });
+    return NextResponse.json({ post: populatedPost }, { status: 201 });
   } catch (err) {
     return NextResponse.json(
       { error: "Unknown server error" },

@@ -20,7 +20,7 @@ export default function CommentsList({ comments, authuserData }) {
           <div className="g-0 mt-2 d-flex flex-nowrap" key={comment._id}>
             {comment.user?.profilePicUrl ? (
               <Image
-                className={`my-auto rounded-circle user-profile-pic32`}
+                className={`my-3 rounded-circle user-profile-pic32`}
                 alt="profile pic"
                 width={40}
                 height={40}
@@ -29,10 +29,10 @@ export default function CommentsList({ comments, authuserData }) {
               />
             ) : (
               <div
-                className={`my-auto rounded-circle`}
+                className={`my-3 rounded-circle`}
                 onClick={() => handleUserProfilePicClick(comment.user?._id)}
               >
-                <span className={`material-symbols-outlined`}>
+                <span className={`material-symbols-outlined span-svg`}>
                   <svg
                     className="user-profile-pic comment-profile"
                     xmlns="http://www.w3.org/2000/svg"

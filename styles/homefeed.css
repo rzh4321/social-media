@@ -12,6 +12,12 @@
   width: 40px;
 }
 
+.span-svg {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+}
+
 .post-card.user-profile-pic {
   position: relative;
   bottom: 15px;
@@ -50,6 +56,7 @@
 .user-profile-pic32 {
   height: 32px;
   width: 32px;
+  margin: 0;
 }
 
 .user-profile-pic32:hover {
