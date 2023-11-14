@@ -5,11 +5,9 @@ export default function DeletePostIcon({ postId }) {
 
   async function handleDeletePost(e) {
     e.preventDefault();
-    console.log("in delete post, calling fetch now");
     const res = await fetch(`/api/posts/${postId}`, {
       method: "DELETE",
     });
-    console.log("back from fetch");
     if (res.status === 201 || res.status === 200) {
       location.reload();
     } else {
