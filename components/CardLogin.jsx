@@ -14,7 +14,7 @@ export default function CardLogin({ switchToSignup, status }) {
     setLoginLoading(true);
     setLoginFailed(false);
     const res = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       username: usernameInput,
       password: passwordInput,
       callbackUrl: "/home",

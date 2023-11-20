@@ -78,7 +78,7 @@ export default function CardSignup({ switchToSignup }) {
       setPasswordInput(data.input.password);
     } else if (res.status === 201) {
       const res = await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         username: usernameInput,
         password: passwordInput,
         callbackUrl: "/home", // should redirect to home page after successful signup
