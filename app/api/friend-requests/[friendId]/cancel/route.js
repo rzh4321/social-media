@@ -3,7 +3,7 @@ import User from "../../../../../models/User";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../config/authOptions";
-// send friend request
+
 export async function DELETE(req, context) {
   await connectToDB();
   const session = await getServerSession(authOptions);
