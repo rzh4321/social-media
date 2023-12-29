@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function CardLogin({ switchToSignup, status }) {
@@ -8,20 +9,23 @@ export default function CardLogin({ switchToSignup, status }) {
   const [passwordInput, setPasswordInput] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginLoading(true);
     setLoginFailed(false);
     const res = await signIn("credentials", {
-      redirect: true,
+      redirect: false,
       username: usernameInput,
       password: passwordInput,
-      callbackUrl: "/home",
     });
     if (res && !res.url) {
       setLoginLoading(false);
       setLoginFailed(true);
+    }
+    else {
+      router.push('/home');
     }
   };
 
@@ -38,10 +42,9 @@ export default function CardLogin({ switchToSignup, status }) {
     const data = await res.json();
     // should return newly created (or existing) user object
     const signInRes = await signIn("credentials", {
-      redirect: true,
+      redirect: false,
       username: data.user.username,
       password: data.user.username,
-      callbackUrl: "/home",
     });
 
     if (signInRes && !signInRes.ok) {

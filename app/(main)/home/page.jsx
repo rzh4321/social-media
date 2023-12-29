@@ -55,6 +55,14 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
   const user = await getUser(session.user.userId);
   const posts = await getPosts(session.user.userId);
+  // setInterval(async() => {
+  //   const data = await fetch('https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam', { next: { revalidate: 5 } });
+  //   const res = await data.json();
+  //   console.log(res);
+  // }, 3000);
+  const data = await fetch('https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam');
+  const res = await data.json();
+  console.log(res);
   return (
     <>
       <HomeFeed

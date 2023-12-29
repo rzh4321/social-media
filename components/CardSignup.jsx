@@ -29,11 +29,6 @@ const schema = z
       },
       { message: "Password must be at least 6 characters" },
     ),
-  })
-  .transform({
-    name: (val) => val.trim(),
-    username: (val) => val.trim(),
-    password: (val) => val.trim(),
   });
 
 export default function CardSignup({ switchToSignup }) {
@@ -53,7 +48,8 @@ export default function CardSignup({ switchToSignup }) {
         password: passwordInput,
       });
     } catch (err) {
-      const errorsArr = err.issues.map((obj) => {
+      console.log('err is ',err);
+      const errorsArr = err?.issues?.map((obj) => {
         return obj.message;
       });
       setSignupErrors(errorsArr);
